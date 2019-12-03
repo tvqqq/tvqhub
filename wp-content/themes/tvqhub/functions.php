@@ -74,6 +74,13 @@ add_action('after_setup_theme', 'tvqhub_setup');
 add_action('wp_enqueue_scripts', 'tvqhub_enqueue_scripts');
 function tvqhub_enqueue_scripts()
 {
+    // Bootstrap 4
+    wp_enqueue_style('bs-style', get_template_directory_uri() . '/vendor/bootstrap/bootstrap.min.css');
+    wp_enqueue_script('bs-script', get_template_directory_uri() . '/vendor/bootstrap/bootstrap.bundle.min.js', array('jquery'));
+
+    // Fontawesome
+    wp_enqueue_style('fa', get_template_directory_uri() . '/vendor/fontawesome/css/all.min.css');
+
     // Base css & js
     wp_enqueue_style('tvqhub', get_stylesheet_uri());
     wp_enqueue_script('tvqhub-js', get_template_directory_uri() . '/js/script.js', array('jquery'));
