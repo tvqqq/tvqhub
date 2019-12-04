@@ -15,9 +15,9 @@
 
 <body <?php body_class(); ?>>
 
-<header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar fixed-top">
-    <div class="container header-bar">
-        <a class="navbar-brand mb-1" href="<?php echo esc_url(home_url('/')) ?>" aria-label="TVQhub">
+<header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
+    <div class="container flex-wrap header-bar">
+        <a class="navbar-brand mb-1 mx-auto mx-lg-0 mr-lg-4" href="<?php echo esc_url(home_url('/')) ?>" aria-label="TVQhub">
             <img class="d-block" width="100px" src="<?php echo get_stylesheet_directory_uri() ?>/images/tvqhub.svg"
                  alt="TVQhub Logo">
         </a>
@@ -58,7 +58,7 @@
             </ul>
         </div>
 
-        <ul class="navbar-nav ml-md-auto">
+        <ul class="navbar-nav ml-md-auto mx-auto m-md-0">
             <li class="nav-item dropdown">
                 <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
