@@ -18,7 +18,7 @@
 <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
     <div class="container flex-wrap header-bar">
         <a class="navbar-brand mb-1 mx-auto mx-lg-0 mr-lg-4" href="<?php echo esc_url(home_url('/')) ?>" aria-label="TVQhub">
-            <img class="d-block" width="100px" src="<?php echo get_stylesheet_directory_uri() ?>/images/tvqhub.svg"
+            <img class="d-block" width="100px" src="<?php echo get_theme_file_uri('assets/images/tvqhub.svg') ?>"
                  alt="TVQhub Logo">
         </a>
 
