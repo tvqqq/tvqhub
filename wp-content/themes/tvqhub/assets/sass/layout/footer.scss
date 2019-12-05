@@ -1,0 +1,99 @@
+footer {
+  padding: 2rem 0 0;
+  background-color: #f7f7f7;
+  text-align: center;
+
+  a {
+    font-weight: bold;
+    color: #464a4c !important;
+  }
+
+  p {
+    line-height: 25px;
+    letter-spacing: 0.6px;
+    margin-bottom: 0.8em;
+  }
+
+  .stripes {
+    height: 10px;
+    width: 100%;
+  }
+
+  .tvqhub-logo-footer {
+    display: inline;
+    width: 50px;
+    position: relative;
+    top: -1px;
+  }
+
+  .links {
+    display: inline-flex;
+    align-items: center;
+    margin-top: -10px;
+
+    a {
+      font-weight: normal !important;
+      background: none !important;
+      border: none !important;
+    }
+
+    .social-link {
+      padding: 0;
+      list-style-type: none;
+      align-items: center;
+      margin-top: 15px;
+      margin-bottom: -20px;
+      font-size: 14px;
+
+      li {
+        display: inline;
+        margin-right: 17px;
+
+        a {
+          color: #bbb !important;
+          transition: .3s ease-in-out;
+        }
+
+        &:nth-child(1) a:hover {
+          color: #3b5998 !important;
+        }
+
+        &:nth-child(2) a:hover {
+          color: #0077b5 !important;
+        }
+
+        &:nth-child(3) a:hover {
+          color: #6cc644 !important;
+        }
+
+        &:nth-child(4) {
+          margin-right: 0;
+
+          a:hover {
+            color: #ea4335 !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+.back-to-top {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  text-align: center;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: #111;
+  cursor: pointer;
+  color: #fff;
+  border-radius: 50%;
+  z-index: 999;
+
+  &:hover {
+    color: #fff;
+    background-color: #282828;
+  }
+}

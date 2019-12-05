@@ -84,6 +84,9 @@ function tvqhub_enqueue_scripts()
     // Google Fonts
     wp_enqueue_style('ggfonts', '//fonts.googleapis.com/css?family=Open+Sans:400,700');
 
+    // Animate.css
+    wp_enqueue_style('animate', get_template_directory_uri() . '/vendor/animate/animate.min.css');
+
     // Base css & js
     wp_enqueue_style('tvqhub', get_stylesheet_uri());
     wp_enqueue_script('tvqhub-js', get_template_directory_uri() . '/assets/js/script.js', array('jquery'));
