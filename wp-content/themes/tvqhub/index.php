@@ -1,3 +1,29 @@
 <?php
 get_header();
-echo 'This is index.php';
+?>
+
+<div class="container">
+    <div class="row">
+        <div id="primary" class="content-area col-12 col-lg-8">
+            <main id="main" class="site-main" role="main">
+                <!--Top sticky posts-->
+
+                <!--Quotes-->
+
+                <!--List-->
+                <?php
+                if (have_posts()) :
+                    /* Start the Loop */
+                    while (have_posts()) : the_post();
+                        get_template_part('template-parts/posts/list');
+                    endwhile;
+                    bs_pagination();
+                else :
+                    echo 'No posts yet.';
+                endif; ?>
+            </main>
+        </div><!--.primary-->
+
+<?php
+get_sidebar();
+get_footer();

@@ -1,3 +1,16 @@
 body {
   font-family: 'Open Sans', sans-serif;
 }
+
+a {
+  text-decoration: none !important;
+}
+
+#content {
+  margin-top: 110px;
+}
+@media #{$break-lg} {
+  #content {
+    margin-top: 30px;
+  }
+}

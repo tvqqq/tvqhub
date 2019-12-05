@@ -1,3 +1,6 @@
+</div><!--.row-->
+</div><!--.container-->
+
 <div class="back-to-top">
     <i class="fa fa-angle-up" aria-hidden="true"></i>
 </div>
@@ -55,7 +58,7 @@
         </svg>
     </div>
 </footer>
-</div>
+</div><!--#content-->
 <?php wp_footer(); ?>
 </body>
 </html>

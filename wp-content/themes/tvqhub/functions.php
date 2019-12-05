@@ -105,3 +105,15 @@ function ie_scripts()
     echo '<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>';
     echo '<![endif]-->';
 }
+
+add_filter('excerpt_more', function () {
+    global $post;
+    return '<a class="more-link" href="' . get_permalink($post->ID) . '">... <i class="fas fa-angle-double-right"></i></a>';
+});
+
+add_filter('excerpt_length', function () {
+    return 35;
+});
+
+// Bootstrap pagination
+require get_template_directory() . '/inc/bs-pagination.php';
