@@ -14,7 +14,7 @@ function bs_pagination($pages = '', $range = 4)
         }
     }
     if (1 != $pages) {
-        echo '<nav aria-label="pagination-post" id="pagination">';
+        echo '<nav aria-label="pagination-post" id="pagination" class="mt-n1">';
         echo '<ul class="pagination justify-content-center">';
         echo '<li class="page-item disabled"><a class="page-link" href="#">Page ' . $paged . ' / ' . $pages . '</a></li>';
 

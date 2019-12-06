@@ -1,5 +1,5 @@
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-    <div class="card card-post mb-4">
+    <div class="card card-post mb-5">
         <div class="card-body">
             <div class="row no-gutters">
 
