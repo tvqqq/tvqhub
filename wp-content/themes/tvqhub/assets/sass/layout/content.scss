@@ -99,4 +99,55 @@ article {
       line-height: 24px;
     }
   }
+
+  .related-posts {
+    .title {
+      color: #939393;
+      letter-spacing: 1.2px;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 40px;
+
+      &:before {
+        content: '';
+        width: 50px;
+        border-bottom: 2px solid #dedede;
+        display: block;
+        margin-bottom: 5px;
+      }
+    }
+
+    .content {
+      display: inline-flex;
+      overflow: hidden;
+      margin-bottom: 10px;
+
+      a {
+        color: #777 !important;
+
+        &:hover {
+          color: $blue !important;
+        }
+      }
+
+      .related-thumbnail {
+        width: calc(100% - 10px);
+        height: 140px;
+        margin-bottom: 10px;
+        background-size: cover;
+        border-radius: 10px;
+      }
+
+      .related-title {
+        font-weight: bold;
+        font-size: 90%;
+        padding: 0 3px;
+      }
+
+      &:hover a .related-thumbnail {
+        transform: scale(1.08);
+        transition-duration: 0.5s;
+      }
+    }
+  }
 }

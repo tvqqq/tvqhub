@@ -22,7 +22,14 @@
             </div>
 
             <div class="entry-footer">
-                <!--TODO: related post, post count,...-->
+                <?php
+                if (function_exists('postviews_related')) {
+                    postviews_related();
+                }
+                if (function_exists('postviews_set')) {
+                    postviews_set(get_the_ID());
+                }
+                ?>
             </div>
         </div>
     </div>
