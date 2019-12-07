@@ -9,7 +9,7 @@
                       datetime="<?php echo esc_attr(get_the_date('c')) ?>"><?php echo esc_attr(get_the_date()) ?></time>
                 <span>•</span>
                 <?php $category = get_the_category(get_the_ID())[0];
-                $tagsList = get_the_tag_list(null, ','); ?>
+                $tagsList = get_the_tag_list(null, ',&nbsp;'); ?>
                 <a href="<?php echo esc_url(home_url('/category/') . $category->slug) ?>"><?php echo $category->name ?></a>
                 <?php if ($tagsList) { ?>
                     • <i class="fas fa-tags"></i>

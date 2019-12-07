@@ -82,11 +82,39 @@ article {
   }
 
   .entry-content {
-    a.more-link {
-      color: #666 !important;
+    img {
+      height: auto;
+      border-radius: 4px;
+      box-shadow: 5px 0 40px #d6dee4;
+      margin: 15px auto;
+
+      &.sticker {
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        margin: 0 auto !important;
+      }
+    }
+
+    a {
+      font-weight: bold;
+      color: $cyan !important;
+      border-bottom: 2px solid #ccf3f6;
 
       &:hover {
-        color: #999 !important;
+        border-color: $cyan !important;
+        background-color: #eefbfc;
+      }
+
+      &:active, &:focus {
+        border-bottom: 2px dashed $cyan !important;
+        background-color: #eefbfc;
+      }
+
+      .more-link {
+        color: #666 !important;
+        &:hover {
+          color: #999 !important;
+        }
       }
     }
   }

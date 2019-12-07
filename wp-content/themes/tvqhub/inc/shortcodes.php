@@ -6,6 +6,7 @@
 $shortcodes = [
 
     'tvqhub' => 'common/v-tvqhub-label',
+    'qod' => 'qod/v-qod',
 
 ];
 
