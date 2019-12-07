@@ -96,21 +96,23 @@ article {
     }
 
     a {
-      font-weight: bold;
-      color: $cyan !important;
-      border-bottom: 2px solid #ccf3f6;
+      &:not(.more-link) {
+        font-weight: bold;
+        color: $cyan !important;
+        border-bottom: 2px solid #ccf3f6;
 
-      &:hover {
-        border-color: $cyan !important;
-        background-color: #eefbfc;
+        &:hover {
+          border-color: $cyan !important;
+          background-color: #eefbfc;
+        }
+
+        &:active, &:focus {
+          border-bottom: 2px dashed $cyan !important;
+          background-color: #eefbfc;
+        }
       }
 
-      &:active, &:focus {
-        border-bottom: 2px dashed $cyan !important;
-        background-color: #eefbfc;
-      }
-
-      .more-link {
+      &.more-link {
         color: #666 !important;
         &:hover {
           color: #999 !important;

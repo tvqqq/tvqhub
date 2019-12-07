@@ -17,7 +17,7 @@
 
 <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
     <div class="container flex-wrap header-bar">
-        <a class="navbar-brand mb-1 mx-auto mx-lg-0 mr-lg-4" href="<?php echo esc_url(home_url('/')) ?>"
+        <a class="navbar-brand mb-1 mx-auto mx-lg-0 mr-lg-2" href="<?php echo esc_url(home_url('/')) ?>"
            aria-label="TVQhub">
             <img class="d-block" width="100px" src="<?php echo get_theme_file_uri('assets/images/tvqhub.svg') ?>"
                  alt="TVQhub Logo">
@@ -26,35 +26,16 @@
         <div class="navbar-nav-scroll">
             <ul class="navbar-nav bd-navbar-nav flex-row">
                 <li class="nav-item">
-                    <a class="nav-link " href="/"
-                       onclick="ga('send', 'event', 'Navbar', 'Community links', 'Bootstrap');">Home</a>
+                    <a class="nav-link" href="/category/abc">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="/docs/4.4/getting-started/introduction/"
-                       onclick="ga('send', 'event', 'Navbar', 'Community links', 'Docs');">Documentation</a>
+                    <a class="nav-link" href="/category/abc">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="/docs/4.4/examples/"
-                       onclick="ga('send', 'event', 'Navbar', 'Community links', 'Examples');">Examples</a>
+                    <a class="nav-link" href="/category/abc">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="https://icons.getbootstrap.com/"
-                       onclick="ga('send', 'event', 'Navbar', 'Community links', 'Icons');">Icons</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="https://themes.getbootstrap.com/"
-                       onclick="ga('send', 'event', 'Navbar', 'Community links', 'Themes');" target="_blank"
-                       rel="noopener">Themes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="https://expo.getbootstrap.com/"
-                       onclick="ga('send', 'event', 'Navbar', 'Community links', 'Expo');" target="_blank"
-                       rel="noopener">Expo</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="https://blog.getbootstrap.com/"
-                       onclick="ga('send', 'event', 'Navbar', 'Community links', 'Blog');" target="_blank"
-                       rel="noopener">Blog</a>
+                    <a class="nav-link" href="/category/abc">Home</a>
                 </li>
             </ul>
         </div>

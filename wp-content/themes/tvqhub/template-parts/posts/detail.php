@@ -21,6 +21,8 @@
                 <?php the_content(); ?>
             </div>
 
+            <div class="clearfix"></div>
+
             <div class="entry-footer">
                 <?php
                 if (function_exists('postviews_related')) {

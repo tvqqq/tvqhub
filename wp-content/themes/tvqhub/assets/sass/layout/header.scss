@@ -7,20 +7,42 @@ header.navbar {
 
   &.bd-navbar {
     min-height: 4rem;
-    box-shadow: 0 4px 4px 0 rgba(0,0,0,.2);
-    background: #4b6cb7;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #182848, #4b6cb7);  /* Chrome 10-25, Safari 5.1-6 */
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, .2);
+    background: #4b6cb7; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #182848, #4b6cb7); /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to right, #182848, #4b6cb7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  }
+
+  .navbar-brand {
+    &:hover {
+      -webkit-animation: pulse infinite 1s;
+      animation: pulse infinite 1s;
+    }
   }
 
   i {
     font-size: 120%;
   }
 
+  .navbar-nav-scroll {
+    li.nav-item {
+      margin: 0 5px;
+    }
+  }
+
   .search {
     margin-top: 3px;
     border-left: 1px solid #aaa;
     padding-left: 8px;
+  }
+
+  .nav-link {
+    color: #fff !important;
+    font-weight: bold;
+
+    &:hover {
+      color: rgba(255, 255, 255, .5) !important;
+    }
   }
 
   @media #{$break-lg} {
