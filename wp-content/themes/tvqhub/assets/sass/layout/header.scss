@@ -13,6 +13,16 @@ header.navbar {
     background: linear-gradient(to right, #182848, #4b6cb7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
 
+  i {
+    font-size: 120%;
+  }
+
+  .search {
+    margin-top: 3px;
+    border-left: 1px solid #aaa;
+    padding-left: 8px;
+  }
+
   @media #{$break-lg} {
     position: relative;
 
