@@ -100,14 +100,17 @@ function ie_scripts()
     echo '<![endif]-->';
 }
 
-add_filter('excerpt_more', function () {
-    global $post;
-    return '<a class="more-link" href="' . get_permalink($post->ID) . '">... <i class="fas fa-angle-double-right"></i></a>';
-});
-
-add_filter('excerpt_length', function () {
-    return 35;
-});
-
-// Bootstrap pagination
-require get_template_directory() . '/inc/bs-pagination.php';
+// Include all PHP files in folder /inc
+function includeInc($dir, $depth = 0)
+{
+    $scan = glob("{$dir}/*");
+    foreach ($scan as $path) {
+        // TODO: combine 2 regex
+        if (preg_match('/\.php$/', $path) && !preg_match('/v-.*$/', basename($path))) {
+            require_once $path;
+        } elseif (is_dir($path)) {
+            includeInc($path, $depth + 1);
+        }
+    }
+}
+includeInc(get_template_directory() . '/inc');
