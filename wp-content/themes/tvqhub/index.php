@@ -8,7 +8,6 @@ get_header();
         <main id="main" class="site-main" role="main">
             <?php
             if (have_posts()) :
-                /* Start the Loop */
                 while (have_posts()) : the_post();
                     get_template_part('template-parts/posts/list');
                 endwhile;
