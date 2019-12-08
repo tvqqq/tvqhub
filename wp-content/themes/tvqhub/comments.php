@@ -10,6 +10,8 @@ if (post_password_required()) {
 ?>
 
 <div class="text-center">
+    <div class="sharethis-inline-reaction-buttons"></div>
+    <div class="sharethis-inline-share-buttons"></div>
     <hr width="20%"/>
     <span class="fa-stack fa-lg">
         <i class="fa fa-circle fa-stack-2x"></i>

@@ -81,6 +81,9 @@ function tvqhub_enqueue_scripts()
     // Animate.css
     wp_enqueue_style('animate', get_template_directory_uri() . '/vendor/animate/animate.min.css');
 
+    // Sharethis
+    wp_enqueue_script('sharethis', 'https://platform-api.sharethis.com/js/sharethis.js#property=5dec7b5e2e495700120c8448&product=inline-share-buttons#asyncload');
+
     // Base css & js
     wp_enqueue_style('tvqhub', get_stylesheet_uri());
     wp_enqueue_script('tvqhub-js', get_template_directory_uri() . '/assets/js/script.js', array('jquery'));
@@ -115,3 +118,15 @@ function includeInc($dir, $depth = 0)
 }
 
 includeInc(get_template_directory() . '/inc');
+
+add_filter('clean_url', 'tvqhub_async_load', 11, 1);
+function tvqhub_async_load($url)
+{
+    if (strpos($url, '#asyncload') === false) {
+        return $url;
+    } else if (is_admin()) {
+        return str_replace('#asyncload', '', $url);
+    } else {
+        return str_replace('#asyncload', '', $url) . "' async='async";
+    }
+}

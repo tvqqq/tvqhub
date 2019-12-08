@@ -2,7 +2,7 @@
 
 function tvqhub_statistics()
 {
-    $since = '2019-12-01';
+    $since = '2019-12-14';
     return [
         'since' => $since,
         'days' => tvqhub_stat_get_days($since),
