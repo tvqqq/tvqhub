@@ -113,4 +113,5 @@ function includeInc($dir, $depth = 0)
         }
     }
 }
+
 includeInc(get_template_directory() . '/inc');

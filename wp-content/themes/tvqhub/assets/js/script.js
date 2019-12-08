@@ -24,6 +24,7 @@ jQuery(document).ready(function ($) {
         n = parseInt(n);
         return Math.floor(Math.random() * (n - m + 1)) + m;
     };
+
     function confetti() {
         $.each($('.particletext.confetti'), function () {
             for (let i = 0; i <= 15; i++) {
@@ -31,5 +32,6 @@ jQuery(document).ready(function ($) {
             }
         });
     }
+
     confetti();
 });

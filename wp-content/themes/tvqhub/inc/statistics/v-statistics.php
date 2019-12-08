@@ -7,7 +7,8 @@ $stat = tvqhub_statistics();
         <div class="card border-info">
             <div class="card-body text-center p-2">
                 <h4><strong><?php echo $stat['days'] ?></strong></h4>
-                <h6>days <small><i class="fas fa-info-circle" data-toggle="tooltip" title="since <?php echo $stat['since'] ?>"></i></small></h6>
+                <h6>days <small><i class="fas fa-info-circle" data-toggle="tooltip"
+                                   title="since <?php echo $stat['since'] ?>"></i></small></h6>
             </div>
         </div>
     </div>

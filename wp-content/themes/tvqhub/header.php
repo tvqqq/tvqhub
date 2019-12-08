@@ -42,14 +42,17 @@
 
         <ul class="navbar-nav ml-md-auto mx-auto m-md-0">
             <li class="nav-item">
-                <a class="nav-link p-2" href="/me" data-toggle="tooltip" data-placement="bottom" title="About me"><i class="fas fa-user-circle"></i></a>
+                <a class="nav-link p-2" href="/me" data-toggle="tooltip" data-placement="bottom" title="About me"><i
+                        class="fas fa-user-circle"></i></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link p-2" href="/contact" data-toggle="tooltip" data-placement="bottom" title="Contact"><i class="far fa-paper-plane"></i></a>
+                <a class="nav-link p-2" href="/contact" data-toggle="tooltip" data-placement="bottom" title="Contact"><i
+                        class="far fa-paper-plane"></i></a>
             </li>
             <li class="nav-item">
                 <form class="form-inline search" method="get" action="<?php echo home_url(); ?>"
-                      role="search" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-trigger="focus" data-content="Press <code>enter</code> to search">
+                      role="search" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"
+                      data-trigger="focus" data-content="Press <code>enter</code> to search">
                     <input id="search" class="form-control form-control-sm" type="search" placeholder="Search..."
                            value="<?php echo get_search_query() ?>" name="s"/>
                 </form>
