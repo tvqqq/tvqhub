@@ -12,7 +12,8 @@ class PostViewModel
     {
         $count = get_post_meta($postId, self::POST_VIEW_COUNT, true);
         if ($count) {
-            update_post_meta($postId, self::POST_VIEW_COUNT, ++$count);
+            $count = $count + 0.5; // TODO research loop 2 times
+            update_post_meta($postId, self::POST_VIEW_COUNT, $count);
         } else {
             add_post_meta($postId, self::POST_VIEW_COUNT, 1);
         }
@@ -20,7 +21,9 @@ class PostViewModel
 
     public static function getTotalViews()
     {
-        // TODO: use $wpdb
+        global $wpdb;
+        $sql = "SELECT SUM(meta_value) FROM wp_postmeta WHERE meta_key = 'tvqhub_post_view_count'";
+        return $wpdb->get_var($sql);
     }
 
     public static function getTop10Posts()

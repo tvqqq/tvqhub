@@ -1,7 +1,5 @@
 <?php
-if (function_exists('tvqhub_get_data_qod')) {
-    $qod = tvqhub_get_data_qod();
-}
+$qod = tvqhub_get_data_qod();
 ?>
 
 <div class="border-qod">
