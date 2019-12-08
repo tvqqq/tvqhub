@@ -1,5 +1,5 @@
 /.idea
 /wp-content/uploads
-/wp-content/*.log
+/wp-content/debug.log
 .htaccess
 wp-config.php
