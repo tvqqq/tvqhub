@@ -13,7 +13,7 @@ get_header();
                 endwhile;
                 bs_pagination();
             else :
-                echo 'No posts yet.';
+                get_template_part('template-parts/posts/soon');
             endif; ?>
         </main>
     </div><!--#primary-->

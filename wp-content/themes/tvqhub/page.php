@@ -9,7 +9,9 @@ get_header();
             <?php
             while (have_posts()) : the_post(); ?>
                 <article id="page-<?php the_ID(); ?>" <?php post_class(); ?>>
-                    <h1 class="page-title"><?php the_title(); ?></h1><!--TODO: option display title or not-->
+                    <?php if (!empty(get_post_meta(get_the_ID(), 'tvqhub_display_title')[0])) { ?>
+                        <h1 class="page-title"><?php the_title(); ?></h1>
+                    <?php } ?>
                     <div class="entry-content"><?php the_content(); ?></div>
                 </article><!-- #post-## -->
 
@@ -25,5 +27,4 @@ get_header();
     </div><!-- #primary -->
 
 <?php
-get_sidebar();
 get_footer();

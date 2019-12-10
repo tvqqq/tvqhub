@@ -12,7 +12,7 @@ function tvqhub_rest_qod()
     $obj = json_decode($json, true);
     $quotes = $obj['contents']['quotes'][0];
 
-    if ((int)$quotes['length'] > 255) {
+    if ((int)$quotes['length'] > 250) {
         return;
     }
 
@@ -31,6 +31,5 @@ function tvqhub_get_data_qod()
     global $wpdb;
     $table = $wpdb->prefix . 'qod';
     $sql = "SELECT * FROM {$table} ORDER BY RAND() LIMIT 1";
-    $result = $wpdb->get_row($sql);
-    return $result;
+    return $wpdb->get_row($sql);
 }

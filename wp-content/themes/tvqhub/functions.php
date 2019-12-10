@@ -108,10 +108,11 @@ function includeInc($dir, $depth = 0)
 {
     $scan = glob("{$dir}/*");
     foreach ($scan as $path) {
+
         // TODO: combine 2 regex
         if (preg_match('/\.php$/', $path) && !preg_match('/v-.*$/', basename($path))) {
             require_once $path;
-        } elseif (is_dir($path)) {
+        } elseif (is_dir($path) && !strpos($path, 'pages')) {
             includeInc($path, $depth + 1);
         }
     }
@@ -119,6 +120,7 @@ function includeInc($dir, $depth = 0)
 
 includeInc(get_template_directory() . '/inc');
 
+// Load async js
 add_filter('clean_url', 'tvqhub_async_load', 11, 1);
 function tvqhub_async_load($url)
 {
@@ -130,3 +132,12 @@ function tvqhub_async_load($url)
         return str_replace('#asyncload', '', $url) . "' async='async";
     }
 }
+
+// Remove default image sizes here.
+add_filter('intermediate_image_sizes_advanced', function ($sizes) {
+    unset($sizes['medium']); // 300px
+    unset($sizes['large']); // 1024px
+    unset($sizes['medium_large']); // 768px
+
+    return $sizes;
+});

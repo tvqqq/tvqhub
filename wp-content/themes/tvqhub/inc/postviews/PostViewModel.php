@@ -12,10 +12,10 @@ class PostViewModel
     {
         $count = get_post_meta($postId, self::POST_VIEW_COUNT, true);
         if ($count) {
-            $count = $count + 0.5; // TODO research loop 2 times
+            $count = $count + 0.5; // TODO research why loop 2 times
             update_post_meta($postId, self::POST_VIEW_COUNT, $count);
         } else {
-            add_post_meta($postId, self::POST_VIEW_COUNT, 1);
+            add_post_meta($postId, self::POST_VIEW_COUNT, 0.5);
         }
     }
 

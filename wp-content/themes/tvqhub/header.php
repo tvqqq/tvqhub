@@ -39,10 +39,10 @@
                     <a class="nav-link" href="/category/chuyen-code">Chuyện code</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/category/chuyen-linh-tinh">Chuyện linh tinh</a>
+                    <a class="nav-link" href="/category/chuyen-hay-ho">Chuyện hay ho</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/category/chia-se">Chia sẻ</a>
+                    <a class="nav-link" href="/category/chuyen-linh-tinh">Chuyện linh tinh</a>
                 </li>
             </ul>
         </div>

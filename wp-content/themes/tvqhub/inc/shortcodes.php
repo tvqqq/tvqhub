@@ -8,6 +8,8 @@ $shortcodes = [
     'tvqhub' => 'common/v-tvqhub-label',
     'qod' => 'qod/v-qod',
     'statistics' => 'statistics/v-statistics',
+    'tvqhub_me' => 'pages/me',
+    'tvqhub_contact' => 'pages/contact',
 
 ];
 
