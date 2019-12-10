@@ -1,5 +1,5 @@
 <div class="col-12 col-lg-4" id="sidebar">
-    <aside id="secondary" class="widget-area" role="complementary">
+    <aside id="secondary" class="widget-area mt-5 mt-lg-0" role="complementary">
         <?php
         if (is_home()) { ?>
             <div class="home-sidebar">

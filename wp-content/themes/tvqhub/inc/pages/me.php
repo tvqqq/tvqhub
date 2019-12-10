@@ -1,7 +1,7 @@
 <?php $cv = get_post_meta(get_the_ID(), 'cv')[0]; ?>
 
 <div class="row" id="page-me">
-    <div class="col-12 col-lg-3 order-lg-last">
+    <div class="col-12 col-lg-3 order-lg-last text-center">
         <!-- Intro -->
         <div class="lds-css ng-scope">
             <div style="width:100%;height:100%" class="lds-facebook">
@@ -11,39 +11,15 @@
             </div>
         </div>
         <img class="avatar-fb" src=""/>
-        <h4 class="text-center">Tất Vĩ Quyền (TVQ)</h4>
-        <div class="row text-muted d-flex flex-row justify-content-around">
+        <h3>Tất Vĩ Quyền (TVQ)</h3>
+        <div class="row text-muted d-flex flex-row me-info">
             <span><i class="fas fa-map-marker-alt"></i> Saigonese</span>
-            <span><i class="far fa-sun"></i> 22+</span>
+            <span><i class="far fa-sun"></i> <?php echo date_diff(date_create(date('Y-m-d')), date_create('1996-12-17'))->y ?>+</span>
             <span><i class="fas fa-horse-head"></i> Sagittarius</span>
         </div>
-        <div class="links links-page-me">
-            <ul class="social-link mb-3">
-                <li><a href="https://www.facebook.com/tvqqq" target="_blank"><i
-                            class="fab fa-facebook fa-2x"
-                            data-toggle="tooltip"
-                            data-placement="bottom"
-                            title="fb/tvqqq"></i></a></li>
-                <li><a href="https://www.linkedin.com/in/tvq" target="_blank"><i
-                            class="fab fa-linkedin fa-2x"
-                            data-toggle="tooltip"
-                            data-placement="bottom"
-                            title="in/tvq"></i></a></li>
-                <li><a href="https://github.com/tvqqq" target="_blank"><i
-                            class="fab fa-github fa-2x"
-                            data-toggle="tooltip"
-                            data-placement="bottom"
-                            title="github/tvqqq"></i></a></li>
-                <li><a href="mailto:tvq9612@gmail.com" target="_blank"><i
-                            class="fas fa-at fa-2x"
-                            data-toggle="tooltip"
-                            data-placement="bottom"
-                            title="tvq9612@gmail.com"></i></a></li>
-            </ul>
-        </div>
-        <div class="text-center mt-3 button-cv">
-            <button type="button" class="btn btn-outline-primary" data-toggle="modal"
-                    data-target="#myCV">My
+        <div class="mt-3 button-cv">
+            <button type="button" class="btn btn-outline-primary disabled" data-toggle="modal"
+                    data-target="#myCV-updating">My
                 CV <i class="fas fa-chevron-circle-right"></i>
             </button>
             <div class="modal fade" id="myCV" tabindex="-1" role="dialog"
@@ -103,10 +79,8 @@
 
         <h5><i class="fas fa-laptop"></i> Currently Using</h5>
         <ul>
-            <li><strong>PC:</strong> i3 3240 - AMD R7 200 - 8GB - 128GB/500GB</li>
-            <li><strong>Laptop:</strong> Thinkpad T430</li>
-            <li><strong>Keyboard:</strong> Dareu DK87</li>
-            <li><strong>Mouse:</strong> Logitech M90</li>
+            <li><strong>Laptop:</strong> Macbook Pro 2019 13" 1.4Ghz</li>
+            <li><strong>Phone:</strong> Asus Zenfone Max Plus M1</li>
             <li><span class="text-muted">Updating...</span></li>
         </ul>
 

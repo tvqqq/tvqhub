@@ -12,7 +12,7 @@ get_header();
                     <?php if (!empty(get_post_meta(get_the_ID(), 'tvqhub_display_title')[0])) { ?>
                         <h1 class="page-title"><?php the_title(); ?></h1>
                     <?php } ?>
-                    <div class="entry-content"><?php the_content(); ?></div>
+                    <div class="entry-content px-3"><?php the_content(); ?></div>
                 </article><!-- #post-## -->
 
                 <?php

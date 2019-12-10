@@ -1,14 +1,19 @@
 #page-me {
-  font-size: 110%;
-
   .avatar-fb {
     border: 4px solid #fff;
     border-radius: 100%;
     box-shadow: 5px 0 40px #d6dee4;
+    width: 100%;
+    min-height: 250px;
+    background: #cdcdcd;
   }
 
-  h5 {
+  .order-lg-first h5 {
     border-bottom: 2px solid #f7f7f7;
+  }
+
+  .me-info {
+    justify-content: space-evenly;
   }
 
   .button-cv {
