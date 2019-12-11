@@ -3,6 +3,7 @@
 /wp-content/debug.log
 .htaccess
 wp-config.php
+wp-content/cache
 
 # Wordfence
 wp-content/wflogs
