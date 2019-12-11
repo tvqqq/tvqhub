@@ -136,8 +136,8 @@ function tvqhub_async_load($url)
 // Remove default image sizes here.
 add_filter('intermediate_image_sizes_advanced', function ($sizes) {
     unset($sizes['medium']); // 300px
-    unset($sizes['large']); // 1024px
     unset($sizes['medium_large']); // 768px
+    unset($sizes['large']); // 1024px
 
     return $sizes;
 });

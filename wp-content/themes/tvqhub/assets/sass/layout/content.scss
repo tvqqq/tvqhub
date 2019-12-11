@@ -82,6 +82,14 @@ article {
   }
 
   .entry-content {
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: bold;
+    }
+
+    ol li, ul li {
+      line-height: 190%;
+    }
+
     img {
       height: auto;
       border-radius: 4px;

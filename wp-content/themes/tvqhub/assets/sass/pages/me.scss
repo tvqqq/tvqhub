@@ -9,7 +9,9 @@
   }
 
   .order-lg-first h5 {
-    border-bottom: 2px solid #f7f7f7;
+    border-bottom: 1px dashed #dbdbdb;
+    width: fit-content;
+    padding-bottom: 4px;
   }
 
   .me-info {
@@ -18,7 +20,7 @@
 
   .button-cv {
     button {
-      font-weight: 700;
+      font-weight: bold;
       -webkit-appearance: none;
       -webkit-transition: background 500ms ease;
       transition: background 500ms ease;
