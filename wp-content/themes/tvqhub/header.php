@@ -29,7 +29,7 @@
     <div class="container flex-wrap header-bar">
         <a class="navbar-brand mb-1 mx-auto mx-lg-0 mr-lg-2" href="<?php echo esc_url(home_url('/')) ?>"
            aria-label="TVQhub">
-            <img class="d-block" width="100px" src="<?php echo get_theme_file_uri('assets/images/tvqhub.svg') ?>"
+            <img class="d-block no-lazy" width="100px" src="<?php echo get_theme_file_uri('assets/images/tvqhub.svg') ?>"
                  alt="TVQhub Logo">
         </a>
 
