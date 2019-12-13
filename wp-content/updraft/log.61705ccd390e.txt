@@ -1,0 +1,215 @@
+0000.001 (0) Opened log file at time: Thu, 12 Dec 2019 13:37:52 +0000 on http://tvqhub.local
+0000.005 (0) UpdraftPlus WordPress backup plugin (https://updraftplus.com): 1.16.21 WP: 5.3 PHP: 7.4.0 (apache2handler, Darwin TVQ-mbp.local 19.0.0 Darwin Kernel Version 19.0.0: Thu Oct 17 16:17:15 PDT 2019; root:xnu-6153.41.3~29/RELEASE_X86_64 x86_64) MySQL: 8.0.18 WPLANG: en_US Server: Apache/2.4.41 (Unix) OpenSSL/1.1.1d PHP/7.4.0 safe_mode: 0 max_execution_time: 900 memory_limit: 1024M (used: 6.7M | 8M) multisite: N openssl: OpenSSL 1.1.1d  10 Sep 2019 mcrypt: N LANG:  ZipArchive::addFile: Y
+0000.008 (0) Free space on disk containing Updraft's temporary directory: 141429.6 MB
+0000.013 (0) Tasks: Backup files:  (schedule: manual) Backup DB: 1 (schedule: daily)
+0000.015 (0) Processed schedules. Tasks now: Backup files:  Backup DB: 1
+0000.032 (0) Requesting semaphore lock (d) (apparently via scheduler: last_scheduled_action_called_at=1576070683, seconds_ago=87189)
+0000.043 (0) Set semaphore last lock (d) time to 2019-12-12 13:37:52
+0000.045 (0) Semaphore lock (d) complete
+0000.050 (0) Backup run: resumption=0, nonce=61705ccd390e, file_nonce=61705ccd390e begun at=1576157872 (0s ago), job type=backup
+0000.054 (0) Scheduling a resumption (1) after 300 seconds (1576158172) in case this run gets aborted
+0000.077 (0) This backup run is not intended for files - skipping
+0000.079 (0) Beginning creation of database dump (WordPress DB)
+0000.087 (0) Testing potential mysqldump binary: /usr/local/bin/mysqldump
+0000.178 (0) Output: /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;\n/*!40103 SET TIME_ZONE='+00:00' */;\n/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;\n/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;\n/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;\n/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;\nDROP TABLE IF EXISTS `wp_options`;\n/*!40101 SET @saved_cs_client     = @@character_set_client */;\n/*!50503 SET character_set_client = utf8mb4 */;\n (truncated - 1145 bytes total)
+0000.207 (0) Table wp_options: Total expected rows (approximate): 277
+0000.217 (0) Table wp_options: Total rows added: 244 in 0.01 seconds
+0000.220 (0) Table wp_options: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_options.table.gz - 11.6 KB)
+0000.230 (0) Table wp_users: Total expected rows (approximate): 1
+0000.238 (0) Table wp_users: Total rows added: 1 in 0.00 seconds
+0000.242 (0) Table wp_users: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_users.table.gz - 0.6 KB)
+0000.249 (0) Table wp_usermeta: Total expected rows (approximate): 28
+0000.253 (0) Table wp_usermeta: Total rows added: 28 in 0.00 seconds
+0000.257 (0) Table wp_usermeta: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_usermeta.table.gz - 1.3 KB)
+0000.261 (0) Skipping table (lacks our prefix (wp_)): users
+0000.265 (0) Table wp_commentmeta: Total expected rows (approximate): 0
+0000.271 (0) Table wp_commentmeta: Total rows added: 0 in 0.00 seconds
+0000.272 (0) Table wp_commentmeta: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_commentmeta.table.gz - 0.4 KB)
+0000.278 (0) Table wp_comments: Total expected rows (approximate): 1
+0000.289 (0) Table wp_comments: Total rows added: 1 in 0.01 seconds
+0000.291 (0) Table wp_comments: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_comments.table.gz - 0.7 KB)
+0000.298 (0) Table wp_links: Total expected rows (approximate): 0
+0000.304 (0) Table wp_links: Total rows added: 0 in 0.00 seconds
+0000.306 (0) Table wp_links: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_links.table.gz - 0.5 KB)
+0000.313 (0) Table wp_postmeta: Total expected rows (approximate): 42
+0000.319 (0) Table wp_postmeta: Total rows added: 42 in 0.00 seconds
+0000.323 (0) Table wp_postmeta: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_postmeta.table.gz - 1.6 KB)
+0000.331 (0) Table wp_posts: Total expected rows (approximate): 13
+0000.338 (0) Table wp_posts: Total rows added: 11 in 0.00 seconds
+0000.341 (0) Table wp_posts: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_posts.table.gz - 4 KB)
+0000.349 (0) Table wp_term_relationships: Total expected rows (approximate): 1
+0000.357 (0) Table wp_term_relationships: Total rows added: 1 in 0.01 seconds
+0000.359 (0) Table wp_term_relationships: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_term_relationships.table.gz - 0.4 KB)
+0000.366 (0) Table wp_term_taxonomy: Total expected rows (approximate): 4
+0000.372 (0) Table wp_term_taxonomy: Total rows added: 4 in 0.01 seconds
+0000.375 (0) Table wp_term_taxonomy: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_term_taxonomy.table.gz - 0.5 KB)
+0000.382 (0) Table wp_termmeta: Total expected rows (approximate): 0
+0000.387 (0) Table wp_termmeta: Total rows added: 0 in 0.00 seconds
+0000.390 (0) Table wp_termmeta: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_termmeta.table.gz - 0.4 KB)
+0000.396 (0) Table wp_terms: Total expected rows (approximate): 4
+0000.401 (0) Table wp_terms: Total rows added: 4 in 0.00 seconds
+0000.403 (0) Table wp_terms: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_terms.table.gz - 0.5 KB)
+0000.413 (0) Table wp_yoast_seo_links: Total expected rows (approximate): 0
+0000.425 (0) Table wp_yoast_seo_links: Total rows added: 0 in 0.01 seconds
+0000.428 (0) Table wp_yoast_seo_links: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_yoast_seo_links.table.gz - 0.4 KB)
+0000.437 (0) Table wp_yoast_seo_meta: Total expected rows (approximate): 0
+0000.441 (0) Table wp_yoast_seo_meta: Total rows added: 0 in 0.00 seconds
+0000.442 (0) Table wp_yoast_seo_meta: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_yoast_seo_meta.table.gz - 0.3 KB)
+0000.447 (0) Skipping table (lacks our prefix (wp_)): failed_jobs
+0000.450 (0) Skipping table (lacks our prefix (wp_)): jobs
+0000.451 (0) Skipping table (lacks our prefix (wp_)): migrations
+0000.452 (0) Skipping table (lacks our prefix (wp_)): password_resets
+0000.454 (0) Skipping table (lacks our prefix (wp_)): sessions
+0000.458 (0) Table wp_qod: Total expected rows (approximate): 7
+0000.466 (0) Table wp_qod: Total rows added: 7 in 0.01 seconds
+0000.467 (0) Table wp_qod: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_qod.table.gz - 0.9 KB)
+0000.473 (0) Table wp_tm_taskmeta: Total expected rows (approximate): 0
+0000.480 (0) Table wp_tm_taskmeta: Total rows added: 0 in 0.01 seconds
+0000.482 (0) Table wp_tm_taskmeta: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_tm_taskmeta.table.gz - 0.4 KB)
+0000.488 (0) Table wp_tm_tasks: Total expected rows (approximate): 0
+0000.495 (0) Table wp_tm_tasks: Total rows added: 0 in 0.00 seconds
+0000.497 (0) Table wp_tm_tasks: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_tm_tasks.table.gz - 0.4 KB)
+0000.505 (0) Table wp_wfblockediplog: Total expected rows (approximate): 0
+0000.509 (0) Table wp_wfblockediplog: Total rows added: 0 in 0.00 seconds
+0000.511 (0) Table wp_wfblockediplog: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfblockediplog.table.gz - 0.3 KB)
+0000.520 (0) Table wp_wfblocks7: Total expected rows (approximate): 0
+0000.524 (0) Table wp_wfblocks7: Total rows added: 0 in 0.00 seconds
+0000.534 (0) Table wp_wfblocks7: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfblocks7.table.gz - 0.4 KB)
+0000.541 (0) Table wp_wfconfig: Total expected rows (approximate): 242
+0000.570 (0) Table wp_wfconfig: Total rows added: 244 in 0.03 seconds
+0000.572 (0) Table wp_wfconfig: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfconfig.table.gz - 365 KB)
+0000.580 (0) Table wp_wfcrawlers: Total expected rows (approximate): 0
+0000.583 (0) Table wp_wfcrawlers: Total rows added: 0 in 0.00 seconds
+0000.585 (0) Table wp_wfcrawlers: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfcrawlers.table.gz - 0.3 KB)
+0000.592 (0) Table wp_wffilechanges: Total expected rows (approximate): 0
+0000.597 (0) Table wp_wffilechanges: Total rows added: 0 in 0.00 seconds
+0000.599 (0) Table wp_wffilechanges: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wffilechanges.table.gz - 0.3 KB)
+0000.607 (0) Table wp_wffilemods: Total expected rows (approximate): 5998
+0000.989 (0) Table wp_wffilemods: Total rows added: 5817 in 0.38 seconds
+0000.993 (0) Table wp_wffilemods: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wffilemods.table.gz - 502.9 KB)
+0001.000 (0) Table wp_wfhits: Total expected rows (approximate): 0
+0001.012 (0) Table wp_wfhits: Total rows added: 0 in 0.01 seconds
+0001.013 (0) Table wp_wfhits: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfhits.table.gz - 0.4 KB)
+0001.019 (0) Table wp_wfhoover: Total expected rows (approximate): 0
+0001.023 (0) Table wp_wfhoover: Total rows added: 0 in 0.00 seconds
+0001.025 (0) Table wp_wfhoover: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfhoover.table.gz - 0.3 KB)
+0001.032 (0) Table wp_wfissues: Total expected rows (approximate): 2
+0001.037 (0) Table wp_wfissues: Total rows added: 2 in 0.00 seconds
+0001.038 (0) Table wp_wfissues: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfissues.table.gz - 1.2 KB)
+0001.047 (0) Table wp_wfknownfilelist: Total expected rows (approximate): 5905
+0001.152 (0) Table wp_wfknownfilelist: Total rows added: 5817 in 0.10 seconds
+0001.154 (0) Table wp_wfknownfilelist: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfknownfilelist.table.gz - 58.1 KB)
+0001.174 (0) Table wp_wflivetraffichuman: Total expected rows (approximate): 0
+0001.182 (0) Table wp_wflivetraffichuman: Total rows added: 0 in 0.00 seconds
+0001.184 (0) Table wp_wflivetraffichuman: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wflivetraffichuman.table.gz - 0.3 KB)
+0001.197 (0) Table wp_wflocs: Total expected rows (approximate): 0
+0001.200 (0) Table wp_wflocs: Total rows added: 0 in 0.00 seconds
+0001.202 (0) Table wp_wflocs: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wflocs.table.gz - 0.4 KB)
+0001.210 (0) Table wp_wflogins: Total expected rows (approximate): 0
+0001.213 (0) Table wp_wflogins: Total rows added: 0 in 0.00 seconds
+0001.214 (0) Table wp_wflogins: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wflogins.table.gz - 0.4 KB)
+0001.251 (0) Table wp_wfls_2fa_secrets: Total expected rows (approximate): 1
+0001.258 (0) Table wp_wfls_2fa_secrets: Total rows added: 1 in 0.00 seconds
+0001.260 (0) Table wp_wfls_2fa_secrets: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfls_2fa_secrets.table.gz - 0.5 KB)
+0001.267 (0) Table wp_wfls_settings: Total expected rows (approximate): 20
+0001.272 (0) Table wp_wfls_settings: Total rows added: 20 in 0.00 seconds
+0001.275 (0) Table wp_wfls_settings: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfls_settings.table.gz - 0.7 KB)
+0001.282 (0) Table wp_wfnotifications: Total expected rows (approximate): 4
+0001.285 (0) Table wp_wfnotifications: Total rows added: 4 in 0.00 seconds
+0001.288 (0) Table wp_wfnotifications: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfnotifications.table.gz - 0.6 KB)
+0001.294 (0) Table wp_wfpendingissues: Total expected rows (approximate): 0
+0001.305 (0) Table wp_wfpendingissues: Total rows added: 0 in 0.01 seconds
+0001.307 (0) Table wp_wfpendingissues: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfpendingissues.table.gz - 0.4 KB)
+0001.314 (0) Table wp_wfreversecache: Total expected rows (approximate): 0
+0001.317 (0) Table wp_wfreversecache: Total rows added: 0 in 0.00 seconds
+0001.318 (0) Table wp_wfreversecache: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfreversecache.table.gz - 0.3 KB)
+0001.325 (0) Table wp_wfsnipcache: Total expected rows (approximate): 0
+0001.329 (0) Table wp_wfsnipcache: Total rows added: 0 in 0.00 seconds
+0001.331 (0) Table wp_wfsnipcache: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfsnipcache.table.gz - 0.4 KB)
+0001.337 (0) Table wp_wfstatus: Total expected rows (approximate): 383
+0001.348 (0) Table wp_wfstatus: Total rows added: 383 in 0.01 seconds
+0001.350 (0) Table wp_wfstatus: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfstatus.table.gz - 7 KB)
+0001.359 (0) Table wp_wftrafficrates: Total expected rows (approximate): 0
+0001.361 (0) Table wp_wftrafficrates: Total rows added: 0 in 0.00 seconds
+0001.363 (0) Table wp_wftrafficrates: finishing file (backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wftrafficrates.table.gz - 0.3 KB)
+0001.369 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_options.table.gz (1/44): adding to final database dump
+0001.373 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_users.table.gz (2/44): adding to final database dump
+0001.375 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_usermeta.table.gz (3/44): adding to final database dump
+0001.377 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_commentmeta.table.gz (4/44): adding to final database dump
+0001.379 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_comments.table.gz (5/44): adding to final database dump
+0001.381 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_links.table.gz (6/44): adding to final database dump
+0001.383 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_postmeta.table.gz (7/44): adding to final database dump
+0001.385 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_posts.table.gz (8/44): adding to final database dump
+0001.387 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_term_relationships.table.gz (9/44): adding to final database dump
+0001.388 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_term_taxonomy.table.gz (10/44): adding to final database dump
+0001.389 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_termmeta.table.gz (11/44): adding to final database dump
+0001.392 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_terms.table.gz (12/44): adding to final database dump
+0001.394 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_yoast_seo_links.table.gz (13/44): adding to final database dump
+0001.395 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_yoast_seo_meta.table.gz (14/44): adding to final database dump
+0001.396 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_qod.table.gz (15/44): adding to final database dump
+0001.398 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_tm_taskmeta.table.gz (16/44): adding to final database dump
+0001.400 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_tm_tasks.table.gz (17/44): adding to final database dump
+0001.402 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfblockediplog.table.gz (18/44): adding to final database dump
+0001.403 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfblocks7.table.gz (19/44): adding to final database dump
+0001.404 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfconfig.table.gz (20/44): adding to final database dump
+0001.426 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfcrawlers.table.gz (21/44): adding to final database dump
+0001.427 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wffilechanges.table.gz (22/44): adding to final database dump
+0001.429 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wffilemods.table.gz (23/44): adding to final database dump
+0001.511 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfhits.table.gz (24/44): adding to final database dump
+0001.513 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfhoover.table.gz (25/44): adding to final database dump
+0001.517 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfissues.table.gz (26/44): adding to final database dump
+0001.519 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfknownfilelist.table.gz (27/44): adding to final database dump
+0001.560 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wflivetraffichuman.table.gz (28/44): adding to final database dump
+0001.562 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wflocs.table.gz (29/44): adding to final database dump
+0001.566 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wflogins.table.gz (30/44): adding to final database dump
+0001.568 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfls_2fa_secrets.table.gz (31/44): adding to final database dump
+0001.570 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfls_settings.table.gz (32/44): adding to final database dump
+0001.573 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfnotifications.table.gz (33/44): adding to final database dump
+0001.575 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfpendingissues.table.gz (34/44): adding to final database dump
+0001.577 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfreversecache.table.gz (35/44): adding to final database dump
+0001.578 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfsnipcache.table.gz (36/44): adding to final database dump
+0001.580 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wfstatus.table.gz (37/44): adding to final database dump
+0001.584 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db-table-wp_wftrafficrates.table.gz (38/44): adding to final database dump
+0001.593 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db.gz: finished writing out complete database file (944 KB)
+0001.615 (0) Total database tables backed up: 38 (backup_2019-12-12-2037_TVQhub_61705ccd390e-db.gz, size: 979709, sha1: 89001f7299850d30e80f398e65922968c7cefbcc, sha256: 679e45e820042eb728c87a67bd163d34115a00e8ee90f1c8d42cf2655e03640e)
+0001.625 (0) backup_2019-12-12-2037_TVQhub_61705ccd390e-db.gz: db: This file has not yet been successfully uploaded: will queue
+0001.626 (0) Saving backup history. Total backup size: 956.7 KB
+0001.630 (0) Requesting upload of the files that have not yet been successfully uploaded (1)
+0001.633 (0) Cloud backup selection (1/1): googledrive with instance (1/1) (last)
+0001.640 (0) Beginning dispatch of backup to remote (googledrive) (instance identifier s-a75c49133afba3a15fc8b374393a9fc2)
+38135.309 (1) Opened log file at time: Fri, 13 Dec 2019 00:13:28 +0000 on http://tvqhub.local
+38135.312 (1) UpdraftPlus WordPress backup plugin (https://updraftplus.com): 1.16.21 WP: 5.3 PHP: 7.4.0 (apache2handler, Darwin TVQ-mbp.local 19.0.0 Darwin Kernel Version 19.0.0: Thu Oct 17 16:17:15 PDT 2019; root:xnu-6153.41.3~29/RELEASE_X86_64 x86_64) MySQL: 8.0.18 WPLANG: en_US Server: Apache/2.4.41 (Unix) OpenSSL/1.1.1d PHP/7.4.0 safe_mode: 0 max_execution_time: 900 memory_limit: 1024M (used: 5.9M | 8M) multisite: N openssl: OpenSSL 1.1.1d  10 Sep 2019 mcrypt: N LANG:  ZipArchive::addFile: Y
+38135.315 (1) Free space on disk containing Updraft's temporary directory: 137367 MB
+38135.319 (1) Backup run: resumption=1, nonce=61705ccd390e, file_nonce=61705ccd390e begun at=1576157872 (38136s ago), job type=backup, previous check-in=1.4s
+38135.320 (1) Long time past since expected resumption time: approx expected=1576158174.4, now=1576196008.2, diff=37833.9
+38135.323 (1) [Warning] Your website is visited infrequently and UpdraftPlus is not getting the resources it hoped for; please read this page: https://updraftplus.com/faqs/why-am-i-getting-warnings-about-my-site-not-having-enough-visitors/
+38135.326 (1) Scheduling a resumption (2) after 300 seconds (1576196308) in case this run gets aborted
+38135.345 (1) This backup run is not intended for files - skipping
+38135.347 (1) Database dump (WordPress DB): Creation was completed already
+38135.360 (1) backup_2019-12-12-2037_TVQhub_61705ccd390e-db.gz: db: This file has not yet been successfully uploaded: will queue
+38135.361 (1) Saving backup history. Total backup size: 956.7 KB
+38135.365 (1) Requesting upload of the files that have not yet been successfully uploaded (1)
+38135.367 (1) Cloud backup selection (1/1): googledrive with instance (1/1) (last)
+38135.369 (1) Beginning dispatch of backup to remote (googledrive) (instance identifier s-a75c49133afba3a15fc8b374393a9fc2)
+38139.350 (1) Google Drive: quota usage: used=1843.3 MB, total=19456 MB, available=17612.7 MB
+38139.354 (1) Google Drive: backup_2019-12-12-2037_TVQhub_61705ccd390e-db.gz: Attempting to upload to Google Drive (into folder id: 0B-WhrrYWQrrpakoyekw1WVRIVWs)
+38142.032 (1) Googledrive chunked upload: 100 % uploaded
+38142.040 (1) Google Drive: OK: Archive backup_2019-12-12-2037_TVQhub_61705ccd390e-db.gz uploaded in 2.68 seconds
+38142.042 (1) Recording as successfully uploaded: backup_2019-12-12-2037_TVQhub_61705ccd390e-db.gz
+38142.048 (1) Deleting local file: backup_2019-12-12-2037_TVQhub_61705ccd390e-db.gz: OK
+38142.058 (1) Retain: beginning examination of existing backup sets; user setting: retain_files=1, retain_db=2
+38142.061 (1) Number of backup sets in history: 2; groups (db): 1
+38142.063 (1) Examining (for databases) backup set with group_id=0, nonce=61705ccd390e, datestamp=1576157872 (Dec 12 2019 13:37:52)
+38142.064 (1) This backup set is the backup set just made, so will not be deleted.
+38142.064 (1) Examining (for databases) backup set with group_id=0, nonce=b3932fbc9870, datestamp=1576070683 (Dec 11 2019 13:24:43)
+38142.064 (1) This backup set remains non-empty (f=0/d=1); will retain in history
+38142.066 (1) Number of backup sets in history: 2; groups (files): 1
+38142.068 (1) Examining (for files) backup set with nonce=61705ccd390e, datestamp=1576157872 (Dec 12 2019 13:37:52)
+38142.068 (1) This backup set remains non-empty (f=0/d=1); will retain in history
+38142.075 (1) Examining (for files) backup set with nonce=b3932fbc9870, datestamp=1576070683 (Dec 11 2019 13:24:43)
+38142.075 (1) This backup set remains non-empty (f=0/d=1); will retain in history
+38142.075 (1) Retain: saving new backup history (sets now: 2) and finishing retain operation
+38142.079 (1) Resume backup (61705ccd390e, 1): finish run
+38142.082 (1) There were no errors in the uploads, so the 'resume' event (2) is being unscheduled
+38142.086 (1) No email will/can be sent - the user has not configured an email address.
+38142.087 (1) The backup apparently succeeded (with warnings) and is now complete

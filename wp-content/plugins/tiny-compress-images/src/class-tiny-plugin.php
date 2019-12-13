@@ -18,7 +18,7 @@
 * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 class Tiny_Plugin extends Tiny_WP_Base {
-	const VERSION = '3.2.0';
+	const VERSION = '3.2.1';
 	const MEDIA_COLUMN = self::NAME;
 	const DATETIME_FORMAT = 'Y-m-d G:i:s';
 
@@ -375,6 +375,8 @@ class Tiny_Plugin extends Tiny_WP_Base {
 				// dimensions of the original image can change. This will then
 				// trigger other plugins and can result in unexpected behaviour and
 				// further changes to the image. This may require another approach.
+				// Note that as of WP 5.3 it is advised to not hook into this filter
+				// anymore, so other plugins are less likely to be triggered.
 				wp_update_attachment_metadata( $attachment_id, $tiny_image->get_wp_metadata() );
 			}
 		}
@@ -419,6 +421,8 @@ class Tiny_Plugin extends Tiny_WP_Base {
 		// dimensions of the original image can change. This will then
 		// trigger other plugins and can result in unexpected behaviour and
 		// further changes to the image. This may require another approach.
+		// Note that as of WP 5.3 it is advised to not hook into this filter
+		// anymore, so other plugins are less likely to be triggered.
 		wp_update_attachment_metadata( $id, $tiny_image->get_wp_metadata() );
 
 		echo $this->render_compress_details( $tiny_image );
