@@ -11,11 +11,13 @@ class PostViewModel
     public static function setPostView($postId)
     {
         $count = get_post_meta($postId, self::POST_VIEW_COUNT, true);
-        if ($count) {
-            $count = $count + 0.5; // TODO research why loop 2 times
-            update_post_meta($postId, self::POST_VIEW_COUNT, $count);
-        } else {
+        if ($count == '') {
+            $count = 0.5;
+            delete_post_meta($postId, self::POST_VIEW_COUNT);
             add_post_meta($postId, self::POST_VIEW_COUNT, 0.5);
+        } else {
+            $count = $count + 0.5;
+            update_post_meta($postId, self::POST_VIEW_COUNT, $count);
         }
     }
 
