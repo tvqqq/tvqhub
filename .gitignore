@@ -6,10 +6,8 @@ wp-config.php
 wp-content/cache
 wp-content/*.log
 
-# Wordfence
-wp-content/wflogs
-wp-content/wfcache
-wordfence-waf.php
+# Updraft
+wp-content/updraft
 
 # W3 Total Cache
 wp-content/w3tc-config
