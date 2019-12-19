@@ -530,6 +530,7 @@ div#wpoptimize_table_list_tables_not_found + h3 {
 }
 
 .notice.wpo-error__enabling-cache {
+	white-space: pre;
 	margin-bottom: 15px;
 }
 

@@ -11,7 +11,17 @@
 
 	<?php if ($wpo_gzip_compression_enabled && !is_wp_error($wpo_gzip_compression_enabled) && false == $wpo_gzip_compression_settings_added) : ?>
 		<div class="wpo-fieldgroup wpo-gzip-already-enabled">
-			<p><span class="dashicons dashicons-yes"></span> <?php _e('Gzip compression is already enabled.', 'wp-optimize'); ?></p>
+			<p><span class="dashicons dashicons-yes"></span> 
+			<?php if ('brotli' == $wpo_gzip_headers_information['compression']) { ?>
+				<?php _e('Your server uses Brotli compression instead of Gzip, which is good.', 'wp-optimize'); ?>
+			<?php } else { ?>
+				<?php _e('Gzip compression is already enabled.', 'wp-optimize'); ?>
+			<?php } ?>
+			<?php if ('cloudflare' == $wpo_gzip_headers_information['server']) { ?>
+				<em><?php _e('It seems to be handled by Cloudflare.', 'wp-optimize'); ?></em>
+			<?php } ?>
+
+			</p>
 		</div>
 	<?php else : ?>
 		<div class="wpo-fieldgroup">

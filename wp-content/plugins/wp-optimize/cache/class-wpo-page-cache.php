@@ -77,13 +77,6 @@ class WPO_Page_Cache {
 	public $advanced_cache_file_writing_error;
 
 	/**
-	 * Path with advanced cache file name used last time
-	 *
-	 * @var string
-	 */
-	public $advanced_cache_file;
-
-	/**
 	 * Last advanced cache file content
 	 *
 	 * @var string
@@ -129,6 +122,16 @@ class WPO_Page_Cache {
 	}
 
 	/**
+	 * Check if current user can purge cache.
+	 *
+	 * @return bool
+	 */
+	public function can_purge_cache() {
+		if (is_multisite()) return $this->is_enabled() && current_user_can('manage_network_options');
+		return $this->is_enabled() && current_user_can('manage_options');
+	}
+
+	/**
 	 * Add Purge from cache in admin bar.
 	 *
 	 * @param WP_Admin_Bar $wp_admin_bar
@@ -136,7 +139,7 @@ class WPO_Page_Cache {
 	public function wpo_admin_bar_purge_cache($wp_admin_bar) {
 		global $pagenow;
 
-		if (!$this->is_enabled()) return;
+		if (!$this->can_purge_cache()) return;
 
 		$act_url = remove_query_arg(array('wpo_single_page_cache_purged', 'wpo_all_pages_cache_purged'));
 
@@ -187,6 +190,9 @@ class WPO_Page_Cache {
 	 * Check if purge single page action sent and purge cache.
 	 */
 	public function handle_purge_single_page_cache() {
+
+		if (!$this->can_purge_cache()) return;
+
 		if (isset($_GET['wpo_single_page_cache_purged']) || isset($_GET['wpo_all_pages_cache_purged'])) {
 			if (isset($_GET['wpo_single_page_cache_purged'])) {
 				$notice_function = $_GET['wpo_single_page_cache_purged'] ? 'notice_purge_single_page_cache_success' : 'notice_purge_single_page_cache_error';
@@ -310,7 +316,13 @@ class WPO_Page_Cache {
 		}
 
 		if (!$this->write_advanced_cache() && $this->get_advanced_cache_version() != WPO_VERSION) {
-			$already_ran_enable = new WP_Error("write_advanced_cache", sprintf("The request to write the file %s failed. Your WP install might not have permission to write inside the wp-content folder. Please try to add the following lines manually:", $this->get_advanced_cache_filename()));
+			$message = sprintf("The request to write the file %s failed. ", htmlspecialchars($this->get_advanced_cache_filename()));
+			$message .= ' '.__('Your WP install might not have permission to write inside the wp-content folder.', 'wp-optimize');
+			$message .= "\n\n".sprintf(__('1. Please navigate, via FTP, to the folder - %s', 'wp-optimize'), htmlspecialchars(dirname($this->get_advanced_cache_filename())));
+			$message .= "\n".__('2. Edit or create a file with the name advanced-cache.php', 'wp-optimize');
+			$message .= "\n".__('3. Copy and paste the following lines into the file:', 'wp-optimize');
+
+			$already_ran_enable = new WP_Error("write_advanced_cache", $message);
 			return $already_ran_enable;
 		}
 

@@ -514,7 +514,7 @@ class WP_Optimize_Page_Cache_Preloader extends Updraft_Task_Manager_1_2 {
 		$response = wp_remote_get(site_url('/sitemap.xml'), array('timeout' => 10));
 
 		if (is_wp_error($response) || '200' != wp_remote_retrieve_response_code($response)) {
-			$sitemap_file = trailingslashit(get_home_path()) . 'sitemap.xml';
+			$sitemap_file = $this->get_local_sitemap_file();
 
 			if (is_file($sitemap_file)) {
 				return true;
@@ -555,7 +555,7 @@ class WP_Optimize_Page_Cache_Preloader extends Updraft_Task_Manager_1_2 {
 
 			// if response is empty then try load from file.
 			if (empty($response) && '' == $sitemap_url) {
-				$sitemap_file = trailingslashit(get_home_path()) . 'sitemap.xml';
+				$sitemap_file = $this->get_local_sitemap_file();
 
 				$response = file_get_contents($sitemap_file);
 			}
@@ -584,6 +584,18 @@ class WP_Optimize_Page_Cache_Preloader extends Updraft_Task_Manager_1_2 {
 		}
 
 		return $urls;
+	}
+
+	/**
+	 * Get the path to a local sitemap.xml file
+	 *
+	 * @return string
+	 */
+	private function get_local_sitemap_file() {
+		if (!function_exists('get_home_path')) {
+			include_once ABSPATH . '/wp-admin/includes/file.php';
+		}
+		return trailingslashit(get_home_path()) . 'sitemap.xml';
 	}
 
 	/**

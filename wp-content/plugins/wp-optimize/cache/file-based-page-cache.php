@@ -110,7 +110,7 @@ if (!empty($_GET)) {
 if (!empty($no_cache_because)) {
 	// Only output if the user has turned on debugging output
 	if (((defined('WP_DEBUG') && WP_DEBUG) || isset($_GET['wpo_cache_debug'])) && (!defined('DOING_CRON') || !DOING_CRON)) {
-		wpo_cache_add_footer_output("\n<!-- WP Optimize page cache - https://getwpo.com - page not served from cache because: ".implode(', ', array_filter($no_cache_because, 'htmlspecialchars'))." -->\n");
+		wpo_cache_add_footer_output("Page not served from cache because: ".implode(', ', array_filter($no_cache_because, 'htmlspecialchars')));
 	}
 	return;
 }

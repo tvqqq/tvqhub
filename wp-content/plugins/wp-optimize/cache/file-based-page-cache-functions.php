@@ -71,6 +71,10 @@ function wpo_cache($buffer, $flags) {
 		$no_cache_because[] = __('DONOTCACHEPAGE constant or wpo_can_cache_page filter forbade it', 'wp-optimize');
 	}
 
+	if (defined('REST_REQUEST') && REST_REQUEST) {
+		$no_cache_because[] = __('This is a REST API request (identified by REST_REQUEST constant)', 'wp-optimize');
+	}
+
 	if (empty($no_cache_because)) {
 
 		$buffer = apply_filters('wpo_pre_cache_buffer', $buffer, $flags);
@@ -98,7 +102,7 @@ function wpo_cache($buffer, $flags) {
 	if (!empty($no_cache_because)) {
 	
 		// Only output if the user has turned on debugging output
-		if (((defined('WP_DEBUG') && WP_DEBUG) || isset($_GET['wpo_cache_debug'])) && (!defined('DOING_CRON') || !DOING_CRON)) {
+		if (((defined('WP_DEBUG') && WP_DEBUG) || isset($_GET['wpo_cache_debug'])) && (!defined('DOING_CRON') || !DOING_CRON) && (!defined('REST_REQUEST') || !REST_REQUEST)) {
 			$buffer .= "\n<!-- WP Optimize page cache - https://getwpo.com - page NOT cached because: ".implode(', ', array_filter($no_cache_because, 'htmlspecialchars'))." -->\n";
 		}
 		
@@ -764,9 +768,9 @@ function wpo_cache_add_footer_output($output = null) {
 	if (function_exists('current_filter') && 'shutdown' == current_filter()) {
 		// Only add the line if it was a page, not something else (e.g. REST response)
 		if (function_exists('did_action') && did_action('wp_footer')) {
-			echo $buffered;
-		} else {
-			error_log($buffered);
+			echo "\n<!-- WP Optimize page cache - https://getwpo.com - ".$buffered." -->\n";
+		} elseif (defined('WPO_CACHE_DEBUG') && WPO_CACHE_DEBUG) {
+			error_log('[CACHE DEBUG] '.wpo_current_url() . ' - ' . $buffered);
 		}
 	} else {
 		if (null == $buffered && function_exists('add_action')) add_action('shutdown', 'wpo_cache_add_footer_output', 11);

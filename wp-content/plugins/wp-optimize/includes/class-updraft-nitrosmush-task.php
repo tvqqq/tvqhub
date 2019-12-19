@@ -71,9 +71,10 @@ class Nitro_Smush_Task extends Updraft_Smush_Task {
 	/**
 	 * Prepares the image as part of the post data for the specific implementation
 	 *
-	 * @param String $local_file - The image to e optimised
+	 * @param string $local_file - The image to e optimised
+	 * @param array  $options    - Eventual options
 	 */
-	public function prepare_post_request($local_file) {
+	public function prepare_post_request($local_file, $options) {
 
 		$boundary = wp_generate_password(12);
 		$lossy = $this->get_option('lossy_compression');
@@ -88,6 +89,8 @@ class Nitro_Smush_Task extends Updraft_Smush_Task {
 		} else {
 			$quality = 100;
 		}
+
+		if (isset($options['quality']) && is_int($options['quality']) && 0 < $options['quality']) $quality = $options['quality'];
 
 		$this->log($quality);
 

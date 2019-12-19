@@ -513,8 +513,12 @@ class Updraft_Smush_Manager extends Updraft_Task_Manager_1_2 {
 			return;
 		}
 
-		if (false === $completed_task_count || false === $total_bytes_saved) {
+		if (false === $completed_task_count) {
 			$completed_task_count = $total_bytes_saved = 0;
+		}
+
+		if (!$total_bytes_saved) {
+			$total_bytes_saved = 0;
 		}
 
 		if (is_multisite()) {

@@ -4,7 +4,7 @@ Donate link: https://david.dw-perspective.org.uk/donate
 Tags: cache, optimizing, database, image optimize, performance, clean, spam, speed, caching, smush, smushing
 Requires at least: 3.9
 Tested up to: 5.3
-Stable tag: 3.0.14
+Stable tag: 3.0.15
 License: GPLv2+
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -305,6 +305,19 @@ If you notice any issues due to high server load, set a higher interval for the 
 9. Features comparison
 
 == Changelog ==
+
+= 3.0.15 - 16/Dec/2019 =
+
+* FIX: Image compression - Fix restoration on multisite
+* FIX: Cache feature - Scheduled preload when a sitemap does not exists
+* TWEAK: Check for headers_sent() before closing the browser connection
+* TWEAK: Cache feature - Do not show clear cache buttons in the admin bar if the user doesn't have the right capability
+* TWEAK: Cache feature - Don't cache REST API requests
+* TWEAK: Tabs to point to the correct URL for direct access
+* TWEAK: Only log the reason why an URL isn't cached if the constant WPO_CACHE_DEBUG is true
+* TWEAK: Image compression - Added a new filter 'wpo_image_compression_single_image_options' to allow changing the image quality for each image.
+* TWEAK: Cache feature - Added instructions how to edit advanced-cache.php file
+* TWEAK: Detecting Cloudflare and Brotli compression before enabling GZIP
 
 = 3.0.14 - 25/Nov/2019 =
 
@@ -827,4 +840,4 @@ If you notice any issues due to high server load, set a higher interval for the 
 * Fix Interface
 
 == Upgrade Notice ==
-* 3.0.14: * Fixed default option values for smush backup automatic deletion. Prevent potential Fatal error when including notices class. Image compression - Fixed division by zero notification. Fix list of backup entities before removing unused images
+* 3.0.15: Image compression - Fix restoration on multisite. Cache feature - Scheduled preload when a sitemap exists
