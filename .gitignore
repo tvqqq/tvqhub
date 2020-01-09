@@ -8,8 +8,3 @@ wp-content/*.log
 
 # Updraft
 wp-content/updraft
-
-# W3 Total Cache
-wp-content/w3tc-config
-wp-content/cachewp-content/w3tc-config
-wp-content/w3tc/pgcache
