@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitfa0ea6a4eb630ae835bf45328e132d37
+class ComposerStaticInitd2b16fc7ca509930996b015a89b2f130
 {
     public static $prefixLengthsPsr4 = array (
         'C' => 
@@ -361,7 +361,6 @@ class ComposerStaticInitfa0ea6a4eb630ae835bf45328e132d37
         'WPSEO_Option_Titles' => __DIR__ . '/../..' . '/inc/options/class-wpseo-option-titles.php',
         'WPSEO_Option_Wpseo' => __DIR__ . '/../..' . '/inc/options/class-wpseo-option-wpseo.php',
         'WPSEO_Options' => __DIR__ . '/../..' . '/inc/options/class-wpseo-options.php',
-        'WPSEO_Options_Backfill' => __DIR__ . '/../..' . '/inc/options/class-wpseo-options-backfill.php',
         'WPSEO_Paper_Presenter' => __DIR__ . '/../..' . '/admin/class-paper-presenter.php',
         'WPSEO_Plugin_Availability' => __DIR__ . '/../..' . '/admin/class-plugin-availability.php',
         'WPSEO_Plugin_Compatibility' => __DIR__ . '/../..' . '/admin/class-plugin-compatibility.php',
@@ -706,9 +705,9 @@ class ComposerStaticInitfa0ea6a4eb630ae835bf45328e132d37
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitfa0ea6a4eb630ae835bf45328e132d37::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitfa0ea6a4eb630ae835bf45328e132d37::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitfa0ea6a4eb630ae835bf45328e132d37::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitd2b16fc7ca509930996b015a89b2f130::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitd2b16fc7ca509930996b015a89b2f130::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitd2b16fc7ca509930996b015a89b2f130::$classMap;
 
         }, null, ClassLoader::class);
     }

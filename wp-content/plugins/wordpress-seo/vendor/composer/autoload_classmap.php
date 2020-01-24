@@ -346,7 +346,6 @@ return array(
     'WPSEO_Option_Titles' => $baseDir . '/inc/options/class-wpseo-option-titles.php',
     'WPSEO_Option_Wpseo' => $baseDir . '/inc/options/class-wpseo-option-wpseo.php',
     'WPSEO_Options' => $baseDir . '/inc/options/class-wpseo-options.php',
-    'WPSEO_Options_Backfill' => $baseDir . '/inc/options/class-wpseo-options-backfill.php',
     'WPSEO_Paper_Presenter' => $baseDir . '/admin/class-paper-presenter.php',
     'WPSEO_Plugin_Availability' => $baseDir . '/admin/class-plugin-availability.php',
     'WPSEO_Plugin_Compatibility' => $baseDir . '/admin/class-plugin-compatibility.php',
