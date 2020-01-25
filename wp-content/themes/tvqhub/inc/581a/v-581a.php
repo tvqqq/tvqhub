@@ -1,5 +1,5 @@
 <?php
-$menu = get_post_meta(get_the_ID(), '581a_price', true);
+$menu = str_replace("\r\n", "", get_post_meta(get_the_ID(), '581a_price', true));
 $menuArr = json_decode($menu, true);
 ?>
 
@@ -7,18 +7,16 @@ $menuArr = json_decode($menu, true);
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="row alert alert-danger">
-
                 <div class="col-5">
                     <strong>Tổng tiền:</strong>
                 </div>
-
                 <div class="col-7 d-flex justify-content-between">
                     <span><strong class="sum-amount">0</strong>&nbsp;VNĐ</span>
                     <button type="button" class="btn btn-sm btn-danger btn-reset-header btn-reset"><i
                             class="fas fa-redo-alt"></i></button>
                 </div>
-
             </div>
+
             <div class="main">
                 <?php foreach ($menuArr as $key => $item) { ?>
                     <div class="card" id="<?php echo $key ?>">
@@ -57,9 +55,7 @@ $menuArr = json_decode($menu, true);
                                     <h5><strong class="sum-amount">0</strong>đ</h5>
                                 </div>
                             </div>
-
                             <hr/>
-
                             <div class="row my-1 align-items-center">
                                 <div class="col">
                                     <h6><strong><i class="fas fa-hand-holding-usd"></i> Khách đưa:</strong></h6>
@@ -68,7 +64,6 @@ $menuArr = json_decode($menu, true);
                                     <input type="text" class="form-control input-customer-give" value=""/>
                                 </div>
                             </div>
-
                             <div class="row mt-3">
                                 <div class="col">
                                     <h6><strong><i class="fas fa-comments-dollar"></i> Tiền thối:</strong></h6>
@@ -79,7 +74,6 @@ $menuArr = json_decode($menu, true);
                             </div>
                         </div>
                     </div>
-
                     <div class="action-button">
                         <div class="row text-center">
                             <div class="col">
@@ -93,3 +87,87 @@ $menuArr = json_decode($menu, true);
         </div>
     </div>
 </div>
+
+<script>
+    jQuery(function ($) {
+        const price = JSON.parse('<?= $menu ?>');
+
+        $('.btn-adjust').on('click', function () {
+            // Find the id
+            let divCard = $(this).closest('div.card');
+            let id = divCard.attr('id');
+
+            // Determine add or minus
+            let adjust = $(this).data('adjust');
+
+            // Adjust the value
+            const inputAmount = $('#' + id).find('.input-amount');
+            let inputAmountValue = inputAmount.val();
+            let newVal = (adjust === 'add') ? ++inputAmountValue : --inputAmountValue;
+            if (newVal < 0) {
+                newVal = 0;
+            }
+            inputAmount.val(newVal);
+
+            // Calc the dishes
+            const dishPrice = price[id].price;
+            let dishesSumPrice = newVal * dishPrice;
+            const htmlDishesSumPrice = $('#' + id).find('.dishes-sum-price');
+            htmlDishesSumPrice.html(dishesSumPrice);
+            $('.dishes-sum-price').simpleMoneyFormat();
+
+            calcSum();
+            moneyBack();
+        });
+
+        $('.input-amount').keyup(function () {
+            let divCard = $(this).closest('div.card');
+            let id = divCard.attr('id');
+
+            const dishPrice = price[id].price;
+            let dishesSumPrice = $(this).val() * dishPrice;
+            const htmlDishesSumPrice = $('#' + id).find('.dishes-sum-price');
+            htmlDishesSumPrice.html(dishesSumPrice);
+            $('.dishes-sum-price').simpleMoneyFormat();
+
+            calcSum();
+            moneyBack();
+        });
+
+        $('.input-customer-give').keyup(function () {
+            $(this).simpleMoneyFormat();
+            moneyBack();
+        });
+
+        function calcSum() {
+            let sum = 0;
+            let amountDishes = $('.dishes-sum-price');
+            amountDishes.each(function (index, element) {
+                sum += parseFloat(element.innerHTML.replace(',', ''));
+            });
+
+            // Show the sum
+            let divSumAmount = $('.sum-amount');
+            divSumAmount.html(sum);
+            divSumAmount.simpleMoneyFormat();
+        }
+
+        function moneyBack() {
+            let sum = $('.sum-amount')[1].innerHTML.replace(',', '');
+            let give = $('.input-customer-give').val().replace(',', '');
+            let divMoneyBack = $('.money-back');
+            divMoneyBack.html(give - sum);
+            divMoneyBack.simpleMoneyFormat();
+        }
+
+        $('.btn-reset').on('click', function () {
+            $('.dishes-sum-price').html(0);
+            $('.input-addon').val('');
+            $('input.input-amount').val(0);
+            $('.sum-amount').html(0);
+            $('.input-customer-give').val('');
+            $('.money-back').html(0);
+        });
+
+    });
+</script>

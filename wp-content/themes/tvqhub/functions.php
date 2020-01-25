@@ -91,8 +91,7 @@ function tvqhub_enqueue_scripts()
     // 581A
     if (is_page('581a')) {
         wp_enqueue_style('581a-style', get_template_directory_uri() . '/inc/581a/style.css');
-        wp_enqueue_style('simplemoney', get_template_directory_uri() . '/inc/581a/simplemoney.js');
-        wp_enqueue_style('581a-script', get_template_directory_uri() . '/inc/581a/script.js');
+        wp_enqueue_script('simplemoney', get_template_directory_uri() . '/inc/581a/simplemoney.js');
     }
 }
 
