@@ -22,7 +22,7 @@ $menuArr = json_decode($menu, true);
                     <div class="card" id="<?php echo $key ?>">
                         <div class="card-body">
                             <div class="row align-content-between">
-                                <div class="col-5">
+                                <div class="col-5 align-self-center">
                                     <strong><?php echo $item['name'] ?>:</strong><br/>
                                     <small>(<?= number_format($item['price']) ?>đ)</small>
                                 </div>
