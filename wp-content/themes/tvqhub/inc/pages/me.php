@@ -1,4 +1,4 @@
-<?php $cv = get_post_meta(get_the_ID(), 'cv')[0]; ?>
+<?php $cv = get_post_meta(get_the_ID(), 'cv', true); ?>
 
 <div class="row" id="page-me">
     <div class="col-12 col-lg-3 order-lg-last text-center">

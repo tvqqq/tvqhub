@@ -4,7 +4,7 @@
              style="background:url(<?php the_post_thumbnail_url('thumbnail') ?>) 50% 50% no-repeat; background-size:cover;">
             <small>
                 <i class="far fa-eye"></i>&nbsp;
-                <?php echo number_format(get_post_meta(get_the_ID(), PostViewModel::POST_VIEW_COUNT)[0] ?? 0) ?>
+                <?php echo number_format(get_post_meta(get_the_ID(), PostViewModel::POST_VIEW_COUNT, true)) ?>
             </small>
         </div>
         <div class="sidebar-post-title"><?php the_title() ?></div>

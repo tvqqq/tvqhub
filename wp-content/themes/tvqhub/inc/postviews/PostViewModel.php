@@ -12,11 +12,10 @@ class PostViewModel
     {
         $count = get_post_meta($postId, self::POST_VIEW_COUNT, true);
         if ($count == '') {
-            $count = 0.5;
             delete_post_meta($postId, self::POST_VIEW_COUNT);
-            add_post_meta($postId, self::POST_VIEW_COUNT, 0.5);
+            add_post_meta($postId, self::POST_VIEW_COUNT, 1);
         } else {
-            $count = $count + 0.5;
+            $count++;
             update_post_meta($postId, self::POST_VIEW_COUNT, $count);
         }
     }
