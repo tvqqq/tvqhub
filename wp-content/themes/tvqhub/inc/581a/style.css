@@ -7,9 +7,7 @@ body {
     font-size: 25px;
     text-align: center;
     border: none;
-    height: -webkit-calc(1.5rem);
-    height: -moz-calc(1.5rem);
-    height: calc(1.5rem);
+    height: 1.5rem;
 }
 
 .card-body {
