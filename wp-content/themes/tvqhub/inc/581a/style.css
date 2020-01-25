@@ -1,0 +1,23 @@
+.input-amount {
+    font-weight: bold;
+    font-size: 25px;
+    text-align: center;
+    border: none;
+    height: calc(1.5rem);
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.card {
+    margin: 12px 0;
+}
+
+.input-customer-give {
+    height: 30px;
+}
+
+.btn-reset-header {
+    font-size: .575rem;
+}
