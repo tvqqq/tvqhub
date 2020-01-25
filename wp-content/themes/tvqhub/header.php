@@ -25,6 +25,8 @@
 
 <body <?php body_class(); ?>>
 
+<?php if (is_page_template('templates/blank.php')) return; ?>
+
 <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
     <div class="container flex-wrap header-bar">
         <a class="navbar-brand mb-1 mx-auto mx-lg-0 mr-lg-2" href="<?php echo esc_url(home_url('/')) ?>"
