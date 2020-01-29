@@ -12,6 +12,7 @@ $shortcodes = [
     '581a' => '581a/v-581a',
     'ama' => 'ama/v-ama',
     'chinese-name' => 'chinese-name/v-chinese-name',
+    'smallcaps' => 'smallcaps/v-smallcaps',
 
 ];
 
