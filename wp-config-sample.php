@@ -17,6 +17,7 @@
  *
  * @package WordPress
  */
+define( 'API', 'http://lar.tvqhub.local/api' );
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
@@ -78,6 +79,16 @@ $table_prefix = 'wp_';
  * @link https://codex.wordpress.org/Debugging_in_WordPress
  */
 define( 'WP_DEBUG', false );
+
+// SMTP
+define( 'SMTP_USER', 'user@example.com' );
+define( 'SMTP_PASS', 'smtp password' );
+define( 'SMTP_HOST', 'smtp.example.com' );
+define( 'SMTP_FROM', 'website@example.com' );
+define( 'SMTP_NAME', 'e.g Website Name' );
+define( 'SMTP_PORT', '25' );
+define( 'SMTP_SECURE', 'tls' );
+define( 'SMTP_AUTH', true );
 
 /* That's all, stop editing! Happy publishing. */
 
