@@ -11,6 +11,7 @@ $shortcodes = [
     'tvqhub_me' => 'pages/me',
     'tvqhub_contact' => 'pages/contact',
     '581a' => '581a/v-581a',
+    'ama' => 'ama/v-ama'
 
 ];
 

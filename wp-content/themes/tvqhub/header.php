@@ -6,6 +6,9 @@
     <link rel="profile" href="http://gmpg.org/xfn/11">
     <?php wp_head(); ?>
 </head>
+<script>
+    const API = '<?= API ?>';
+</script>
 
 <!-- Global script -->
 

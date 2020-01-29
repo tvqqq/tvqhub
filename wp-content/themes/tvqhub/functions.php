@@ -88,6 +88,15 @@ function tvqhub_enqueue_scripts()
     wp_enqueue_style('tvqhub', get_stylesheet_uri());
     wp_enqueue_script('tvqhub-js', get_template_directory_uri() . '/assets/js/script.js', array('jquery'));
 
+    if (is_page_template('templates/vue.php')) {
+        if (WP_DEBUG) {
+            wp_enqueue_script('vue-dev', get_template_directory_uri() . '/vendor/vue/vue.dev.js');
+        } else {
+            wp_enqueue_script('vue', get_template_directory_uri() . '/vendor/vue/vue.min.js');
+        }
+        wp_enqueue_script('axios', get_template_directory_uri() . '/vendor/vue/axios.min.js');
+    }
+
     // 581A
     if (is_page('581a')) {
         wp_enqueue_style('581a-style', get_template_directory_uri() . '/inc/581a/style.css');
@@ -114,7 +123,6 @@ function includeInc($dir, $depth = 0)
 {
     $scan = glob("{$dir}/*");
     foreach ($scan as $path) {
-
         // TODO: combine 2 regex
         if (preg_match('/\.php$/', $path) && !preg_match('/v-.*$/', basename($path))) {
             require_once $path;
@@ -123,7 +131,6 @@ function includeInc($dir, $depth = 0)
         }
     }
 }
-
 includeInc(get_template_directory() . '/inc');
 
 // Load async js
