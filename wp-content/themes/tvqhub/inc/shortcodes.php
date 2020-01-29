@@ -10,7 +10,8 @@ $shortcodes = [
     'statistics' => 'statistics/v-statistics',
     'tvqhub_me' => 'pages/me',
     '581a' => '581a/v-581a',
-    'ama' => 'ama/v-ama'
+    'ama' => 'ama/v-ama',
+    'chinese-name' => 'chinese-name/v-chinese-name',
 
 ];
 
