@@ -27,14 +27,14 @@ $menu = [
 <h3 class="sidebar-title"><span>Menu</span></h3>
 <ul class="menu-items mb-4">
     <?php foreach ($menu as $link => $item) { ?>
-    <li>
         <a href="/<?php echo $link ?>">
-            <span class="fa-stack" style="color: <?php echo $item['color'] ?>">
-                <i class="fas fa-circle fa-stack-2x"></i>
-                <i class="<?php echo $item['icon'] ?> fa-stack-1x fa-inverse"></i>
-            </span>
-            <span><?php echo $item['name'] ?></span>
+            <li>
+                <span class="fa-stack" style="color: <?php echo $item['color'] ?>">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="<?php echo $item['icon'] ?> fa-stack-1x fa-inverse"></i>
+                </span>
+                <span><?php echo $item['name'] ?></span>
+            </li>
         </a>
-    </li>
     <?php } ?>
 </ul>
