@@ -97,11 +97,6 @@ function tvqhub_enqueue_scripts()
         wp_enqueue_script('axios', get_template_directory_uri() . '/vendor/vue/axios.min.js');
     }
 
-    // 581A
-    if (is_page('581a')) {
-        wp_enqueue_style('581a-style', get_template_directory_uri() . '/inc/581a/style.css');
-        wp_enqueue_script('simplemoney', get_template_directory_uri() . '/inc/581a/simplemoney.js');
-    }
 }
 
 /**
@@ -157,7 +152,7 @@ add_filter('intermediate_image_sizes_advanced', function ($sizes) {
 
 // SMTP Authentication
 add_action('phpmailer_init', 'send_smtp_email');
-function send_smtp_email($phpmailer)
+function send_smtp_email(PHPMailer $phpmailer)
 {
     $phpmailer->isSMTP();
     $phpmailer->Host = SMTP_HOST;

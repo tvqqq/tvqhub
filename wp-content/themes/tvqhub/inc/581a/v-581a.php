@@ -2,6 +2,8 @@
 $menu = str_replace("\r\n", "", get_post_meta(get_the_ID(), '581a_price', true));
 $menuArr = json_decode($menu, true);
 ?>
+<link rel="stylesheet" href="<?php echo get_template_directory_uri() . '/inc/581a/style.css' ?>" />
+<script src="<?php echo get_template_directory_uri() . '/inc/581a/simplemoney.js' ?>"></script>
 
 <div class="container">
     <div class="row justify-content-center">
