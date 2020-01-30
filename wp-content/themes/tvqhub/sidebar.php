@@ -3,6 +3,7 @@
         <?php
         if (is_home()) { ?>
             <div class="home-sidebar">
+                <?php echo do_shortcode('[menu-items]') ?>
                 <?php if (function_exists('postviews_top10')) {
                     postviews_top10();
                 }

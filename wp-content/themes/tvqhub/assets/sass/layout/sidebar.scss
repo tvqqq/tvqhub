@@ -76,4 +76,31 @@
       }
     }
   }
+
+  .menu-items {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+
+    li {
+      padding: 5px 1px;
+      margin: 4px 0;
+
+      &:hover {
+        background: #F9F9F9;
+        box-shadow: 0 1px 1px #dedede;
+        border: #fafafa;
+        border-radius: 2px;
+      }
+
+      a {
+        color: #666 !important;
+      }
+
+      .fa-stack {
+        font-size: 0.7em;
+      }
+    }
+  }
 }

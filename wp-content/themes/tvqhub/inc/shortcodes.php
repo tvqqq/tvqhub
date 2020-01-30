@@ -14,6 +14,7 @@ $shortcodes = [
     'chinese-name' => 'chinese-name/v-chinese-name',
     'smallcaps' => 'smallcaps/v-smallcaps',
     'horoscope' => 'horoscope/v-horoscope',
+    'menu-items' => 'common/v-menu-items',
 
 ];
 
