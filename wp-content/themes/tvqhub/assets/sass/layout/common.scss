@@ -10,6 +10,11 @@ p {
   line-height: 175%;
 }
 
+embed, iframe, object, img {
+  max-width: 100%;
+  object-fit: cover;
+}
+
 #content {
   margin-top: 110px;
 }
