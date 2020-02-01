@@ -6,20 +6,25 @@ $menu = [
         'icon' => 'fas fa-question',
         'color' => '#ef5350'
     ],
+    'chinese-playlist' => [
+        'name' => 'Nhạc Hoa ngữ <img class="ml-1" src="https://1.bp.blogspot.com/-0QutP-eThe4/UVKw9qDmtbI/AAAAAAAAE1E/spxdpNtOVjQ/s1600/nameicon_144249.gif"/>',
+        'icon' => 'fas fa-step-forward',
+        'color' => '#EC407A'
+    ],
     'smallcaps' => [
         'name' => 'Sᴍᴀʟʟᴄᴀᴘs Generator',
         'icon' => 'fas fa-font',
-        'color' => '#EC407A'
+        'color' => '#AB47BC'
     ],
     'ten-tieng-trung-cua-ban' => [
         'name' => 'Tên tiếng Trung của bạn',
         'icon' => 'fas fa-globe-asia',
-        'color' => '#AB47BC'
+        'color' => '#7E57C2'
     ],
     'horoscope' => [
         'name' => 'Tra cứu chòm sao',
         'icon' => 'fas fa-star-of-david',
-        'color' => '#7E57C2'
+        'color' => '#5C6BC0'
     ],
 ];
 ?>
