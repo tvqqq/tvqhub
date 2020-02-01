@@ -6,7 +6,7 @@
                 <div class="col-12 col-md-3">
                     <div class="thumb mb-3 mb-md-0">
                         <a href="<?php the_permalink() ?>"
-                           style="background:url(<?php the_post_thumbnail_url('full') ?>)no-repeat center center; display: block; height:100% ;background-size:cover"
+                           style="background:url(<?php the_post_thumbnail_url() ?>)no-repeat center center; display: block; height:100% ;background-size:cover"
                            class="thumb-hover">
                             <span class="thumb-overlay"></span>
                         </a>
