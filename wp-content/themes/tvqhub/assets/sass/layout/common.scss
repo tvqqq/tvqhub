@@ -30,4 +30,7 @@ embed, iframe, object, img {
   width: 50px;
   position: relative;
   top: -2px;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin: 0 auto !important;
 }
