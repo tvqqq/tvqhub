@@ -21,11 +21,15 @@ if (function_exists('do_action')) {
 	do_action('wpo_cache_extensions_loaded');
 }
 
+add_filter('wpo_restricted_cache_page_type', 'wpo_restricted_cache_page_type');
+
 $no_cache_because = array();
 
-// Don't cache robots.txt or htacesss or sitemap. Remember to properly escape any output to prevent injection.
-if (strpos($_SERVER['REQUEST_URI'], 'robots.txt') !== false || strpos($_SERVER['REQUEST_URI'], '.htaccess') !== false || strpos($_SERVER['REQUEST_URI'], 'sitemap.xml') !== false) {
-	$no_cache_because[] = 'The file path is unsuitable for caching ('.$_SERVER['REQUEST_URI'].')';
+// check if we want to cache current page.
+$restricted_cache_page_type = apply_filters('wpo_restricted_cache_page_type', false);
+
+if ($restricted_cache_page_type) {
+	$no_cache_because[] = $restricted_cache_page_type;
 }
 
 // Don't cache non-GET requests.
@@ -38,7 +42,7 @@ $file_extension = preg_replace('#^(.*?)\?.*$#', '$1', $file_extension);
 $file_extension = trim(preg_replace('#^.*\.(.*)$#', '$1', $file_extension));
 
 // Don't cache disallowed extensions. Prevents wp-cron.php, xmlrpc.php, etc.
-if (!preg_match('#index\.php$#i', $_SERVER['REQUEST_URI']) && in_array($file_extension, array( 'php', 'xml', 'xsl' ))) {
+if (!preg_match('#index\.php$#i', $_SERVER['REQUEST_URI']) && !preg_match('#sitemap([a-zA-Z0-9_-]+)?\.xml$#i', $_SERVER['REQUEST_URI']) && in_array($file_extension, array('php', 'xml', 'xsl'))) {
 	$no_cache_because[] = 'The request extension is not suitable for caching';
 }
 

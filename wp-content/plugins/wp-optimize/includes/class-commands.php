@@ -436,4 +436,36 @@ class WP_Optimize_Commands {
 
 		return true;
 	}
+
+	/**
+	 * Run images trash command.
+	 */
+	public function images_trash_command($params) {
+		if (!class_exists('WP_Optimize_Images_Trash_Manager_Commands')) {
+			return array(
+				'errors' => array('WP_Optimize_Images_Trash_Manager_Commands class not found'),
+			);
+		}
+
+		// get posted command.
+		$trash_command = isset($params['images_trash_command']) ? $params['images_trash_command'] : '';
+		// check if command is allowed.
+		$allowed_commands = WP_Optimize_Images_Trash_Manager_Commands::get_allowed_ajax_commands();
+
+		if (!in_array($trash_command, $allowed_commands)) {
+			return array(
+				'errors' => array('No such command found'),
+			);
+		}
+
+		$results = call_user_func(array(WP_Optimize_Images_Trash_Manager()->commands, $trash_command), $params);
+
+		if (is_wp_error($results)) {
+			$results = array(
+				'errors' => array($results->get_error_message()),
+			);
+		}
+
+		return $results;
+	}
 }

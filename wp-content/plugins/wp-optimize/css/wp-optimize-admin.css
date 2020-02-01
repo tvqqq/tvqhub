@@ -926,6 +926,18 @@ body.rtl .wpo-page {
 
 }
 
+@keyframes rotate {
+
+	0% {
+		transform: rotate(0);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+
+}
+
 /* Common BLOCKS */
 
 /* Buttons */
@@ -1275,6 +1287,11 @@ a.wpo-info__trigger {
 a.wpo-info__trigger span.dashicons {
 	text-decoration: none;
 	vertical-align: middle;
+}
+
+.wpo-rotate {
+	animation: rotate 1s linear infinite;
+	transform-origin: 50% 50%;
 }
 
 /* TABS */
@@ -1865,7 +1882,7 @@ body.rtl #wp-optimize-nav-page-menu {
 			display: inline-block;
 }
 
-#wpo_unused_images, #wpo_smush_images_grid {
+#wpo_unused_images, #wpo_unused_images_trash, #wpo_smush_images_grid {
 	width: calc(100% + 8px);
     margin-left: -4px;
     margin-right: -4px;
@@ -1879,12 +1896,12 @@ body.rtl #wp-optimize-nav-page-menu {
 
 }
 
-#wpo_unused_images .wpo-fieldgroup, #wpo_smush_images_grid .wpo-fieldgroup {
+#wpo_unused_images .wpo-fieldgroup, #wpo_unused_images_trash .wpo-fieldgroup, #wpo_smush_images_grid .wpo-fieldgroup {
 		width: 100%;
 		margin: 4px;
 	}
 
-#wpo_unused_images a {
+#wpo_unused_images a, #wpo_unused_images_trash a {
 	outline: none;
 }
 

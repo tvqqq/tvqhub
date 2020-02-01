@@ -4,7 +4,7 @@ Donate link: https://david.dw-perspective.org.uk/donate
 Tags: cache, optimizing, database, image optimize, performance, clean, spam, speed, caching, smush, smushing
 Requires at least: 3.9
 Tested up to: 5.3
-Stable tag: 3.0.15
+Stable tag: 3.0.16
 License: GPLv2+
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -305,6 +305,17 @@ If you notice any issues due to high server load, set a higher interval for the 
 9. Features comparison
 
 == Changelog ==
+
+= 3.0.16 - 27/Jan/2020 =
+
+* FIX: Premium - Unused images - Fixed detection of -rotated and -scaled images
+* TWEAK: Cache feature - Cache sitemap.xml and robots.txt
+* TWEAK: Cache feature: fix scheduled preload
+* TWEAK: Cache feature: save the value of wpo_current_url() to enhance compatibility with Weglot
+* TWEAK: Fix permissions for restoring or compressing images on multisite
+* TWEAK: Premium - Tweak UI when fetching unused image infos
+* TWEAK: Premium - Added compatibility for Oxygen builder
+* TWEAK: Premium - Added WP-CLI commands for managing cache
 
 = 3.0.15 - 16/Dec/2019 =
 
@@ -840,4 +851,4 @@ If you notice any issues due to high server load, set a higher interval for the 
 * Fix Interface
 
 == Upgrade Notice ==
-* 3.0.15: Image compression - Fix restoration on multisite. Cache feature - Scheduled preload when a sitemap exists
+* 3.0.16: Premium - Unused images - Fixed detection of -rotated and -scaled images

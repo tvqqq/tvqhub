@@ -88,6 +88,8 @@
 		</span>
 	</div>
 
+	<?php do_action('wpo_page_cache_settings_after', $wpo_cache_options); ?>
+
 </div>
 
 <input id="wp-optimize-save-cache-settings" class="button button-primary" type="submit" name="wp-optimize-save-cache-settings" value="<?php _e('Save changes', 'wp-optimize'); ?>">

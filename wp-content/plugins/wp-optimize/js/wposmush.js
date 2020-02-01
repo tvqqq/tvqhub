@@ -986,7 +986,7 @@ var WP_Optimize_Smush = function() {
 
 		json_parse = ('undefined' === typeof json_parse) ? true : json_parse;
 		data = $.isEmptyObject(data) ? {'use_cache' : false} : data;
-		
+
 		var ajax_data = {
 			action: 'updraft_smush_ajax',
 			subaction: action,
@@ -999,7 +999,7 @@ var WP_Optimize_Smush = function() {
 			url: ajaxurl,
 			data: ajax_data,
 			success: function(response) {
-				
+
 				if (json_parse) {
 					try {
 						var resp = wpo_parse_json(response);
@@ -1024,11 +1024,11 @@ var WP_Optimize_Smush = function() {
 				}
 			},
 			dataType: 'text'
-			
+
 		}
-		
+
 		$.ajax(ajax_opts);
-		
+
 	};
 
 } // END WP_Optimize_Smush
@@ -1051,10 +1051,10 @@ function wpo_parse_json(json_mix_str) {
 		console.log("WPO: Exception when trying to parse JSON (1) - will attempt to fix/re-parse");
 		console.log(json_mix_str);
 	}
-	
+
 	var json_start_pos = json_mix_str.indexOf('{');
 	var json_last_pos = json_mix_str.lastIndexOf('}');
-	
+
 	// Case where some php notice may be added after or before json string
 	if (json_start_pos > -1 && json_last_pos > -1) {
 		var json_str = json_mix_str.slice(json_start_pos, json_last_pos + 1);
@@ -1064,17 +1064,17 @@ function wpo_parse_json(json_mix_str) {
 			return parsed;
 		} catch (e) {
 			console.log("WPO: Exception when trying to parse JSON (2) - will attempt to fix/re-parse based upon bracket counting");
-			
+
 			var cursor = json_start_pos;
 			var open_count = 0;
 			var last_character = '';
 			var inside_string = false;
-			
+
 			// Don't mistake this for a real JSON parser. Its aim is to improve the odds in real-world cases seen, not to arrive at universal perfection.
 			while ((open_count > 0 || cursor == json_start_pos) && cursor <= json_last_pos) {
-				
+
 				var current_character = json_mix_str.charAt(cursor);
-				
+
 				if (!inside_string && '{' == current_character) {
 					open_count++;
 				} else if (!inside_string && '}' == current_character) {
@@ -1082,14 +1082,14 @@ function wpo_parse_json(json_mix_str) {
 				} else if ('"' == current_character && '\\' != last_character) {
 					inside_string = inside_string ? false : true;
 				}
-				
+
 				last_character = current_character;
 				cursor++;
 			}
-			
+
 			console.log("Started at cursor="+json_start_pos+", ended at cursor="+cursor+" with result following:");
 			console.log(json_mix_str.substring(json_start_pos, cursor));
-			
+
 			try {
 				var parsed = JSON.parse(json_mix_str.substring(json_start_pos, cursor));
 				console.log('WPO: JSON re-parse successful');
@@ -1098,10 +1098,10 @@ function wpo_parse_json(json_mix_str) {
 				// Throw it again, so that our function works just like JSON.parse() in its behaviour.
 				throw e;
 			}
-			
+
 		}
 	}
-	
+
 	throw "WPO: could not parse the JSON";
-	
+
 }

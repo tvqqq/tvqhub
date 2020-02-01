@@ -234,8 +234,12 @@ class Updraft_Smush_Manager extends Updraft_Task_Manager_1_2 {
 	 */
 	public function restore_single_image($image_id, $blog_id) {
 
-		if (is_multisite()) {
+		$switched_blog = false;
+		if (is_multisite() && current_user_can('manage_network_options')) {
 			switch_to_blog($blog_id);
+			$switched_blog = true;
+		} elseif (is_multisite() && get_current_blog_id() != $blog_id) {
+			return new WP_Error('restore_backup_wrong_blog_id', __('The blog ID provided does not match the current blog.', 'wp-optimize'));
 		}
 
 		$error = false;
@@ -299,7 +303,7 @@ class Updraft_Smush_Manager extends Updraft_Task_Manager_1_2 {
 			delete_post_meta($image_id, 'smush-info');
 		}
 
-		if (is_multisite()) {
+		if ($switched_blog) {
 			restore_current_blog();
 		}
 

@@ -41,6 +41,10 @@ if (!class_exists('Updraft_PHP_Logger')) require_once(WPO_PLUGIN_MAIN_PATH.'/inc
 
 require_once dirname(__FILE__) . '/file-based-page-cache-functions.php';
 
+if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
+	require_once dirname(__FILE__) . '/php-5.3-functions.php';
+}
+
 wpo_cache_load_extensions();
 
 if (!class_exists('WPO_Page_Cache')) :
@@ -318,9 +322,12 @@ class WPO_Page_Cache {
 		if (!$this->write_advanced_cache() && $this->get_advanced_cache_version() != WPO_VERSION) {
 			$message = sprintf("The request to write the file %s failed. ", htmlspecialchars($this->get_advanced_cache_filename()));
 			$message .= ' '.__('Your WP install might not have permission to write inside the wp-content folder.', 'wp-optimize');
-			$message .= "\n\n".sprintf(__('1. Please navigate, via FTP, to the folder - %s', 'wp-optimize'), htmlspecialchars(dirname($this->get_advanced_cache_filename())));
-			$message .= "\n".__('2. Edit or create a file with the name advanced-cache.php', 'wp-optimize');
-			$message .= "\n".__('3. Copy and paste the following lines into the file:', 'wp-optimize');
+
+			if (!defined('WP_CLI') || !WP_CLI) {
+				$message .= "\n\n".sprintf(__('1. Please navigate, via FTP, to the folder - %s', 'wp-optimize'), htmlspecialchars(dirname($this->get_advanced_cache_filename())));
+				$message .= "\n".__('2. Edit or create a file with the name advanced-cache.php', 'wp-optimize');
+				$message .= "\n".__('3. Copy and paste the following lines into the file:', 'wp-optimize');
+			}
 
 			$already_ran_enable = new WP_Error("write_advanced_cache", $message);
 			return $already_ran_enable;
@@ -767,6 +774,11 @@ EOF;
 				$config_path = $filename;
 				break;
 			}
+		}
+
+		// WP-CLI doesn't include wp-config.php that's why we use function from WP-CLI to locate config file.
+		if (!$config_path && is_callable('wpo_wp_cli_locate_wp_config')) {
+			$config_path = wpo_wp_cli_locate_wp_config();
 		}
 
 		return $config_path;
