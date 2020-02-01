@@ -2,6 +2,9 @@
 <script src="<?php echo get_template_directory_uri() . '/inc/chinese-playlist/APlayer.min.js' ?>"></script>
 
 <div id="app-vue-chinese-playlist">
+    <div class="sticker text-center my-3">
+        <img src="<?php echo get_template_directory_uri() . '/inc/chinese-playlist/chinese-playlist.png' ?>" width="500px" />
+    </div>
     <div id="aplayer"> </div>
 </div>
 
@@ -26,14 +29,14 @@
             const ap = new APlayer({
                 container: document.getElementById('aplayer'),
                 mini: false,
-                autoplay: false,
+                autoplay: true,
                 loop: 'all',
                 order: 'list',
                 preload: 'metadata',
                 volume: 1,
                 mutex: true,
                 listFolded: false,
-                listMaxHeight: '460px',
+                listMaxHeight: '500px',
                 audio: audioList
             });
         });
