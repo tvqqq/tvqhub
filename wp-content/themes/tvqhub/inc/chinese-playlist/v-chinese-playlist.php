@@ -36,7 +36,7 @@
                 volume: 1,
                 mutex: true,
                 listFolded: false,
-                listMaxHeight: '500px',
+                listMaxHeight: '470px',
                 audio: audioList
             });
         });
