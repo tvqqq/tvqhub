@@ -7,8 +7,8 @@
     </div>
     <div id="aplayer"> </div>
     <div class="text-center mt-4">
-        <i class="fas fa-music"></i> <strong id="count"></strong> bài hát • Cập nhật: <span id="last-updated"></span> <i class="far fa-clock"></i><br/>
-        Hãy đóng góp thêm vào playlist bằng cách bình luận bên dưới nhé <img src="https://2.bp.blogspot.com/-X73i45IvKlY/UVKwu-h6ymI/AAAAAAAAEuI/OlGPV2lEorM/s320/nameicon_122626.gif" />
+        <i class="fas fa-music"></i> <strong id="count"></strong> bài hát • Cập nhật: <span id="last-updated"></span> <i class="far fa-clock"></i><br/><br/>
+        Hãy đóng góp thêm vào playlist bằng cách bình luận bên dưới nhé <img src="https://2.bp.blogspot.com/-X73i45IvKlY/UVKwu-h6ymI/AAAAAAAAEuI/OlGPV2lEorM/s320/nameicon_122626.gif" class="sticker" />
     </div>
 </div>
 
