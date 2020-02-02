@@ -3,7 +3,7 @@
         <div class="row mb-3">
             <div class="col-6 d-flex flex-column text-center">
                 <span>Chọn <strong>tháng</strong></span>
-                <div class="input-group align-self-center" style="width: 40%">
+                <div class="input-group align-self-center" style="width: 50%">
                     <select class="custom-select" id="thang">
                         <option value="0" selected>----Tháng----</option>
                         <?php
