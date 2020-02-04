@@ -19,9 +19,8 @@
             <span><i class="fas fa-horse-head"></i> Sagittarius</span>
         </div>
         <div class="mt-3 button-cv">
-            <button type="button" class="btn btn-outline-primary disabled" data-toggle="modal"
-                    data-target="#myCV-updating">My
-                CV <i class="fas fa-chevron-circle-right"></i>
+            <button type="button" class="btn btn-outline-primary" data-toggle="modal"
+                    data-target="#myCV">My CV <i class="fas fa-chevron-circle-right"></i>
             </button>
             <div class="modal fade" id="myCV" tabindex="-1" role="dialog"
                  aria-labelledby="myCVLabel"
@@ -34,7 +33,7 @@
                                     You can download the PDF file.<br/><i class="fas fa-arrow-circle-down"></i>
                                     <a href="<?= $cv ?>"
                                        class="btn btn-outline-primary mt-3 mb-1">
-                                        <strong>DOWNLOAD TatViQuyen-CV.pdf</strong>
+                                        <strong>DOWNLOAD CV</strong>
                                         <i class="fa fa-download" aria-hidden="true"></i>
                                     </a>
                                 </p>
@@ -58,6 +57,13 @@
                 than coding, I love music, photography, and travelling across the world...🛵</p>
         </div>
 
+        <h5><i class="fas fa-laptop"></i> Currently Using</h5>
+        <ul>
+            <li><strong>Laptop:</strong> Macbook Pro 2019 13" 1.4Ghz</li>
+            <li><strong>Smartphone:</strong> Apple iPhone 11</li>
+            <li><span class="text-muted">Updating...</span></li>
+        </ul>
+
         <h5><i class="fas fa-stream"></i> Timeline</h5>
         <div class="timeline">
             <div class="container-timeline right">
@@ -74,18 +80,6 @@
             </div>
         </div>
 
-        <h5><i class="fas fa-laptop"></i> Currently Using</h5>
-        <ul>
-            <li><strong>Laptop:</strong> Macbook Pro 2019 13" 1.4Ghz</li>
-            <li><strong>Smartphone:</strong> Asus Zenfone Max Plus M1</li>
-            <li><span class="text-muted">Updating...</span></li>
-        </ul>
-
-        <h5><i class="fab fa-bitbucket"></i> Bucket List</h5>
-        <div class="custom-control custom-checkbox disabled">
-            <input type="checkbox" class="custom-control-input">
-            <label class="custom-control-label"><span class="text-muted">Updating...</span></label>
-        </div>
     </div>
 </div>
 
