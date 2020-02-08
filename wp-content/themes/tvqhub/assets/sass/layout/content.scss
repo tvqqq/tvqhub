@@ -83,6 +83,7 @@ article {
   .entry-content {
     h1, h2, h3, h4, h5, h6 {
       font-weight: bold;
+      margin-bottom: 10px;
     }
 
     h2 {
@@ -97,7 +98,6 @@ article {
     }
 
     ul, ol {
-      margin-bottom: 0;
       margin-left: -10px;
 
       li {
@@ -109,7 +109,7 @@ article {
       height: auto;
       border-radius: 5px;
       box-shadow: 0 5px 15px 1px #d6dee4;
-      margin: 10px auto 15px;
+      margin: 0 auto 15px;
 
       &.sticker {
         border-radius: 0 !important;
