@@ -14,7 +14,7 @@
                 </div>
 
                 <div class="col-12 col-md-9 pl-md-3">
-                    <h2 class="entry-title"><a
+                    <h2 class="entry-title title-home"><a
                             href="<?php echo esc_url(get_permalink()) ?>"><?php echo get_the_title() ?></a></h2>
                     <div class="entry-meta">
                         <time class="entry-date"
