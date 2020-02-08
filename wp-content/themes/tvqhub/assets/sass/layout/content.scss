@@ -49,19 +49,18 @@ article {
       position: absolute;
       width: 0;
       height: 0;
-      border-top: 15px solid transparent;
-      border-bottom: 15px solid transparent;
-      border-left: 15px solid #e0e0e0;
-      top: 23px;
+      border-top: 20px solid transparent;
+      border-bottom: 20px solid transparent;
+      border-left: 20px solid #e0e0e0;
+      top: 19px;
       left: 0;
     }
   }
 
   .entry-title {
-    font-size: 28px;
+    font-size: 33px;
     font-weight: bold;
     color: $blue !important;
-    margin-bottom: 3px;
 
     a {
       color: #454545 !important;
@@ -86,15 +85,31 @@ article {
       font-weight: bold;
     }
 
-    ol li, ul li {
-      line-height: 190%;
+    h2 {
+      &:before {
+        content: "\f105";
+        color: #5b86e5;
+        padding-right: 6px;
+        margin-left: -19px;
+        font-size: 25px;
+        font-family: "Font Awesome 5 Free";
+      }
+    }
+
+    ul, ol {
+      margin-bottom: 0;
+      margin-left: -10px;
+
+      li {
+        line-height: 190%;
+      }
     }
 
     img {
       height: auto;
-      border-radius: 4px;
-      box-shadow: 5px 0 40px #d6dee4;
-      margin: 15px auto;
+      border-radius: 5px;
+      box-shadow: 0 5px 15px 1px #d6dee4;
+      margin: 10px auto 15px;
 
       &.sticker {
         border-radius: 0 !important;
@@ -111,18 +126,18 @@ article {
 
     a {
       &:not(.more-link) {
-        font-weight: bold;
-        color: $cyan !important;
-        border-bottom: 2px solid #ccf3f6;
+        color: #283d6a !important;
+        border-bottom: 1px dashed #283d6a59;
+        transition: .2s ease-in-out;
 
         &:hover {
-          border-color: $cyan !important;
-          background-color: #eefbfc;
+          border-color: #283d6a !important;
+          background-color: #7391d721;
         }
 
         &:active, &:focus {
-          border-bottom: 2px dashed $cyan !important;
-          background-color: #eefbfc;
+          border-bottom: 1px solid #283d6a !important;
+          background-color: #7391d721;
         }
       }
 
