@@ -1,6 +1,6 @@
 <div id="app-vue-smallcaps">
     <div class="page-tools page-tools-smallcaps">
-        <h1 class="mt-2 mb-4 text-info"><strong>Sᴍᴀʟʟᴄᴀᴘs</strong> Generator</h1>
+        <h1 class="mt-2 mb-4 text-dark"><strong>Sᴍᴀʟʟᴄᴀᴘs</strong> Generator</h1>
 
         <div class="form-group">
             <label for="sc-input">Typing here:</label>

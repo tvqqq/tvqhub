@@ -1,38 +1,49 @@
 <?php
 // Color: 400 - https://www.materialui.co/colors
 $menu = [
-    'ama' => [
+    [
+        'link' => 'https://ly.tvqhub.com',
+        'name' => 'Short Link',
+        'icon' => 'fas fa-link',
+        'color' => '#29B6F6'
+    ], [
+        'link' => '/ama',
         'name' => 'Ask Me Anything',
         'icon' => 'fas fa-question',
-        'color' => '#ef5350'
-    ],
-    'chinese-playlist' => [
-        'name' => 'Nhạc Hoa ngữ <img class="ml-1" src="https://1.bp.blogspot.com/-0QutP-eThe4/UVKw9qDmtbI/AAAAAAAAE1E/spxdpNtOVjQ/s1600/nameicon_144249.gif"/>',
+        'color' => '#42A5F5'
+    ], [
+        'link' => 'chinese-playlist',
+        'name' => 'Nhạc Hoa ngữ',
         'icon' => 'fas fa-step-forward',
-        'color' => '#EC407A'
-    ],
-    'smallcaps' => [
-        'name' => 'Sᴍᴀʟʟᴄᴀᴘs Generator',
-        'icon' => 'fas fa-font',
-        'color' => '#AB47BC'
-    ],
-    'ten-tieng-trung-cua-ban' => [
+        'color' => '#5C6BC0'
+    ], [
+        'link' => 'ten-tieng-trung-cua-ban',
         'name' => 'Tên tiếng Trung của bạn',
         'icon' => 'fas fa-globe-asia',
         'color' => '#7E57C2'
-    ],
-    'horoscope' => [
+    ], [
+        'link' => 'smallcaps',
+        'name' => 'Sᴍᴀʟʟᴄᴀᴘs Generator',
+        'icon' => 'fas fa-font',
+        'color' => '#AB47BC'
+    ], [
+        'link' => 'horoscope',
         'name' => 'Tra cứu chòm sao',
         'icon' => 'fas fa-star-of-david',
-        'color' => '#5C6BC0'
-    ],
+        'color' => '#EC407A'
+    ], [
+        'link' => 'https://deep.tvqhub.com',
+        'name' => 'Deep by TVQhub',
+        'icon' => 'fas fa-cloud-moon-rain',
+        'color' => '#ef5350'
+    ]
 ];
 ?>
 
 <h3 class="sidebar-title"><span>Menu</span></h3>
 <ul class="menu-items mb-4">
-    <?php foreach ($menu as $link => $item) { ?>
-        <a href="/<?php echo $link ?>">
+    <?php foreach ($menu as $item) { ?>
+        <a href="<?php echo $item['link'] ?>" <?php echo strpos($item['link'], '.') ? 'target="_blank"' : '' ?>>
             <li>
                 <span class="fa-stack" style="color: <?php echo $item['color'] ?>">
                     <i class="fas fa-circle fa-stack-2x"></i>

@@ -43,12 +43,12 @@ jQuery(function ($) {
                 thang = parseInt($("#thang").val());
                 ngay = parseInt($("#ngay").val());
                 if (thang == 0 || ngay == 0) {
-                    $("#error").removeClass('d-none').addClass('d-block');
-                    $("#thong-tin").removeClass('d-block').addClass('d-none');
+                    $("#error").removeClass('d-none').addClass('d-inline-block');
+                    $("#thong-tin").removeClass('d-inline-block').addClass('d-none');
                 } else {
                     chomSao.TimChomSao(thang, ngay);
-                    $("#error").removeClass('d-block').addClass('d-none');
-                    $("#thong-tin").removeClass('d-none').addClass('d-block');
+                    $("#error").removeClass('d-inline-block').addClass('d-none');
+                    $("#thong-tin").removeClass('d-none').addClass('d-inline-block');
                 }
             });
         },
