@@ -59,6 +59,7 @@
             }
         },
         created() {
+            axios(AIRLOCK);
         },
         methods: {
             isName(evt) {

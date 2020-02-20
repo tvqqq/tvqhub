@@ -8,6 +8,8 @@
 </head>
 <script>
     const API = '<?= API ?>';
+    const AIRLOCK = '<?= substr(API, 0, -3) . 'airlock/csrf-cookie' ?>';
+    axios.defaults.withCredentials = true;
 </script>
 
 <!-- Global script -->
