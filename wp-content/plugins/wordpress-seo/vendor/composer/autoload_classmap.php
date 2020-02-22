@@ -272,7 +272,7 @@ return array(
     'WPSEO_Link_Cleanup_Transient' => $baseDir . '/admin/links/class-link-cleanup-transient.php',
     'WPSEO_Link_Column_Count' => $baseDir . '/admin/links/class-link-column-count.php',
     'WPSEO_Link_Columns' => $baseDir . '/admin/links/class-link-columns.php',
-    'WPSEO_Link_Compatibility_Notifier' => $baseDir . '/admin/links/class-link-compatibility-notifier.php',
+    'WPSEO_Link_Compatibility_Notifier' => $baseDir . '/deprecated/admin/links/class-link-compatibility-notifier.php',
     'WPSEO_Link_Content_Processor' => $baseDir . '/admin/links/class-link-content-processor.php',
     'WPSEO_Link_Extractor' => $baseDir . '/admin/links/class-link-extractor.php',
     'WPSEO_Link_Factory' => $baseDir . '/admin/links/class-link-factory.php',
