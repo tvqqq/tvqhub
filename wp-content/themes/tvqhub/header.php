@@ -8,6 +8,10 @@
 </head>
 <script>
     const API = '<?= API ?>';
+    const AIRLOCK = API + '/airlock';
+    if (typeof axios !== 'undefined') {
+        axios.defaults.withCredentials = true;
+    }
 </script>
 
 <!-- Global script -->

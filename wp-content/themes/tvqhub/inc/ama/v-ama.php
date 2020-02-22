@@ -75,16 +75,24 @@
             },
         },
         mounted() {
-            axios({
-                method: 'GET',
-                url: API + '/ama',
-            }).then(response => {
-                this.listQuestions = response.data.data;
-                this.countNoReply = response.data.meta.count_no_reply;
-                this.isListLoading = false;
-            });
+            this.init();
         },
         methods: {
+            async init() {
+                await axios(AIRLOCK + '/csrf');
+                await axios.post(AIRLOCK + '/login');
+                await this.index();
+            },
+            index() {
+                axios({
+                    method: 'GET',
+                    url: API + '/ama'
+                }).then(response => {
+                    this.listQuestions = response.data.data;
+                    this.countNoReply = response.data.meta.count_no_reply;
+                    this.isListLoading = false;
+                });
+            },
             send() {
                 this.loading = true;
                 axios({
