@@ -58,10 +58,14 @@
                 fail: false,
             }
         },
-        created() {
-            axios(AIRLOCK);
+        mounted() {
+            this.init();
         },
         methods: {
+            async init() {
+                await axios(AIRLOCK + '/csrf');
+                await axios.post(AIRLOCK + '/login');
+            },
             isName(evt) {
                 this.result = null;
                 evt = (evt) ? evt : window.event;
@@ -104,6 +108,6 @@
             playSound() {
                 responsiveVoice.speak(this.cnChar, 'Chinese Female');
             }
-        },
+        }
     });
 </script>

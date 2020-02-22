@@ -79,7 +79,8 @@
         },
         methods: {
             async init() {
-                await axios(AIRLOCK);
+                await axios(AIRLOCK + '/csrf');
+                await axios.post(AIRLOCK + '/login');
                 await this.index();
             },
             index() {
