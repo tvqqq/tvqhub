@@ -1,6 +1,7 @@
-var WP_Optimize_Cache = function (send_command) {
+var WP_Optimize_Cache = function () {
 
 	var $ = jQuery;
+	var send_command = wp_optimize.send_command;
 
 	var browser_cache_enable_btn = $('#wp_optimize_browser_cache_enable'),
 		purge_cache_btn = $('#wp-optimize-purge-cache'),
@@ -251,8 +252,6 @@ var WP_Optimize_Cache = function (send_command) {
 				$('#wpo_advanced_cache_output').hide();
 			}
 
-			$.unblockUI();
-			spinner.hide();
 			// update the toggle state depending on response.enabled
 			enable_page_caching_switch.prop('checked', response.enabled);
 			success_icon.show();
@@ -273,6 +272,9 @@ var WP_Optimize_Cache = function (send_command) {
 					success_icon.hide();
 				});
 			}, 5000);
+		}).always(function() {
+			$.unblockUI();
+			spinner.hide();
 		});
 	});
 

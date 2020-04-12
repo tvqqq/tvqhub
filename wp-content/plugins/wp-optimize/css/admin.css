@@ -138,6 +138,8 @@
 
 /* .wp-optimize-settings-clean-transient label, .wp-optimize-settings-clean-pingbacks label, .wp-optimize-settings-clean-trackbacks label, .wp-optimize-settings-clean-postmeta label, .wp-optimize-settings-clean-orphandata label, .wp-optimize-settings-clean-commentmeta label */
 
+/* Optimizations tab */
+
 .wp-optimize-setting-is-sensitive td > label::before {
 	content: "\f534";
 	font-family: 'dashicons';
@@ -155,6 +157,10 @@
 
 .wpo-run-optimizations__container {
 	margin-bottom: 15px;
+}
+
+.wp-optimize-optimizations-table-placeholder {
+	min-height: 80px;
 }
 
 td.wp-optimize-settings-optimization-checkbox {

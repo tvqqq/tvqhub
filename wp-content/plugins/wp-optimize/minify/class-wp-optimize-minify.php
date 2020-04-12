@@ -8,8 +8,8 @@ if (!defined('WP_OPTIMIZE_SHOW_MINIFY_ADVANCED')) define('WP_OPTIMIZE_SHOW_MINIF
 if (!class_exists('WP_Optimize_Minify_Admin')) {
 	include WP_OPTIMIZE_MINIFY_DIR.'/class-wp-optimize-minify-admin.php';
 }
-if (WPO_MINIFY_PHP_VERSION_MET && !class_exists('WP_Optimize_Minify_Fe')) {
-	include WP_OPTIMIZE_MINIFY_DIR.'/class-wp-optimize-minify-fe.php';
+if (WPO_MINIFY_PHP_VERSION_MET && !class_exists('WP_Optimize_Minify_Front_End')) {
+	include WP_OPTIMIZE_MINIFY_DIR.'/class-wp-optimize-minify-front-end.php';
 }
 if (WPO_MINIFY_PHP_VERSION_MET && !class_exists('WP_Optimize_Minify_Cache_Functions')) {
 	include WP_OPTIMIZE_MINIFY_DIR.'/class-wp-optimize-minify-cache-functions.php';
@@ -38,7 +38,7 @@ class WP_Optimize_Minify {
 		if (!WPO_MINIFY_PHP_VERSION_MET) return;
 
 		if (wp_optimize_minify_config()->is_enabled()) {
-			new WP_Optimize_Minify_Fe();
+			new WP_Optimize_Minify_Front_End();
 		}
 		// cron job to delete old wpo_min cache
 		add_action('wpo_minify_purge_old_cache', array('WP_Optimize_Minify_Cache_Functions', 'purge_old'));

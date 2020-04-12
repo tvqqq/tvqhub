@@ -14,7 +14,7 @@
 						<?php echo checked($wpo_minify_options['merge_google_fonts']); ?>
 					>
 					<?php _e('Merge fonts from Google Fonts into one request', 'wp-optimize'); ?>
-					<b tabindex="0" data-tooltip="<?php _e('This improves speed when loading multiple fonts from Google Fonts.', 'wp-optimize');?>"><span class="dashicons dashicons-editor-help"></span></b>
+					<span tabindex="0" data-tooltip="<?php _e('This improves speed when loading multiple fonts from Google Fonts.', 'wp-optimize');?>"><span class="dashicons dashicons-editor-help"></span></span>
 				</label>
 				<label for="remove_googlefonts">
 					<input
@@ -25,7 +25,7 @@
 						<?php echo checked($wpo_minify_options['remove_googlefonts']); ?>
 					>
 					<?php _e('Remove fonts from Google Fonts completely', 'wp-optimize'); ?>
-					<b tabindex="0" data-tooltip="<?php _e('If selected, all enqueued fonts from Google Fonts will be removed from the site', 'wp-optimize');?>"><span class="dashicons dashicons-editor-help"></span></b>
+					<span tabindex="0" data-tooltip="<?php _e('If selected, all enqueued fonts from Google Fonts will be removed from the site', 'wp-optimize');?>"><span class="dashicons dashicons-editor-help"></span></span>
 				</label>
 			</fieldset>
 			<p class="wpo_min-bold-green wpo_min-rowintro">
@@ -40,7 +40,7 @@
 						<?php echo checked('inline' === $wpo_minify_options['gfonts_method']); ?>
 					>
 					<?php _e('Default', 'wp-optimize'); ?>
-					<b tabindex="0" data-tooltip="<?php esc_attr_e('Inherit from the CSS settings (the stylesheets will be merged or inlined).', 'wp-optimize');?>"><span class="dashicons dashicons-editor-help"></span></b>
+					<span tabindex="0" data-tooltip="<?php esc_attr_e('Inherit from the CSS settings (the stylesheets will be merged or inlined).', 'wp-optimize');?>"><span class="dashicons dashicons-editor-help"></span></span>
 				</label>
 				<label>
 					<input
@@ -50,7 +50,7 @@
 						<?php echo checked('async' === $wpo_minify_options['gfonts_method']); ?>
 					>
 						<?php _e('Asynchronously load CSS files from Google Fonts', 'wp-optimize'); ?>
-						<b tabindex="0" data-tooltip="<?php esc_attr_e('Will use \'preload\' with LoadCSS polyfill', 'wp-optimize');?>"><span class="dashicons dashicons-editor-help"></span></b>
+						<span tabindex="0" data-tooltip="<?php esc_attr_e('Will use \'preload\' with LoadCSS polyfill', 'wp-optimize');?>"><span class="dashicons dashicons-editor-help"></span></span>
 				</label>
 				<label>
 					<input
@@ -60,7 +60,7 @@
 						<?php echo checked('exclude' === $wpo_minify_options['gfonts_method']); ?>
 					>
 					<?php _e('Asynchronously load fonts from Google Fonts using JavaScript', 'wp-optimize'); ?>
-					<b tabindex="0" data-tooltip="<?php _e('Use if you want to exclude the CSS from Google Fonts from performance tests.', 'wp-optimize');?>"><span class="dashicons dashicons-editor-help"></span></b>
+					<span tabindex="0" data-tooltip="<?php _e('Use if you want to exclude the CSS from Google Fonts from performance tests.', 'wp-optimize');?>"><span class="dashicons dashicons-editor-help"></span></span>
 				</label>
 			</fieldset>
 		</div>
@@ -78,7 +78,7 @@
 					<?php echo checked('inline' === $wpo_minify_options['fawesome_method']); ?>
 					>
 					<?php _e('Default', 'wp-optimize'); ?>
-					<b tabindex="0" data-tooltip="<?php esc_attr_e('Inherit from the CSS settings (the stylesheets will be merged or inlined).', 'wp-optimize');?>"><span class="dashicons dashicons-editor-help"></span></b>
+					<span tabindex="0" data-tooltip="<?php esc_attr_e('Inherit from the CSS settings (the stylesheets will be merged or inlined).', 'wp-optimize');?>"><span class="dashicons dashicons-editor-help"></span></span>
 				</label>
 				<label>
 					<input
@@ -88,7 +88,7 @@
 						<?php echo checked('async' === $wpo_minify_options['fawesome_method']); ?>
 					>
 					<?php _e('Asynchronously load the Font Awesome CSS file', 'wp-optimize'); ?>
-					<b tabindex="0" data-tooltip="<?php _e('Will use \'preload\' with LoadCSS polyfill', 'wp-optimize');?>"><span class="dashicons dashicons-editor-help"></span></b>
+					<span tabindex="0" data-tooltip="<?php _e('Will use \'preload\' with LoadCSS polyfill', 'wp-optimize');?>"><span class="dashicons dashicons-editor-help"></span></span>
 				</label>
 				<label><input
 					type="radio"
@@ -97,7 +97,7 @@
 					<?php echo checked('exclude' === $wpo_minify_options['fawesome_method']); ?>
 				>
 				<?php _e('Asynchronously load the Font Awesome stylesheet using JavaScript', 'wp-optimize'); ?>
-				<b tabindex="0" data-tooltip="<?php _e('Use if you want to exclude Font Awesome from page speed tests (PageSpeed Insights, GTMetrix...)', 'wp-optimize');?>"><span class="dashicons dashicons-editor-help"></span></b>
+				<span tabindex="0" data-tooltip="<?php _e('Use if you want to exclude Font Awesome from page speed tests (PageSpeed Insights, GTMetrix...)', 'wp-optimize');?>"><span class="dashicons dashicons-editor-help"></span></span>
 			</label>
 			</fieldset>
 		</div>

@@ -408,7 +408,7 @@ class WP_Optimize_Options {
 		// Save additional auto backup option values.
 		foreach ($settings as $key => $value) {
 			if (preg_match('/enable\-auto\-backup\-/', $key)) {
-				$value = ('0' != $value) ? 'true' : 'false';
+				$value = ('true' == $value) ? 'true' : 'false';
 				$this->update_option($key, $value);
 			}
 		}

@@ -3,8 +3,8 @@ Contributors: DavidAnderson, ruhanirabin, DNutbourne, aporter, snightingale, lum
 Donate link: https://david.dw-perspective.org.uk/donate
 Tags: cache, optimizing, database, image optimize, performance, clean, spam, speed, caching, smush, smushing
 Requires at least: 3.9
-Tested up to: 5.3
-Stable tag: 3.0.16
+Tested up to: 5.4
+Stable tag: 3.0.19
 License: GPLv2+
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -305,6 +305,37 @@ If you notice any issues due to high server load, set a higher interval for the 
 9. Features comparison
 
 == Changelog ==
+
+= 3.0.19 - 31/Mar/2020 =
+
+* FIX: Fix force tables optimisations checkboxes
+* FIX: Fix tablesorter issue preventing the optimisations from displaying
+* FIX: Premium - Fix Spam and Trashed Comments preview
+
+= 3.0.18 - 27/Mar/2020 =
+
+* FIX: Don't override advanced-cache.php if caching is disabled
+
+= 3.0.17 - 19/Mar/2020 =
+
+* FIX: Show image as uncompressed after restoring backup from the media modal
+* FIX: Save the last state for "take a backup" checkboxes
+* TWEAK: Load optimizations and database tables list via ajax
+* TWEAK: Move database optimization settings to the database page
+* TWEAK: Improve error handling for ajax requests
+* TWEAK: Cache feature - Add the filter `wpo_cache_show_cached_by_comment` to enable users to hide the HTML comment <!-- Cached by WP-Optimze... -->
+* TWEAK: Cache feature - Clear archive page cache when post is updated
+* TWEAK: Cache feature - Possibility to exclude front page from the cache
+* TWEAK: Cache feature - Deny direct access to cache files folder
+* TWEAK: Cache feature - Prevent direct access to cache config content
+* TWEAK: Image compression - Prevent confusing errors when restoring an image whose backup file was deleted
+* TWEAK: Only show the plugin's own notices on WP-Optimize's pages
+* TWEAK: Remove MetaSlider related message
+* TWEAK: Premium - Page cache - Possibility to generate a cache file per country with WooCommerce geolocation
+* TWEAK: Premium - Reorganise cache extensions to only keep the code required at the cache generation / fetching stage
+* TWEAK: Premium - Unused images - add support for non-dated folders
+* TWEAK: Premium - Unused images - Added wpo_unused_images_per_page filter for filtering images per page count
+* TWEAK: Premium - Unused images - Possibility to move unused images to trash before completely deleting
 
 = 3.0.16 - 27/Jan/2020 =
 
@@ -851,4 +882,4 @@ If you notice any issues due to high server load, set a higher interval for the 
 * Fix Interface
 
 == Upgrade Notice ==
-* 3.0.16: Premium - Unused images - Fixed detection of -rotated and -scaled images
+* 3.0.19: This new version contains various UX performance improvements. The Premium version contains a geolocation feature compatible with WooCommerce. 3.0.18 and 3.0.19 fix a few defects in 3.0.17.

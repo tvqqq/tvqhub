@@ -22,6 +22,7 @@ class WP_Optimize_Updates {
 	 */
 	private static $updates = array(
 		'3.0.12' => array('delete_old_locks'),
+		'3.0.17' => array('disable_cache_directories_viewing'),
 	);
 
 	/**
@@ -64,6 +65,13 @@ class WP_Optimize_Updates {
 				" OR option_name LIKE ('%load-url-task'));";
 
 		$wpdb->query($query);
+	}
+
+	/**
+	 * Disable cache directories viewing.
+	 */
+	public static function disable_cache_directories_viewing() {
+		wpo_disable_cache_directories_viewing();
 	}
 }
 

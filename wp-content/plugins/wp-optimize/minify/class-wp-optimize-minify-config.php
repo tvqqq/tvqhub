@@ -113,7 +113,7 @@ class WP_Optimize_Minify_Config {
 			'critical_path_css_is_front_page' => '',
 			// settings tab checkboxes
 			'preserve_settings_on_uninstall' => true,
-			'fix_editor' => false,
+			'disable_when_logged_in' => false,
 			'default_protocol' => 'dynamic', // dynamic, http, https
 			'html_minification' => true,
 			'clean_header_one' => false,

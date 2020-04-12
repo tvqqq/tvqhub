@@ -37,7 +37,7 @@ class WP_Optimize_Commands {
 	}
 
 	public function get_status_box_contents() {
-		return WP_Optimize()->include_template('settings/status-box-contents.php', true, array('optimize_db' => false));
+		return WP_Optimize()->include_template('database/status-box-contents.php', true, array('optimize_db' => false));
 	}
 	
 	public function get_optimizations_table() {
@@ -51,8 +51,10 @@ class WP_Optimize_Commands {
 	 * @return array An array containing the WPO translations and the "WP Optimize" tab's rendered contents
 	 */
 	public function get_wp_optimize_contents() {
-		$content = WP_Optimize()->include_template('database/optimize-table.php', true, array('optimize_db' => false));
-		$content .= $this->get_status_box_contents();
+		$content = WP_Optimize()->include_template('database/optimize-table.php', true, array('optimize_db' => false, 'load_data' => WP_Optimize()->template_should_include_data()));
+		if (WP_Optimize()->is_updraft_central_request()) {
+			$content .= $this->get_status_box_contents();
+		}
 
 		return array(
 			'content' => $content,
@@ -67,7 +69,7 @@ class WP_Optimize_Commands {
 	 * @return array An array containing the WPO translations and the "Table Information" tab's rendered contents
 	 */
 	public function get_table_information_contents() {
-		$content = WP_Optimize()->include_template('database/tables.php', true, array('optimize_db' => false));
+		$content = WP_Optimize()->include_template('database/tables.php', true, array('optimize_db' => false, 'load_data' => WP_Optimize()->template_should_include_data()));
 
 		return array(
 			'content' => $content,
@@ -83,8 +85,8 @@ class WP_Optimize_Commands {
 	 */
 	public function get_settings_contents() {
 		$admin_settings = '<form action="#" method="post" enctype="multipart/form-data" name="settings_form" id="settings_form">';
-		$admin_settings .= WP_Optimize()->include_template('settings/settings-general.php', true, array('optimize_db' => false));
-		$admin_settings .= WP_Optimize()->include_template('settings/settings-auto-cleanup.php', true, array('optimize_db' => false));
+		$admin_settings .= WP_Optimize()->include_template('database/settings-general.php', true, array('optimize_db' => false));
+		$admin_settings .= WP_Optimize()->include_template('database/settings-auto-cleanup.php', true, array('optimize_db' => false, 'show_innodb_option' => WP_Optimize()->template_should_include_data() && $this->optimizer->show_innodb_force_optimize()));
 		$admin_settings .= WP_Optimize()->include_template('settings/settings-logging.php', true, array('optimize_db' => false));
 		$admin_settings .= '<input id="wp-optimize-settings-save" class="button button-primary" type="submit" name="wp-optimize-settings" value="' . esc_attr('Save settings', 'wp-optimize') .'" />';
 		$admin_settings .= '</form>';
@@ -295,15 +297,29 @@ class WP_Optimize_Commands {
 
 		return $results;
 	}
-		
+
+	/**
+	 * Get the data for the tables tab
+	 *
+	 * @return array
+	 */
 	public function get_table_list() {
 		
 		list ($total_size, $part2) = $this->optimizer->get_current_db_size();
 	
-		return array(
+		return apply_filters('wpo_get_tables_data', array(
 			'table_list' => WP_Optimize()->include_template('database/tables-body.php', true, array('optimize_db' => false)),
 			'total_size' => $total_size
-		);
+		));
+	}
+
+	/**
+	 * Get the database tabs information
+	 *
+	 * @return array
+	 */
+	public function get_database_tabs() {
+		return array_merge(array('optimizations' => $this->get_optimizations_table()), $this->get_table_list());
 	}
 
 	/**

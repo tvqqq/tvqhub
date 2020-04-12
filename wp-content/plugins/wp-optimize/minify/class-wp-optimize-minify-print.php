@@ -123,13 +123,13 @@ class WP_Optimize_Minify_Print {
 	 * @param string $log
 	 * @return void
 	 */
-	public static function write_css($file, $code, $log) {
-		file_put_contents($file.'.txt', $log);
+	public static function write_combined_asset($file, $code, $log) {
+		file_put_contents($file.'.json', json_encode($log));
 		file_put_contents($file, $code);
 		file_put_contents($file.'.gz', gzencode(file_get_contents($file), 9));
 		
 		// permissions
-		WP_Optimize_Minify_Cache_Functions::fix_permission_bits($file.'.txt');
+		WP_Optimize_Minify_Cache_Functions::fix_permission_bits($file.'.json');
 		WP_Optimize_Minify_Cache_Functions::fix_permission_bits($file);
 		WP_Optimize_Minify_Cache_Functions::fix_permission_bits($file.'.gz');
 		

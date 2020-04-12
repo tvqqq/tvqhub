@@ -34,8 +34,8 @@ var WP_Optimize_Smush = function() {
 		smush_timer_handle = 0,
 		smush_image_list = [],
 		smush_completed = false,
-		smush_mark_all_as_uncompressed = false;
-
+		smush_mark_all_as_uncompressed = false,
+		smush_affected_images = {};
 
 	/**
 	 *  Checks if smush is active and loads images if yes - image tabs change.
@@ -407,7 +407,7 @@ var WP_Optimize_Smush = function() {
 
 			if (response.status) {
 				$('.wpo_smush_single_image', wrapper).hide();
-				$('.toggle-smush-advanced', wrapper).removeClass('opened');
+				$('.wpo-toggle-advanced-options', wrapper).removeClass('opened');
 				$('.wpo_smush_mark_single_image', wrapper).hide();
 				$('.wpo_smush_unmark_single_image', wrapper).show();
 				$('.wpo_restore_single_image', wrapper).show();
@@ -452,7 +452,7 @@ var WP_Optimize_Smush = function() {
 		setTimeout(reset_view_bulk_smush, 500);
 	});
 
-	$('body').on('click', '.toggle-smush-advanced', function(e) {
+	$('body').on('click', '.wpo-toggle-advanced-options', function(e) {
 		e.preventDefault();
 		$(this).toggleClass('opened');
 	});
@@ -903,35 +903,87 @@ var WP_Optimize_Smush = function() {
 		if (resp.hasOwnProperty('success') && resp.success) {
 			$(".smush-information").text(resp.summary);
 			update_view_modal_message($("#smush-information-modal"), $.unblockUI);
-			$('.toggle-smush-advanced.wpo_smush_single_image').removeClass('opened');
 
-			var wrapper = $("#smush_info").closest('#smush-metabox-inside-wrapper');
+			$('.wpo-toggle-advanced-options.wpo_smush_single_image').removeClass('opened');
+
+			update_view_singe_image_compress(resp.operation, resp.summary, resp.restore_possible);
+
+			// here we store data from the the response
+			// this information will be used to show correct UI elements
+			// when smush metabox will shown again without reloading main page
+			var blog_id = resp.blog_id || resp.options.blog_id,
+				image_id = resp.image || resp.options.attachment_id;
+
+			if (!smush_affected_images.hasOwnProperty(blog_id)) smush_affected_images[blog_id] = {};
+			if (!smush_affected_images[blog_id].hasOwnProperty(image_id)) smush_affected_images[blog_id][image_id] = {};
 
 			if ('compress' == resp.operation) {
-				$(".wpo_smush_single_image").hide();
-				$(".wpo_restore_single_image").show();
-
-				$("#smush_info").text(resp.summary);
-
-				$('.wpo_smush_mark_single_image').hide();
-
-				if (resp.restore_possible) {
-					$(".restore_possible").show();
-				} else {
-					$(".restore_possible").hide();
+				smush_affected_images[blog_id][image_id] = {
+					operation: resp.operation,
+					summary: resp.summary,
+					restore_possible: resp.restore_possible
 				}
 			} else {
-				$(".wpo_smush_single_image").show();
-				$(".wpo_restore_single_image").hide();
-
-				$('.wpo_smush_mark_single_image').show();
-				$('.wpo_smush_unmark_single_image', wrapper).hide();
+				smush_affected_images[blog_id][image_id] = {
+					operation: resp.operation
+				}
 			}
 		} else {
 			$(".smush-information").text(resp.error_message);
 			update_view_modal_message($("#smush-information-modal"), $.unblockUI);
 		}
 	}
+
+	/**
+	 * Update metabox view depending on a command response.
+	 *
+	 * @param {string}  operation
+	 * @param {string}  summary
+	 * @param {boolean} restore_possible
+	 */
+	function update_view_singe_image_compress(operation, summary, restore_possible) {
+		var wrapper = $("#smush_info").closest('#smush-metabox-inside-wrapper');
+
+		if ('compress' == operation) {
+			$(".wpo_smush_single_image").hide();
+			$(".wpo_restore_single_image").show();
+
+			$("#smush_info").text(summary);
+
+			$('.wpo_smush_mark_single_image').hide();
+
+			if (restore_possible) {
+				$(".restore_possible").show();
+			} else {
+				$(".restore_possible").hide();
+			}
+		} else {
+			$(".wpo_smush_single_image").show();
+			$(".wpo_restore_single_image").hide();
+
+			$('.wpo_smush_mark_single_image').show();
+			$('.wpo_smush_unmark_single_image', wrapper).hide();
+		}
+	}
+
+	/**
+	 * Handle smush metabox load event. This handler is used to restore correct smush metabox view.
+	 */
+	$(document).on('admin-metabox-smush-loaded', function() {
+		var image_data = $('.wpo_restore_single_image input[type="button"]').first().data();
+
+		if (!image_data) return;
+
+		if (smush_affected_images.hasOwnProperty(image_data.blog) && smush_affected_images[image_data.blog].hasOwnProperty(image_data.id)) {
+			var smush_image_data = smush_affected_images[image_data.blog][image_data.id];
+
+			if ('compress' == smush_image_data.operation) {
+				update_view_singe_image_compress(smush_image_data.operation, smush_image_data.summary, smush_image_data.restore_possible);
+			} else {
+				update_view_singe_image_compress(smush_image_data.operation);
+			}
+		}
+	});
 
 	/**
 	 * Display a modal message
@@ -1036,13 +1088,16 @@ var WP_Optimize_Smush = function() {
 /**
  * Parse JSON string, including automatically detecting unwanted extra input and skipping it
  *
- * @param {string} json_mix_str - JSON string which need to parse and convert to object
+ * @param {string|object} json_mix_str - JSON string which need to parse and convert to object
  *
  * @throws SyntaxError|String (including passing on what JSON.parse may throw) if a parsing error occurs.
  *
  * @return mixed parsed JSON object. Will only return if parsing is successful (otherwise, will throw)
  */
 function wpo_parse_json(json_mix_str) {
+	// When using wp_send_json to return the value, the format is already parsed.
+	if ('object' === typeof json_mix_str) return json_mix_str;
+
 	// Just try it - i.e. the 'default' case where things work (which can include extra whitespace/line-feeds, and simple strings, etc.).
 	try {
 		var result = JSON.parse(json_mix_str);

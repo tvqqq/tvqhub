@@ -17,7 +17,7 @@ class WP_Optimize_Notices extends Updraft_Notices_1_0 {
 	/**
 	 * Creates and returns the only notice instance
 	 *
-	 * @return a WP_Optimize_Notices instance
+	 * @return object WP_Optimize_Notices instance
 	 */
 	public static function instance() {
 		if (empty(self::$_instance)) {
@@ -123,17 +123,17 @@ class WP_Optimize_Notices extends Updraft_Notices_1_0 {
 				'supported_positions' => $this->anywhere,
 				'validity_function' => 'is_wpo_premium_installed',
 			),
-			'meta-slider' => array(
-				'prefix' => '',
-				'title' => __("MetaSlider: the world's #1 slider plugin from the makers of WP-Optimize", "wp-optimize"),
-				'text' => __("With MetaSlider, you can easily add style and flare with beautifully-designed sliders.", "wp-optimize"),
-				'button_link' => 'https://www.metaslider.com',
-				'button_meta' => 'metaslider',
-				'image' => 'notices/metaslider_logo.png',
-				'dismiss_time' => 'dismiss_notice',
-				'supported_positions' => $this->anywhere,
-				'validity_function' => 'is_metaslider_installed',
-			),
+			// 'meta-slider' => array(
+			// 'prefix' => '',
+			// 'title' => __("MetaSlider: the world's #1 slider plugin from the makers of WP-Optimize", "wp-optimize"),
+			// 'text' => __("With MetaSlider, you can easily add style and flare with beautifully-designed sliders.", "wp-optimize"),
+			// 'button_link' => 'https://www.metaslider.com',
+			// 'button_meta' => 'metaslider',
+			// 'image' => 'notices/metaslider_logo.png',
+			// 'dismiss_time' => 'dismiss_notice',
+			// 'supported_positions' => $this->anywhere,
+			// 'validity_function' => 'is_metaslider_installed',
+			// ),
 
 			// The sale adverts content starts here
 			'blackfriday' => array(
@@ -218,9 +218,6 @@ class WP_Optimize_Notices extends Updraft_Notices_1_0 {
 		if ($this->initialized) return;
 		$this->initialized = true;
 		$this->notices_content = (defined('WP_OPTIMIZE_NOADS_B') && WP_OPTIMIZE_NOADS_B) ? array() : $this->populate_notices_content();
-		$our_version = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? WPO_VERSION.'.'.time() : WPO_VERSION;
-		$min_or_not_internal = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '-'. str_replace('.', '-', WPO_VERSION). '.min';
-		wp_enqueue_style('wp-optimize-notices-css',  WPO_PLUGIN_URL.'/css/wp-optimize-notices'.$min_or_not_internal.'.css', array(), $our_version);
 	}
 
 	/**

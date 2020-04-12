@@ -88,6 +88,13 @@ class WPO_Page_Cache {
 	public $advanced_cache_file_content;
 
 	/**
+	 * Store the latest advanced-cache.php version required
+	 *
+	 * @var string
+	 */
+	private $_minimum_advanced_cache_file_version = '3.0.17';
+
+	/**
 	 * Set everything up here
 	 */
 	public function __construct() {
@@ -109,12 +116,15 @@ class WPO_Page_Cache {
 
 		// Handle single page purge.
 		add_action('wp_loaded', array($this, 'handle_purge_single_page_cache'));
+
+		add_action('admin_init', array($this, 'admin_init'));
 	}
 
 	/**
 	 * Do required actions on activate/deactivate any plugin.
 	 */
 	public function activate_deactivate_plugin() {
+
 		$this->update_cache_config();
 
 		/**
@@ -272,7 +282,7 @@ class WPO_Page_Cache {
 	 */
 	public function show_notice($message, $type) {
 		?>
-		<div class="notice notice-<?php echo $type; ?> is-dismissible">
+		<div class="notice wpo-notice notice-<?php echo $type; ?> is-dismissible">
 			<p><?php echo $message; ?></p>
 		</div>
 		<script>
@@ -455,8 +465,12 @@ class WPO_Page_Cache {
 			return new WP_Error('create_folders', sprintf(__('The request to the filesystem failed: unable to create directory %s. Please check your file permissions.'), str_ireplace(ABSPATH, '', WPO_CACHE_CONFIG_DIR)));
 		}
 		
-		if (!is_dir(WPO_CACHE_FILES_DIR) && !wp_mkdir_p(WPO_CACHE_FILES_DIR)) {
-			return new WP_Error('create_folders', sprintf(__('The request to the filesystem failed: unable to create directory %s. Please check your file permissions.'), str_ireplace(ABSPATH, '', WPO_CACHE_FILES_DIR)));
+		if (!is_dir(WPO_CACHE_FILES_DIR)) {
+			if (!wp_mkdir_p(WPO_CACHE_FILES_DIR)) {
+				return new WP_Error('create_folders', sprintf(__('The request to the filesystem failed: unable to create directory %s. Please check your file permissions.'), str_ireplace(ABSPATH, '', WPO_CACHE_FILES_DIR)));
+			} else {
+				wpo_disable_cache_directories_viewing();
+			}
 		}
 
 		return true;
@@ -533,7 +547,11 @@ if (false !== \$plugin_location) {
 
 if (!@file_exists(WPO_CACHE_CONFIG_DIR . '/$config_file_basename')) { return; }
 
-\$GLOBALS['wpo_cache_config'] = json_decode(file_get_contents(WPO_CACHE_CONFIG_DIR . '/$config_file_basename'), true);
+\$GLOBALS['wpo_cache_config'] = @json_decode(file_get_contents(WPO_CACHE_CONFIG_DIR . '/$config_file_basename'), true);
+
+if (empty(\$GLOBALS['wpo_cache_config'])) {
+	include_once(WPO_CACHE_CONFIG_DIR . '/$config_file_basename');
+}
 
 if (empty(\$GLOBALS['wpo_cache_config']) || empty(\$GLOBALS['wpo_cache_config']['enable_page_caching'])) { return; }
 
@@ -551,13 +569,39 @@ EOF;
 			return false;
 		}
 
-		if (file_put_contents($this->get_advanced_cache_filename(), $this->advanced_cache_file_content)) {
+		if (!file_put_contents($this->get_advanced_cache_filename(), $this->advanced_cache_file_content)) {
 			$this->advanced_cache_file_writing_error = true;
 			return false;
 		}
 
 		$this->advanced_cache_file_writing_error = false;
 		return true;
+	}
+
+	/**
+	 * Update advanced cache version if needed.
+	 */
+	public function maybe_update_advanced_cache() {
+
+		if (!$this->is_enabled()) return;
+
+		// from 3.0.17 we use more secure way to store cache config files and need update advanced-cache.php
+		$advanced_cache_current_version = $this->get_advanced_cache_version();
+		if ($advanced_cache_current_version && version_compare($advanced_cache_current_version, $this->_minimum_advanced_cache_file_version, '>=')) return;
+
+		if (!$this->write_advanced_cache()) {
+			add_action('admin_notices', array($this, 'notice_advanced_cache_autoupdate_error'));
+		} else {
+			$this->update_cache_config();
+		}
+	}
+
+	/**
+	 * Show notification when advanced-cache.php could not be updated.
+	 */
+	public function notice_advanced_cache_autoupdate_error() {
+		$this->show_notice(__('The file advanced-cache.php needs to be updated, but the automatic process failed.', 'wp_optimize').
+		' <a href="'.admin_url('admin.php?page=wpo_cache').'">'.__('Please try to re-enable WP-Optimize cache manually.', 'wp-optimize').'</a>', 'error');
 	}
 
 	/**
@@ -838,6 +882,18 @@ EOF;
 		$path = trailingslashit(WPO_CACHE_FILES_DIR) . trailingslashit(wpo_get_url_path(get_home_url(get_current_blog_id())));
 
 		wpo_delete_files($path, false);
+	}
+
+	/**
+	 * Admin actions
+	 *
+	 * @return void
+	 */
+	public function admin_init() {
+		// Maybe update the advanced cache.
+		if ((!defined('DOING_AJAX') || !DOING_AJAX) && current_user_can('update_plugins')) {
+			$this->maybe_update_advanced_cache();
+		}
 	}
 
 	/**

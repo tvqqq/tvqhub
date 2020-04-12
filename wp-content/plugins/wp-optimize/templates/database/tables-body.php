@@ -3,10 +3,10 @@
 <tbody id="the-list">
 <?php
 
-	// Read SQL Version and act accordingly.
 	// Check for InnoDB tables.
 	// Check for windows servers.
 	$sqlversion = $wp_optimize->get_db_info()->get_version();
+	$tablesstatus = $wp_optimize->get_optimizer()->get_tables();
 	$total_gain = 0;
 	$no = 0;
 	$row_usage = 0;
@@ -16,8 +16,6 @@
 	$non_inno_db_tables = 0;
 	$inno_db_tables = 0;
 	
-	$tablesstatus = $optimizer->get_tables();
-
 	foreach ($tablesstatus as $tablestatus) {
 		$no++;
 		echo '<tr 
@@ -54,14 +52,14 @@
 
 		echo "</td>\n";
 
-		echo '<td data-colname="'.__('Records', 'wp-optimize').'">'.number_format_i18n($tablestatus->Rows).'</td>'."\n";
-		echo '<td data-colname="'.__('Data Size', 'wp-optimize').'">'.$wp_optimize->format_size($tablestatus->Data_length).'</td>'."\n";
-		echo '<td data-colname="'.__('Index Size', 'wp-optimize').'">'.$wp_optimize->format_size($tablestatus->Index_length).'</td>'."\n";
+		echo '<td data-colname="'.__('Records', 'wp-optimize').'" data-raw_value="'.esc_attr(intval($tablestatus->Rows)).'">'.number_format_i18n($tablestatus->Rows).'</td>'."\n";
+		echo '<td data-colname="'.__('Data Size', 'wp-optimize').'" data-raw_value="'.esc_attr(intval($tablestatus->Data_length)).'">'.$wp_optimize->format_size($tablestatus->Data_length).'</td>'."\n";
+		echo '<td data-colname="'.__('Index Size', 'wp-optimize').'" data-raw_value="'.esc_attr(intval($tablestatus->Index_length)).'">'.$wp_optimize->format_size($tablestatus->Index_length).'</td>'."\n";
 
 		if ($tablestatus->is_optimizable) {
 			echo '<td data-colname="'.__('Type', 'wp-optimize').'" data-optimizable="1">'.htmlspecialchars($tablestatus->Engine).'</td>'."\n";
 
-			echo '<td data-colname="'.__('Overhead', 'wp-optimize').'">';
+			echo '<td data-colname="'.__('Overhead', 'wp-optimize').'" data-raw_value="'.esc_attr(intval($tablestatus->Data_free)).'">';
 			$font_colour = (($optimize_db) ? (($tablestatus->Data_free > 0) ? '#0000FF' : '#004600') : (($tablestatus->Data_free > 0) ? '#9B0000' : '#004600'));
 			echo '<span style="color:'.$font_colour.';">';
 			echo $wp_optimize->format_size($tablestatus->Data_free);

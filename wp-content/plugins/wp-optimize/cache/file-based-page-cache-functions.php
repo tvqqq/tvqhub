@@ -46,6 +46,8 @@ function wpo_cache($buffer, $flags) {
 		// Try creating a folder for cached files, if it was flushed recently
 		if (!mkdir(WPO_CACHE_FILES_DIR)) {
 			$no_cache_because[] = __('WP-O cache directory was not found', 'wp-optimize').' ('.WPO_CACHE_FILES_DIR.')';
+		} else {
+			wpo_disable_cache_directories_viewing();
 		}
 	}
 
@@ -123,13 +125,22 @@ function wpo_cache($buffer, $flags) {
 
 		$add_to_footer = '';
 		
-		if (preg_match('#</html>#i', $buffer)) {
+		/**
+		 * Filter wether to display the html comment <!-- Cached by WP-Optimize ... -->
+		 *
+		 * @param boolean $show - Wether to display the html comment
+		 * @return boolean
+		 */
+		if (preg_match('#</html>#i', $buffer) && (apply_filters('wpo_cache_show_cached_by_comment', true) || (defined('WP_DEBUG') && WP_DEBUG))) {
 			if (!empty($GLOBALS['wpo_cache_config']['enable_mobile_caching']) && wpo_is_mobile()) {
 				$add_to_footer .= "\n<!-- Cached by WP-Optimize - for mobile devices - https://getwpo.com - Last modified: " . gmdate('D, d M Y H:i:s', $modified_time) . " GMT -->\n";
 			} else {
 				$add_to_footer .= "\n<!-- Cached by WP-Optimize - https://getwpo.com - Last modified: " . gmdate('D, d M Y H:i:s', $modified_time) . " GMT -->\n";
 			}
 		}
+
+		// Create an empty index.php file in the cache directory for disable directory viewing.
+		if (!is_file($path . '/index.php')) file_put_contents($path . '/index.php', '');
 
 		/**
 		 * Save $buffer into cache file.
@@ -195,6 +206,12 @@ function wpo_restricted_cache_page_type($restricted) {
 	// Don't cache search or password protected.
 	if ((function_exists('is_search') && is_search()) || (function_exists('is_404') && is_404()) || !empty($post->post_password)) {
 		$restricted = __('Page type is not cacheable (search, 404 or password-protected)', 'wp-optimize');
+	}
+
+	// Don't cache the front page if option is set.
+	if (in_array('/', wpo_get_url_exceptions()) && function_exists('is_front_page') && is_front_page()) {
+
+		$restricted = __('In the settings, caching is disabled for the front page', 'wp-optimize');
 	}
 
 	// Don't cache htacesss. Remember to properly escape any output to prevent injection.
@@ -613,6 +630,9 @@ function wpo_url_in_exceptions($url) {
 	if (!empty($exceptions)) {
 		foreach ($exceptions as $exception) {
 
+			// don't check / - front page using regexp, we handle it in wpo_restricted_cache_page_type()
+			if ('/' == $exception) continue;
+
 			if (wpo_url_exception_match($url, $exception)) {
 				// Exception match.
 				return true;
@@ -881,5 +901,45 @@ function wpo_cache_config_get($key, $default = false) {
 	} else {
 		return $default;
 	}
+}
+endif;
+
+if (!function_exists('wpo_disable_cache_directories_viewing')) :
+function wpo_disable_cache_directories_viewing() {
+	global $is_apache, $is_IIS, $is_iis7;
+
+	if (!is_dir(WPO_CACHE_FILES_DIR)) return;
+
+	// Create .htaccess file for apache server.
+	if ($is_apache) {
+		$htaccess_filename = WPO_CACHE_FILES_DIR . '/.htaccess';
+
+		// CS does not like heredoc
+		// phpcs:disable
+		$htaccess_content = <<<EOF
+# Disable directory browsing 
+Options -Indexes
+
+# Disable access to any files
+<FilesMatch ".*">
+	Order allow,deny
+	Deny from all
+</FilesMatch>		
+EOF;
+		// phpcs:enable
+
+		if (!is_file($htaccess_filename)) @file_put_contents($htaccess_filename, $htaccess_content); // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+	}
+
+	// Create web.config file for IIS servers.
+	if ($is_IIS || $is_iis7) {
+		$webconfig_filename = WPO_CACHE_FILES_DIR . '/web.config';
+		$webconfig_content = "<configuration>\n<system.webServer>\n<authorization>\n<deny users=\"*\" />\n</authorization>\n</system.webServer>\n</configuration>\n";
+
+		if (!is_file($webconfig_filename)) @file_put_contents($webconfig_filename, $webconfig_content); // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+	}
+
+	// Create empty index.php file for all servers.
+	if (!is_file(WPO_CACHE_FILES_DIR . '/index.php')) @file_put_contents(WPO_CACHE_FILES_DIR . '/index.php', '');// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
 }
 endif;

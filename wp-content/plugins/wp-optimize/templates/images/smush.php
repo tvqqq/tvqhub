@@ -62,8 +62,8 @@
 			</div>
 			<p><?php _e('Not sure what to choose?', 'wp-optimize'); ?> <a href="https://getwpo.com/lossy-vs-lossless-image-compression-a-guide-to-the-trade-off-between-image-size-and-quality/" target="_blank"><?php _e('Read our article "Lossy vs Lossless image compression"', 'wp-optimize'); ?></a></p>
 		</div>
-		<button type="button" class="button button-link toggle-smush-advanced"><span class="text"><span class="dashicons dashicons-arrow-down-alt2"></span> <span class="toggle-smush-advanced__text-show"><?php _e('Show advanced options', 'wp-optimize');?></span><span class="toggle-smush-advanced__text-hide"><?php _e('Hide advanced options', 'wp-optimize');?></span></span></button>
-		<div class="smush-advanced">
+		<button type="button" class="button button-link wpo-toggle-advanced-options"><span class="text"><span class="dashicons dashicons-arrow-down-alt2"></span> <span class="wpo-toggle-advanced-options__text-show"><?php _e('Show advanced options', 'wp-optimize');?></span><span class="wpo-toggle-advanced-options__text-hide"><?php _e('Hide advanced options', 'wp-optimize');?></span></span></button>
+		<div class="smush-advanced wpo-advanced-options">
 			<div class="compression_server">
 				<h3><?php _e('Compression service', 'wp-optimize');?></h3>
 				<div> <input type="radio" name="compression_server" id="resmushit" value="resmushit" <?php checked($smush_options['compression_server'], 'resmushit'); ?> >			  

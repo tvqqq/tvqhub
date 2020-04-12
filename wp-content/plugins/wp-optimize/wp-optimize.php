@@ -3,7 +3,7 @@
 Plugin Name: WP-Optimize - Clean, Compress, Cache
 Plugin URI: https://getwpo.com
 Description: WP-Optimize makes your site fast and efficient. It cleans the database, compresses images and caches pages. Fast sites attract more traffic and users.
-Version: 3.0.16
+Version: 3.0.19
 Author: David Anderson, Ruhani Rabin, Team Updraft
 Author URI: https://updraftplus.com
 Text Domain: wp-optimize
@@ -15,10 +15,11 @@ if (!defined('ABSPATH')) die('No direct access allowed');
 
 // Check to make sure if WP_Optimize is already call and returns.
 if (!class_exists('WP_Optimize')) :
-define('WPO_VERSION', '3.0.16');
+define('WPO_VERSION', '3.0.19');
 define('WPO_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('WPO_PLUGIN_MAIN_PATH', plugin_dir_path(__FILE__));
 define('WPO_PREMIUM_NOTIFICATION', false);
+define('WPO_MINIFY_PHP_VERSION_MET', version_compare(PHP_VERSION, '5.4', '>=') ? true : false);
 
 class WP_Optimize {
 
@@ -31,6 +32,8 @@ class WP_Optimize {
 	protected static $_optimizer_instance = null;
 
 	protected static $_options_instance = null;
+
+	protected static $_minify_instance = null;
 
 	protected static $_notices_instance = null;
 
@@ -55,7 +58,7 @@ class WP_Optimize {
 		register_activation_hook(__FILE__, 'wpo_activation_actions');
 		register_deactivation_hook(__FILE__, 'wpo_deactivation_actions');
 		register_uninstall_hook(__FILE__, 'wpo_uninstall_actions');
-
+		
 		add_action('admin_init', array($this, 'admin_init'));
 		add_action('admin_menu', array($this, 'admin_menu'));
 
@@ -110,6 +113,21 @@ class WP_Optimize {
 			self::$_optimizer_instance = new WP_Optimizer();
 		}
 		return self::$_optimizer_instance;
+	}
+
+	/**
+	 * Get and instanciate WP_Optimize_Minify
+	 *
+	 * @return WP_Optimize_Minify
+	 */
+	public function get_minify() {
+		if (empty(self::$_minify_instance)) {
+				if (!class_exists('WP_Optimize_Minify')) {
+					include_once WPO_PLUGIN_MAIN_PATH.'/minify/class-wp-optimize-minify.php';
+				}
+				self::$_minify_instance = new WP_Optimize_Minify();
+		}
+		return self::$_minify_instance;
 	}
 
 	public static function get_options() {
@@ -210,22 +228,26 @@ class WP_Optimize {
 	 */
 	public function admin_enqueue_scripts() {
 		$current_screen = get_current_screen();
-		// load scripts and styles only on WP-Optimize pages.
-		if (!preg_match('/wp\-optimize/i', $current_screen->id)) return;
 
 		$enqueue_version = (defined('WP_DEBUG') && WP_DEBUG) ? WPO_VERSION.'.'.time() : WPO_VERSION;
 		$min_or_not = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 		$min_or_not_internal = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '-'. str_replace('.', '-', WPO_VERSION). '.min';
 
+		// Register or enqueue common scripts
+		wp_register_script('wp-optimize-send-command', WPO_PLUGIN_URL.'js/send-command'.$min_or_not_internal.'.js', array(), $enqueue_version);
+
+		// load scripts and styles only on WP-Optimize pages.
+		if (!preg_match('/wp\-optimize/i', $current_screen->id)) return;
+		
 		wp_enqueue_script('jquery-serialize-json', WPO_PLUGIN_URL.'js/serialize-json/jquery.serializejson'.$min_or_not.'.js', array('jquery'), $enqueue_version);
 
 		wp_register_script('updraft-queue-js', WPO_PLUGIN_URL.'js/queue'.$min_or_not_internal.'.js', array(), $enqueue_version);
-		wp_enqueue_script('wp-optimize-cache-js', WPO_PLUGIN_URL.'js/cache'.$min_or_not_internal.'.js', array('smush-js'), $enqueue_version);
-		wp_enqueue_script('wp-optimize-admin-js', WPO_PLUGIN_URL.'js/wpoadmin'.$min_or_not_internal.'.js', array('jquery', 'updraft-queue-js', 'smush-js'), $enqueue_version);
+		wp_enqueue_script('wp-optimize-cache-js', WPO_PLUGIN_URL.'js/cache'.$min_or_not_internal.'.js', array('wp-optimize-send-command', 'smush-js'), $enqueue_version);
+		wp_enqueue_script('wp-optimize-admin-js', WPO_PLUGIN_URL.'js/wpoadmin'.$min_or_not_internal.'.js', array('jquery', 'updraft-queue-js', 'wp-optimize-send-command', 'smush-js'), $enqueue_version);
 		wp_enqueue_style('wp-optimize-admin-css', WPO_PLUGIN_URL.'css/wp-optimize-admin'.$min_or_not_internal.'.css', array(), $enqueue_version);
 		// Using tablesorter to help with organising the DB size on Table Information
 		// https://github.com/Mottie/tablesorter
-		wp_enqueue_script('tablesorter-js', WPO_PLUGIN_URL.'js/tablesorter/jquery.tablesorter'.$min_or_not.'.js', array('jquery'), $enqueue_version);
+		wp_enqueue_script('tablesorter-js', WPO_PLUGIN_URL.'js/tablesorter/jquery.tablesorter'.$min_or_not.'.js', array('jquery', 'wp-optimize-send-command'), $enqueue_version);
 
 		wp_enqueue_script('tablesorter-widgets-js', WPO_PLUGIN_URL.'js/tablesorter/jquery.tablesorter.widgets'.$min_or_not.'.js', array('jquery'), $enqueue_version);
 
@@ -278,6 +300,16 @@ class WP_Optimize {
 	public function is_apache_server() {
 		global $is_apache;
 		return $is_apache;
+	}
+
+	/**
+	 * Check if script running on IIS web server.
+	 *
+	 * @return bool
+	 */
+	public function is_IIS_server() {
+		global $is_IIS, $is_iis7;
+		return $is_IIS || $is_iis7;
 	}
 
 	/**
@@ -355,6 +387,10 @@ class WP_Optimize {
 		// Load page cache.
 		$this->get_page_cache();
 		$this->init_page_cache();
+
+		// Include minify
+		// $this->get_minify();
+		$this->run_updates();
 	}
 
 	/**
@@ -493,12 +529,25 @@ class WP_Optimize {
 	public function wp_optimize_ajax_handler() {
 		$nonce = empty($_POST['nonce']) ? '' : $_POST['nonce'];
 
-		if (!wp_verify_nonce($nonce, 'wp-optimize-ajax-nonce') || empty($_POST['subaction'])) die('Security check');
+		if (!wp_verify_nonce($nonce, 'wp-optimize-ajax-nonce') || empty($_POST['subaction'])) {
+			wp_send_json(array(
+				'result' => false,
+				'error_code' => 'security_check',
+				'error_message' => __('The security check failed; try refreshing the page.', 'wp-optimize')
+			));
+		}
 
 		$subaction = $_POST['subaction'];
 		$data = isset($_POST['data']) ? $_POST['data'] : null;
 
-		if (!current_user_can($this->capability_required())) die('Security check');
+		if (!current_user_can($this->capability_required())) {
+			wp_send_json(array(
+				'result' => false,
+				'error_code' => 'security_check',
+				'error_message' => __('You are not allowed to run this command.', 'wp-optimize')
+			));
+		}
+
 
 		// Currently the settings are only available to network admins.
 		if (is_multisite() && !current_user_can('manage_network_options')) {
@@ -506,11 +555,11 @@ class WP_Optimize {
 			 * Filters the commands allowed to the subsite admins. Other commands are only available to network admin. Only used in a multisite context.
 			 */
 			$allowed_commands = apply_filters('wpo_multisite_allowed_commands', array('check_server_status', 'compress_single_image', 'restore_single_image'));
-			if (!in_array($subaction, $allowed_commands)) return array(
+			if (!in_array($subaction, $allowed_commands)) wp_send_json(array(
 				'result' => false,
 				'error_code' => 'update_failed',
 				'error_message' => __('Options can only be saved by network admin', 'wp-optimize')
-			);
+			));
 		}
 		
 		$wp_optimize = $this;
@@ -528,9 +577,17 @@ class WP_Optimize {
 			// Other commands, available for any remote method.
 			if (!class_exists('WP_Optimize_Commands')) include_once(WPO_PLUGIN_MAIN_PATH . 'includes/class-commands.php');
 			if (!class_exists('WP_Optimize_Cache_Commands')) include_once(WPO_PLUGIN_MAIN_PATH . 'cache/class-cache-commands.php');
+			if (!class_exists('WP_Optimize_Minify_Commands')) include_once(WPO_PLUGIN_MAIN_PATH . 'minify/class-wp-optimize-minify-commands.php');
 
 			$commands = new WP_Optimize_Commands();
 			$cache_commands = new WP_Optimize_Cache_Commands();
+			$minify_commands = new WP_Optimize_Minify_Commands();
+
+
+			// check if called command not in main commands class and exist in cache commands class then change class.
+			if (!is_callable(array($commands, $subaction)) && is_callable(array($minify_commands, $subaction))) {
+				$commands = $minify_commands;
+			}
 
 			// check if called command not in main commands class and exist in cache commands class then change class.
 			if (!is_callable(array($commands, $subaction)) && is_callable(array($cache_commands, $subaction))) {
@@ -539,7 +596,11 @@ class WP_Optimize {
 
 			if (!is_callable(array($commands, $subaction))) {
 				error_log("WP-Optimize: ajax_handler: no such command (".$subaction.")");
-				die('No such command');
+				$results = array(
+					'result' => false,
+					'error_code' => 'command_not_found',
+					'error_message' => sprintf(__('The command "%s" was not found', 'wp-optimize'), $subaction)
+				);
 			} else {
 				$results = call_user_func(array($commands, $subaction), $data);
 
@@ -596,7 +657,11 @@ class WP_Optimize {
 	public function get_tabs($page) {
 		// define tabs for pages.
 		$pages_tabs = array(
-			'WP-Optimize' => array('optimize' => __('Optimizations', 'wp-optimize'), 'tables' => __('Tables', 'wp-optimize')),
+			'WP-Optimize' => array(
+				'optimize' => __('Optimizations', 'wp-optimize'),
+				'tables' => __('Tables', 'wp-optimize'),
+				'settings' => __('Settings', 'wp-optimize'),
+			),
 			'wpo_images'  => array(
 				'smush' => __('Compress images', 'wp-optimize'),
 				'unused' => __('Unused images and sizes', 'wp-optimize').'<span class="premium-only">Premium</span>',
@@ -717,6 +782,9 @@ class WP_Optimize {
 	 * Define required actions for admin pages.
 	 */
 	public function register_admin_content() {
+
+		do_action('wp_optimize_register_admin_content');
+
 		/**
 		 * SETTINGS
 		 */
@@ -731,8 +799,8 @@ class WP_Optimize {
 		 * DATABASE
 		 */
 		add_action('wp_optimize_admin_page_WP-Optimize_optimize', array($this, 'output_database_optimize_tab'), 20);
-
 		add_action('wp_optimize_admin_page_WP-Optimize_tables', array($this, 'output_database_tables_tab'), 20);
+		add_action('wp_optimize_admin_page_WP-Optimize_settings', array($this, 'output_database_settings_tab'), 20);
 
 		/**
 		 * CACHE
@@ -760,6 +828,18 @@ class WP_Optimize {
 			 * Add action for display Dashboard > Lazyload tab.
 			 */
 			add_action('wp_optimize_admin_page_wpo_images_lazyload', array($this, 'admin_page_wpo_images_lazyload'));
+		}
+	}
+
+	/**
+	 * Database settings
+	 */
+	public function output_database_settings_tab() {
+
+		if ($this->can_manage_options()) {
+			$this->include_template('database/settings.php');
+		} else {
+			$this->prevent_manage_options_info();
 		}
 	}
 
@@ -921,7 +1001,7 @@ class WP_Optimize {
 
 		// display optimizations table or restricted access message.
 		if ($this->can_run_optimizations()) {
-			$this->include_template('database/optimize-table.php', false, array('optimize_db' => $optimize_db, 'optimization_results' => $optimization_results ));
+			$this->include_template('database/optimize-table.php', false, array('optimize_db' => $optimize_db, 'optimization_results' => $optimization_results, 'load_data' => false));
 		} else {
 			$this->prevent_run_optimizations_message();
 		}
@@ -937,7 +1017,7 @@ class WP_Optimize {
 		$optimize_db = ($nonce_passed && isset($_POST["optimize-db"])) ? true : false;
 
 		if ($this->can_run_optimizations()) {
-			$this->include_template('database/tables.php', false, array('optimize_db' => $optimize_db));
+			$this->include_template('database/tables.php', false, array('optimize_db' => $optimize_db, 'load_data' => WP_Optimize()->template_should_include_data()));
 		} else {
 			$this->prevent_run_optimizations_message();
 		}
@@ -985,6 +1065,8 @@ class WP_Optimize {
 			'loading_urls' => __('Loading URLs...', 'wp-optimize'),
 			'current_cache_size' => __('Current cache size:', 'wp-optimize'),
 			'number_of_files' => __('Number of files:', 'wp-optimize'),
+			'toggle_info' => __('Show information', 'wp-optimize'),
+			'page_refresh' => __('Refreshing the page to reflect changes...', 'wp-optimize'),
 			'spinner_src' => esc_attr(admin_url('images/spinner-2x.gif')),
 			'sites' => $this->get_sites(),
 		));
@@ -1280,7 +1362,7 @@ class WP_Optimize {
 			),
 			array(
 				'create_submenu' => false,
-				'order' => 45,
+				'order' => 55,
 				'icon' => 'separator',
 			),
 			array(
@@ -1290,7 +1372,7 @@ class WP_Optimize {
 				'function' => array($this, 'display_admin'),
 				'icon' => 'admin-settings',
 				'create_submenu' => true,
-				'order' => 50,
+				'order' => 60,
 			),
 			array(
 				'page_title' => __('Support & FAQs', 'wp-optimize'),
@@ -1873,7 +1955,7 @@ class WP_Optimize {
 		// 32MB
 		if ($mp < 33554432) {
 			$save = $wpdb->show_errors(false);
-			$req = @$wpdb->query("SET GLOBAL max_allowed_packet=33554432");
+			$req = @$wpdb->query("SET GLOBAL max_allowed_packet=33554432");// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
 			$wpdb->show_errors($save);
 
 			$mp = (int) $wpdb->get_var("SELECT @@session.max_allowed_packet");
@@ -1987,6 +2069,27 @@ class WP_Optimize {
 		// Try to reduce the chances of PHP self-terminating via reaching max_execution_time.
 		@set_time_limit($time_limit); // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
 	}
+
+	/**
+	 * Does the request come from UDC
+	 *
+	 * @return boolean
+	 */
+	public function is_updraft_central_request() {
+		return defined('UPDRAFTCENTRAL_COMMAND') && UPDRAFTCENTRAL_COMMAND;
+	}
+
+	/**
+	 * Does the data need to be included in this request. Currently only true if the request is made from UpdraftCentral.
+	 *
+	 * @return boolean
+	 */
+	public function template_should_include_data() {
+		/**
+		 * Filters wether data should be included in certain templates or not.
+		 */
+		return apply_filters('wpo_template_should_include_data', $this->is_updraft_central_request());
+	}
 }
 
 /**
@@ -2006,7 +2109,7 @@ function wpo_activation_actions() {
 	}
 
 	WP_Optimize()->get_options()->set_default_options();
-	WP_Optimize()->run_updates();
+	// WP_Optimize()->get_minify()->plugin_activate();
 }
 
 /**
@@ -2015,6 +2118,7 @@ function wpo_activation_actions() {
 function wpo_deactivation_actions() {
 	WP_Optimize()->wpo_cron_deactivate();
 	WP_Optimize()->get_page_cache()->disable();
+	// WP_Optimize()->get_minify()->plugin_deactivate();
 }
 
 function wpo_cron_deactivate() {
@@ -2028,6 +2132,7 @@ function wpo_cron_deactivate() {
 function wpo_uninstall_actions() {
 	WP_Optimize()->get_options()->delete_all_options();
 	wp_clear_scheduled_hook('wpo_cron_plugin');
+	// WP_Optimize()->get_minify()->plugin_uninstall();
 }
 
 function WP_Optimize() {

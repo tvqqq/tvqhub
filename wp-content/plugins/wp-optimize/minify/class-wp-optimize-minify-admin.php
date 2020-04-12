@@ -24,6 +24,23 @@ class WP_Optimize_Minify_Admin {
 		// This function runs when WordPress updates or installs/remove something. Forces new cache
 		add_action('upgrader_process_complete', array('WP_Optimize_Minify_Cache_Functions', 'cache_increment'));
 		add_action('after_switch_theme', array('WP_Optimize_Minify_Cache_Functions', 'cache_increment'));
+
+		add_action('wp_optimize_register_admin_content', array($this, 'register_content'));
+	}
+
+	/**
+	 * Register the content
+	 *
+	 * @return void
+	 */
+	public function register_content() {
+		add_action('wp_optimize_admin_page_wpo_minify_status', array($this, 'output_status'), 20);
+		add_action('wp_optimize_admin_page_wpo_minify_settings', array($this, 'output_settings'), 20);
+		add_action('wp_optimize_admin_page_wpo_minify_advanced', array($this, 'output_advanced'), 20);
+		add_action('wp_optimize_admin_page_wpo_minify_font', array($this, 'output_font_settings'), 20);
+		add_action('wp_optimize_admin_page_wpo_minify_css', array($this, 'output_css_settings'), 20);
+		add_action('wp_optimize_admin_page_wpo_minify_js', array($this, 'output_js_settings'), 20);
+		add_action('wp_optimize_admin_page_wpo_minify_html', array($this, 'output_html_settings'), 20);
 	}
 
 	/**
@@ -40,7 +57,7 @@ class WP_Optimize_Minify_Admin {
 		wp_enqueue_script(
 			'wp-optimize-minify-admin-purge',
 			WPO_PLUGIN_URL.'js/minify-admin-purge' . $min_or_not_internal . '.js',
-			array('jquery', 'wp-optimize-sendcommand-js'),
+			array('jquery', 'wp-optimize-send-command'),
 			$enqueue_version
 		);
 		wp_localize_script('wp-optimize-minify-admin-purge', 'wp_optimize_ajax_nonce', wp_create_nonce('wp-optimize-ajax-nonce'));
@@ -155,5 +172,124 @@ class WP_Optimize_Minify_Admin {
 			</div>
 			<?php
 		}
+	}
+
+	/**
+	 * Minify - Outputs the status tab
+	 *
+	 * @return void
+	 */
+	public function output_status() {
+		$wpo_minify_options = wp_optimize_minify_config()->get();
+		WP_Optimize()->include_template(
+			'minify/status-tab.php',
+			false,
+			array(
+				'wpo_minify_options' => $wpo_minify_options,
+				'show_information_notice' => !get_user_meta(get_current_user_id(), 'wpo-hide-minify-information-notice', true)
+			)
+		);
+	}
+
+	/**
+	 * Minify - Outputs the font settings tab
+	 *
+	 * @return void
+	 */
+	public function output_font_settings() {
+		$wpo_minify_options = wp_optimize_minify_config()->get();
+		WP_Optimize()->include_template(
+			'minify/font-settings-tab.php',
+			false,
+			array(
+				'wpo_minify_options' => $wpo_minify_options
+			)
+		);
+	}
+
+	/**
+	 * Minify - Outputs the CSS settings tab
+	 *
+	 * @return void
+	 */
+	public function output_css_settings() {
+		$wpo_minify_options = wp_optimize_minify_config()->get();
+		WP_Optimize()->include_template(
+			'minify/css-settings-tab.php',
+			false,
+			array(
+				'wpo_minify_options' => $wpo_minify_options
+			)
+		);
+	}
+
+	/**
+	 * Minify - Outputs the JS settings tab
+	 *
+	 * @return void
+	 */
+	public function output_js_settings() {
+		$wpo_minify_options = wp_optimize_minify_config()->get();
+		WP_Optimize()->include_template(
+			'minify/js-settings-tab.php',
+			false,
+			array(
+				'wpo_minify_options' => $wpo_minify_options
+			)
+		);
+	}
+
+	/**
+	 * Minify - Outputs the HTML settings tab
+	 *
+	 * @return void
+	 */
+	public function output_html_settings() {
+		$wpo_minify_options = wp_optimize_minify_config()->get();
+		WP_Optimize()->include_template(
+			'minify/html-settings-tab.php',
+			false,
+			array(
+				'wpo_minify_options' => $wpo_minify_options
+			)
+		);
+	}
+
+	/**
+	 * Minify - Outputs the settings tab
+	 *
+	 * @return void
+	 */
+	public function output_settings() {
+		$wpo_minify_options = wp_optimize_minify_config()->get();
+		WP_Optimize()->include_template(
+			'minify/settings-tab.php',
+			false,
+			array(
+				'wpo_minify_options' => $wpo_minify_options
+			)
+		);
+	}
+
+	/**
+	 * Minify - Outputs the advanced tab
+	 *
+	 * @return void
+	 */
+	public function output_advanced() {
+		$wpo_minify_options = wp_optimize_minify_config()->get();
+		$files = false;
+		if (apply_filters('wpo_minify_status_show_files_on_load', true) && WPO_MINIFY_PHP_VERSION_MET) {
+			$files = WP_Optimize_Minify_Cache_Functions::get_cached_files();
+		}
+
+		WP_Optimize()->include_template(
+			'minify/advanced-tab.php',
+			false,
+			array(
+				'wpo_minify_options' => $wpo_minify_options,
+				'files' => $files
+			)
+		);
 	}
 }

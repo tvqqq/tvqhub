@@ -44,7 +44,7 @@
 				</form>
 			<?php
 			} else {
-				echo sprintf('<a href="%s" target="_blank">%s</a>', $faq_link, __('Follow this link to read the article about how to enable browser cache with your server software.', 'wp_optimize'));
+				printf('<a href="%s" target="_blank">%s</a>', $faq_link, __('Follow this link to read the article about how to enable browser cache with your server software.', 'wp_optimize'));
 			}
 			?>
 

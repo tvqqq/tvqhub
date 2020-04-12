@@ -248,25 +248,25 @@ class Updraft_Smush_Manager extends Updraft_Task_Manager_1_2 {
 		$backup_path = get_post_meta($image_id, 'original-file', true);
 		
 		// If the file doesn't exist, check if it's relative
-		if (!file_exists($backup_path)) {
+		if (!is_file($backup_path)) {
 			$uploads_dir = wp_upload_dir();
 			$uploads_basedir = trailingslashit($uploads_dir['basedir']);
 
-			if (file_exists($uploads_basedir . $backup_path)) {
+			if (is_file($uploads_basedir . $backup_path)) {
 				$backup_path = $uploads_basedir . $backup_path;
 			}
 		}
 
 		// If the file still doesn't exist, the record could be an absolute path from a migrated site
 		// Use the current Uploads path
-		if (!file_exists($backup_path)) {
+		if (!is_file($backup_path)) {
 			$current_uploads_dir_folder = trailingslashit(substr($uploads_basedir, strlen(ABSPATH)));
 			// A strict operator (!==) needs to be used, as 0 is a positive result.
 			if (false !== strpos($backup_path, $current_uploads_dir_folder)) {
 				$temp_relative_backup_path = substr($backup_path, strpos($backup_path, $current_uploads_dir_folder) + strlen($current_uploads_dir_folder));
 			}
 
-			if (file_exists($uploads_basedir . $temp_relative_backup_path)) {
+			if (is_file($uploads_basedir . $temp_relative_backup_path)) {
 				$backup_path = $uploads_basedir . $temp_relative_backup_path;
 			}
 
@@ -274,7 +274,7 @@ class Updraft_Smush_Manager extends Updraft_Task_Manager_1_2 {
 
 		// If the file still doesn't exist, the record could be an absolute path from a migrated site
 		// The current Uploads path failed, so try with the default uploads directory value
-		if (!file_exists($backup_path)) {
+		if (!is_file($backup_path)) {
 			// A strict operator (!==) needs to be used, as 0 is a positive result.
 			if (false !== strpos($backup_path, 'wp-content/uploads/')) {
 				$backup_path = substr($backup_path, strpos($backup_path, 'wp-content/uploads/') + strlen('wp-content/uploads/'));
@@ -282,7 +282,7 @@ class Updraft_Smush_Manager extends Updraft_Task_Manager_1_2 {
 			}
 		}
 
-		if (!file_exists($backup_path)) {
+		if (!is_file($backup_path)) {
 			// Delete information about backup.
 			delete_post_meta($image_id, 'original-file');
 			$error = new WP_Error('restore_backup_not_found', __('The backup was not found; it may have been deleted or was already restored', 'wp-optimize'));
@@ -1022,7 +1022,7 @@ class Updraft_Smush_Manager extends Updraft_Task_Manager_1_2 {
 		$log_header[] = "\n";
 		$log_header[] = "Header for logs at time:  ".date('r')." on ".network_site_url();
 		$log_header[] = "WP: ".$wp_version;
-		$log_header[] = "PHP: ".phpversion()." (".PHP_SAPI.", ".@php_uname().")";
+		$log_header[] = "PHP: ".phpversion()." (".PHP_SAPI.", ".@php_uname().")";// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
 		$log_header[] = "MySQL: $mysql_version";
 		$log_header[] = "WPLANG: ".get_locale();
 		$log_header[] = "Server: ".$_SERVER["SERVER_SOFTWARE"];
@@ -1067,7 +1067,7 @@ class Updraft_Smush_Manager extends Updraft_Task_Manager_1_2 {
 		
 		if (!$got_wp_version) {
 			global $wp_version;
-			@include(ABSPATH.WPINC.'/version.php');
+			@include(ABSPATH.WPINC.'/version.php');// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
 			$got_wp_version = $wp_version;
 		}
 
@@ -1113,7 +1113,7 @@ class Updraft_Smush_Manager extends Updraft_Task_Manager_1_2 {
 	 * @return Integer - 1 or 0
 	 */
 	public function detect_safe_mode() {
-		return (@ini_get('safe_mode') && strtolower(@ini_get('safe_mode')) != "off") ? 1 : 0;
+		return (@ini_get('safe_mode') && strtolower(@ini_get('safe_mode')) != "off") ? 1 : 0;// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
 	}
 
 	/**
@@ -1352,7 +1352,7 @@ class Updraft_Smush_Manager extends Updraft_Task_Manager_1_2 {
 	public function unscheduled_original_file_deletion($post_id) {
 		$the_original_file = get_post_meta($post_id, 'original-file', true);
 		if ('' != $the_original_file && file_exists($the_original_file)) {
-			@unlink($the_original_file);
+			@unlink($the_original_file);// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
 		}
 	}
 

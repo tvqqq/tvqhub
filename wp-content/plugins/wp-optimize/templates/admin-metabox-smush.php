@@ -37,8 +37,8 @@
 			<span class="alignright"><?php _e('Best image quality', 'wp-optimize');?></span>
 		</div>
 	</div>
-	<a href="#" class="toggle-smush-advanced wpo_smush_single_image" <?php echo $smush_display; ?>><?php _e('Show advanced options', 'wp-optimize');?></a>
-	<div class='smush-advanced'>
+	<a href="#" class="wpo-toggle-advanced-options wpo_smush_single_image" <?php echo $smush_display; ?>><?php _e('Show advanced options', 'wp-optimize');?></a>
+	<div class='smush-advanced wpo-advanced-options'>
 		<h4><?php _e('Service provider', 'wp-optimize');?></h4>
 		<fieldset class="compression_server">
 			<label for="resmushit"> 
@@ -97,3 +97,5 @@
 	<div class="smush-information"></div>
 	<input type="button" class="wpo_primary_small button-primary" value="<?php _e('Cancel', 'wp-optimize'); ?>" />
 </div>
+
+<script type="text/javascript">jQuery(document).trigger('admin-metabox-smush-loaded');</script>

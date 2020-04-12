@@ -119,6 +119,7 @@ class Updraft_Smush_Manager_Commands extends Updraft_Task_Manager_Commands_1_0 {
 
 		$response['status'] = true;
 		$response['operation'] = 'restore';
+		$response['blog_id'] = $blog_id;
 		$response['image']	 = $image_id;
 		$response['success'] = $success;
 		$response['summary'] = __('The image was restored successfully', 'wp-optimize');

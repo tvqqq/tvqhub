@@ -416,9 +416,9 @@ class WP_Optimize_Minify_Cache_Functions {
 				$file = $cache_dir.'/'.$file;
 				$ext = pathinfo($file, PATHINFO_EXTENSION);
 				if (in_array($ext, array('js', 'css'))) {
-					$log = '';
-					if (file_exists($file.'.txt')) {
-						$log = file_get_contents($file.'.txt');
+					$log = false;
+					if (file_exists($file.'.json')) {
+						$log = json_decode(file_get_contents($file.'.json'));
 					}
 					$min_css = substr($file, 0, -4).'.min.css';
 					$minjs = substr($file, 0, -3).'.min.js';
@@ -448,5 +448,22 @@ class WP_Optimize_Minify_Cache_Functions {
 	 */
 	public static function format_date_time($timestamp) {
 		return date(get_option('date_format').' @ '.get_option('time_format'), $timestamp);
+	}
+
+	/**
+	 * Format the log created when merging assets. Called via array_map
+	 *
+	 * @param array $files The files array, containing the 'log' object or array.
+	 * @return array
+	 */
+	public static function format_file_logs($files) {
+		$files['log'] = WP_Optimize()->include_template(
+			'minify/cached-file-log.php',
+			true,
+			array(
+				'log' => $files['log']
+			)
+		);
+		return $files;
 	}
 }

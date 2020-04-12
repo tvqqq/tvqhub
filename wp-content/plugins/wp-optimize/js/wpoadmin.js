@@ -1,74 +1,20 @@
-/**
- * Send an action via admin-ajax.php.
- *
- * @param {string}   action     The action to send
- * @param {[type]}   data       Data to send
- * @param {Function} callback   Will be called with the results
- * @param {boolean}  json_parse JSON parse the results
- * @param {object}   options    Optional extra options; current properties supported are 'timeout' (in milliseconds)
- *
- * @return {JSON}
- */
-wp_optimize_send_command_admin_ajax = function (action, data, callback, json_parse, options) {
-
-	json_parse = ('undefined' === typeof json_parse) ? true : json_parse;
-
-	if (!data) data = {};
-	// If the command doesn't have the property, default to true
-	if (!data.hasOwnProperty('include_ui_elements')) {
-		data.include_ui_elements = true;
-	}
-
-	var ajax_data = {
-		action: 'wp_optimize_ajax',
-		subaction: action,
-		nonce: wp_optimize_ajax_nonce,
-		data: data
-	};
-
-	var args = {
-		type: 'post',
-		data: ajax_data,
-		success: function (response) {
-			if (json_parse) {
-				try {
-					var resp = wpo_parse_json(response);
-				} catch (e) {
-					console.log(e);
-					console.log(response);
-					alert(wpoptimize.error_unexpected_response);
-					return;
-				}
-				if ('function' === typeof callback) callback(resp);
-			} else {
-				if ('function' === typeof callback) callback(response);
-			}
-		}
-	};
-
-	// Eventually merge options
-	if ('object' === typeof options) {
-		if (options.hasOwnProperty('timeout')) { args.timeout = options.timeout; }
-	}
-
-	return jQuery.ajax(ajaxurl, args);
-};
-
 jQuery(document).ready(function ($) {
-	WP_Optimize = WP_Optimize(wp_optimize_send_command_admin_ajax);
-	if ('undefined' != typeof WP_Optimize_Cache) WP_Optimize_Cache = WP_Optimize_Cache(wp_optimize_send_command_admin_ajax);
+	WP_Optimize = WP_Optimize();
+	if ('undefined' != typeof WP_Optimize_Cache) WP_Optimize_Cache = WP_Optimize_Cache();
+	if ('undefined' != typeof wp_optimize.minify) WP_Optimize_Minify = wp_optimize.minify.init();
 });
 
 /**
  * Main WP_Optimize - Function for sending communications.
- *
- * @param {string}  send_command Function for sending remote communications via
  */
-var WP_Optimize = function (send_command) {
+var WP_Optimize = function () {
 	
 	var $ = jQuery;
 	var debug_level = 0;
 	var queue = new Updraft_Queue();
+	var send_command = wp_optimize.send_command;
+	var optimization_force = false;
+	var force_single_table_optimization = false;
 
 	/**
 	 * Enable select all checkbox for optimizations list.
@@ -98,36 +44,40 @@ var WP_Optimize = function (send_command) {
 		enable_or_disable_schedule_options();
 	});
 
+	// table sorter library.
+	// This calls the tablesorter library in order to sort the table information correctly.
+	// There is a fix below on line 172 to apply applyWidgets on load to avoid diplay hidden for tabs.
+	// add parser through the tablesorter addParser method
+	$.tablesorter.addParser({
+		// set a unique id
+		id: 'sizes',
+		is: function(s) {
+			// return false so this parser is not auto detected
+			return false;
+		},
+		format: function(cell_content, table, cell) {
+			var val = $(cell).data('raw_value');
+			if (!val) val = 0;
+			return parseInt(val);
+		},
+		// set type, either numeric or text
+		type: 'numeric'
+	});
 
-	var table_list_filter = $('#wpoptimize_table_list_filter'),
+	/**
+	 * Triggered when the database tabs are loaded.
+	 */
+
+	$(document).on('wpo_database_tabs_loaded', function() {
+
+		/**
+		 * Setup table events and tablesorter
+		 */
+
+		var table_list_filter = $('#wpoptimize_table_list_filter'),
 		table_list = $('#wpoptimize_table_list'),
 		table_footer_line = $('#wpoptimize_table_list tbody:last'),
 		tables_not_found = $('#wpoptimize_table_list_tables_not_found');
-
-	// table sorter library.
-
-	// This calls the tablesorter library in order to sort the table information correctly.
-	// There is a fix below on line 172 to apply applyWidgets on load to avoid diplay hidden for tabs.
-	$(function() {
-		// add parser through the tablesorter addParser method
-		$.tablesorter.addParser({
-			// set a unique id
-			id: 'sizes',
-			is: function(s) {
-				// return false so this parser is not auto detected
-				return false;
-			},
-			format: function(s) {
-				// format your data for normalization
-				var kb = 1024,
-					mb = kb * 1024,
-					gb = mb * 1024;
-
-				return eval(s.toLowerCase().replace(/kb/,['* ', kb].join('')).replace(/mb/,['* ', mb].join('')).replace(/gb/,['* ', gb].join('')).replace(/[^0-9\.\*\s]/g, ''));
-			},
-			// set type, either numeric or text
-			type: 'numeric'
-		});
 
 		table_list.tablesorter({
 			theme: 'default',
@@ -156,19 +106,55 @@ var WP_Optimize = function (send_command) {
 		 */
 		table_list.on('filterEnd', function() {
 			var search_value = $.trim(table_list_filter.val());
-
+	
 			if ('' == search_value) {
 				table_footer_line.show();
 			} else {
 				table_footer_line.hide();
 			}
-
+	
 			if (0 == $('#the-list tr:visible', table_list).length) {
 				tables_not_found.show();
 			} else {
 				tables_not_found.hide();
 			}
 		});
+
+		/**
+		 * Setup force optimization checkboxes and associated events
+		 */
+
+		var optimization_force_checkbox = $('#innodb_force_optimize');
+		var optimization_row = optimization_force_checkbox.closest('tr');
+		var single_table_optimization_force = $('#innodb_force_optimize_single');
+
+		optimization_force_checkbox.on('change', function() {
+			$('button, input[type="checkbox"]', optimization_row).each(function() {
+				optimization_force = optimization_force_checkbox.is(':checked');
+				var btn = $(this);
+				if (btn.data('disabled')) {
+					if (optimization_force) {
+						btn.prop('disabled', false);
+					} else {
+						btn.prop('disabled', true);
+					}
+				}
+			});
+		});
+
+		// Handle force optimization checkbox on table list tab.
+		single_table_optimization_force.on('change', function() {
+			force_single_table_optimization = $(this).is(':checked');
+			update_single_table_optimization_buttons(force_single_table_optimization);
+		});
+
+		// Set initial value
+		force_single_table_optimization = single_table_optimization_force.is(':checked');
+		optimization_force = optimization_force_checkbox.is(':checked');
+
+		// Update single table optimization buttons state on load.
+		update_single_table_optimization_buttons(force_single_table_optimization);
+
 	});
 
 	/**
@@ -253,8 +239,19 @@ var WP_Optimize = function (send_command) {
 
 	});
 
+	$('#wp-optimize-wrap').on('page-change', function(e, params) {
+		// When changing the page, trigger a click, in case the page was loaded somewhere else.
+		if ('WP-Optimize' == params.page && $('#wp-optimize-nav-tab-WP-Optimize-optimize').is('.nav-tab-active')) {
+			$('#wp-optimize-nav-tab-WP-Optimize-optimize').trigger('click');
+		}
+		// Trigger the global tab change events when changing page
+		var active_tab = $('.wpo-page[data-whichpage='+params.page+']').find('.nav-tab-wrapper .nav-tab-active');
+		$('#wp-optimize-wrap').trigger('tab-change', { page: params.page, tab: active_tab.data('tab') });
+		$('#wp-optimize-wrap').trigger('tab-change/'+params.page+'/'+active_tab.data('tab'), { content: $('#' + active_tab.attr('id') + '-contents')});
+
+	});
+
 	// set a time out, as needs to be done once the rest is loaded
-	// TODO: Refactor the JS to be able to execute things at the right time without having to guess.
 	setTimeout(function() {
 		// Trigger page-change event  on load
 		$('#wp-optimize-wrap').trigger('page-change', { page: $('.wpo-pages-menu a.active').data('menuslug') });
@@ -282,6 +279,11 @@ var WP_Optimize = function (send_command) {
 		$(this).addClass('nav-tab-active');
 		$(this).closest('.wpo-page').find('.wp-optimize-nav-tab-contents').hide();
 		$('#' + clicked_tab_id + '-contents').show();
+
+		// Trigger global events on tab change
+		$('#wp-optimize-wrap').trigger('tab-change', { page: $(this).data('page'), tab: $(this).data('tab') });
+		$('#wp-optimize-wrap').trigger('tab-change/'+$(this).data('page')+'/'+$(this).data('tab'), { content: $('#' + clicked_tab_id + '-contents')});
+
 	});
 
 	// Mobile menu toggle
@@ -304,7 +306,53 @@ var WP_Optimize = function (send_command) {
 			$('#wp-optimize-wrap').removeClass('wpo-mobile-menu-opened');
 		}
 	}
-	
+
+	var database_tabs_loaded = false;
+	// When showing the tables tab
+	$('#wp-optimize-wrap').on('tab-change/WP-Optimize/tables', function(e) {
+		get_database_tabs();
+	});
+
+	// When showing the tables tab
+	$('#wp-optimize-wrap').on('tab-change/WP-Optimize/optimize', function(event, data) {
+		get_database_tabs();
+	});
+
+	// When showing the settings tab
+	$('#wp-optimize-wrap').on('tab-change/wpo_settings/settings', function(event, data) {
+		// If the innodb_force_optimize--container is present, fetch the required data.
+		// We load the database tabs together, as they need the same processing.
+		if (data.content.find('.innodb_force_optimize--container').length) get_database_tabs();
+	});
+
+	/**
+	 * Get the data for the database tabs. We get them at the same time, as they both need the same time consuming requests.
+	 */
+	function get_database_tabs() {
+		if (database_tabs_loaded) return;
+		var container = $('.wpo-page[data-whichpage=WP-Optimize]');
+		var shade = container.find('.wpo_shade');
+		shade.removeClass('hidden');
+		send_command('get_database_tabs', {}, function(response) {
+
+			// Set the satus to true, to prevent loading again.
+			database_tabs_loaded = true;
+
+			// Updtate the optimizations tab
+			if (response.hasOwnProperty('optimizations')) {
+				container.find('.wp-optimize-optimizations-table-placeholder').replaceWith(response.optimizations);
+			}
+
+			// Updtate the optimizations tables list
+			update_tables_list(response);
+
+			$(document).trigger('wpo_database_tabs_loaded');
+
+		}).always(function() {
+			shade.addClass('hidden');
+		});
+	}
+
 	/**
 	 * Gathers the settings from the settings tab and return in selected format.
 	 *
@@ -314,16 +362,17 @@ var WP_Optimize = function (send_command) {
 	 */
 	function gather_settings(output_format) {
 		var form_data = '',
-			output_format = ('undefined' === typeof output_format) ? 'string' : output_format;
+			output_format = ('undefined' === typeof output_format) ? 'string' : output_format,
+			$form_elements = $("#wp-optimize-database-settings form input[name!='action'], #wp-optimize-database-settings form select, #wp-optimize-database-settings form textarea, #wp-optimize-general-settings form input[name!='action'], #wp-optimize-general-settings form textarea, #wp-optimize-general-settings form select, #wp-optimize-nav-tab-contents-optimize input[type='checkbox'], .wp-optimize-nav-tab-contents input[name^='enable-auto-backup-']");
 
 		if ('object' == output_format) {
-			form_data = $("#wp-optimize-general-settings form input[name!='action'], #wp-optimize-general-settings form textarea, #wp-optimize-general-settings form select, #wp-optimize-nav-tab-contents-optimize input[type='checkbox'], .wp-optimize-nav-tab-contents input[name^='enable-auto-backup-']").serializeJSON({useIntKeysAsArrayIndex: true});
+			form_data = $form_elements.serializeJSON({useIntKeysAsArrayIndex: true});
 		} else {
 			// Excluding the unnecessary 'action' input avoids triggering a very mis-conceived mod_security rule seen on one user's site.
-			form_data = $("#wp-optimize-general-settings form input[name!='action'], #wp-optimize-general-settings form textarea, #wp-optimize-general-settings form select, #wp-optimize-nav-tab-contents-optimize input[type='checkbox'], .wp-optimize-nav-tab-contents input[name^='enable-auto-backup-']").serialize();
+			form_data = $form_elements.serialize();
 
 			// Include unchecked checkboxes. user filter to only include unchecked boxes.
-			$.each($('#wp-optimize-general-settings form input[type=checkbox], .wp-optimize-nav-tab-contents input[name^="enable-auto-backup-"]')
+			$.each($('#wp-optimize-database-settings form input[type=checkbox], #wp-optimize-general-settings form input[type=checkbox], .wp-optimize-nav-tab-contents input[name^="enable-auto-backup-"]')
 					.filter(function (idx) {
 						return $(this).prop('checked') == false
 					}),
@@ -837,52 +886,62 @@ var WP_Optimize = function (send_command) {
 
 		send_command('save_manual_run_optimization_options', optimization_options);
 	}
-	
+
+	/**
+	 * Uptate the tables list
+	 *
+	 * @param {object} response
+	 */
+	function update_tables_list(response) {
+		if (response.hasOwnProperty('table_list')) {
+			var resort = true,
+				// add a callback, as desired
+				callback = function(table) {
+					$('#wpoptimize_table_list tbody').css('opacity', '1');
+				};
+
+			// update body with new content.
+			$("#wpoptimize_table_list tbody").remove();
+			$("#wpoptimize_table_list thead").after(response.table_list);
+
+			$("#wpoptimize_table_list").trigger("updateAll", [resort, callback]);
+		}
+
+		if (response.hasOwnProperty('total_size')) {
+			$('#optimize_current_db_size').html(response.total_size);
+		}
+
+		if (response.hasOwnProperty('show_innodb_force_optimize')) {
+			$('.innodb_force_optimize--container').toggleClass('hidden', !response.show_innodb_force_optimize);
+		}
+
+		change_actions_column_visibility();
+		update_single_table_optimization_buttons(force_single_table_optimization);
+	}
+
 	$('#wp_optimize_table_list_refresh').click(function (e) {
-
-		e.preventDefault();
 		
+		e.preventDefault();
+		var shade = $(this).closest('.wpo-tab-postbox').find('.wpo_shade');
+		shade.removeClass('hidden');
 		$('#wpoptimize_table_list tbody').css('opacity', '0.5');
-		send_command('get_table_list', false, function (response) {
-			
-			if (response.hasOwnProperty('table_list')) {
-				var resort = true,
-					// add a callback, as desired
-					callback = function(table) {
-						$('#wpoptimize_table_list tbody').css('opacity', '1');
-					};
-
-				// update body with new content.
-				$("#wpoptimize_table_list tbody").remove();
-				$("#wpoptimize_table_list thead").after(response.table_list);
-
-				$("#wpoptimize_table_list").trigger("updateAll", [resort, callback]);
-			}
-			if (response.hasOwnProperty('total_size')) {
-				$('#optimize_current_db_size').html(response.total_size);
-			}
-
-			change_actions_column_visibility();
-			update_single_table_optimization_buttons(single_table_optimization_force.is(':checked'));
+		send_command('get_table_list', false, update_tables_list).always(function() {
+			shade.addClass('hidden');
 		});
 	});
 	
-	$('#settings_form').on('click', '#wp-optimize-settings-save', function (e) {
+	$('#database_settings_form, #settings_form').on('click', '.wpo-save-settings', function (e) {
 
 		e.preventDefault();
-
-		// validate logger settings.
-		if (!validate_logger_settings()) return false;
-
-		console.log('What?');
-		$('#save_spinner').show();
+		var form = $(this).closest('form');
+		var spinner = form.find('.wpo-saving-settings');
+		spinner.show();
 
 		var form_data = gather_settings();
 
 		send_command('save_settings', form_data, function (resp) {
 
-			$('#save_spinner').hide();
-			$('#save_done').show().delay(5000).fadeOut();
+			form.closest('form').find('.save-done').show().delay(5000).fadeOut();
 
 			if (resp && resp.hasOwnProperty('save_results') && resp.save_results && resp.save_results.hasOwnProperty('errors')) {
 				for (var i = 0, len = resp.save_results.errors.length; i < len; i++) {
@@ -892,7 +951,11 @@ var WP_Optimize = function (send_command) {
 				console.log(resp.save_results.messages);
 			}
 			if (resp && resp.hasOwnProperty('status_box_contents')) {
-				$('#wp_optimize_status_box .inside').html(resp.status_box_contents);
+				$(resp.status_box_contents).each(function(index, el) {
+					if ($(el).is('#wp_optimize_status_box')) {
+						$('#wp_optimize_status_box').replaceWith($(el));
+					}
+				});
 			}
 			if (resp && resp.hasOwnProperty('optimizations_table')) {
 				$('#optimizations_list').replaceWith(resp.optimizations_table);
@@ -902,51 +965,23 @@ var WP_Optimize = function (send_command) {
 			if (resp.save_results.refresh) {
 				location.reload();
 			}
+		}).always(function() {
+			spinner.hide();
 		});
 	});
 
-	$('#wp_optimize_status_box').on('click', '#wp_optimize_status_box_refresh', function (e) {
+	$('#wp-optimize-wrap').on('click', '#wp_optimize_status_box_refresh', function (e) {
 		e.preventDefault();
 		$('#wp_optimize_status_box').css('opacity', '0.5');
 		send_command('get_status_box_contents', null, function (resp) {
-			$('#wp_optimize_status_box').css('opacity', '1').find('.inside').html(resp);
-		});
-	});
-
-	var optimization_force_checkbox = $('#innodb_force_optimize'),
-		optimization_force = optimization_force_checkbox.is(':checked'),
-		optimization_row = optimization_force_checkbox.closest('tr'),
-		single_table_optimization_force = $('#innodb_force_optimize_single');
-
-	optimization_force_checkbox.on('change', function() {
-		$('button, input[type="checkbox"]', optimization_row).each(function() {
-			optimization_force = optimization_force_checkbox.is(':checked');
-			var btn = $(this);
-			if (btn.data('disabled')) {
-				if (optimization_force) {
-					btn.prop('disabled', false);
-				} else {
-					btn.prop('disabled', true);
+			$('#wp_optimize_status_box').css('opacity', '1');
+				$(resp).each(function(index, el) {
+				if ($(el).is('#wp_optimize_status_box')) {
+					$('#wp_optimize_status_box').replaceWith($(el));
 				}
-			}
+			});
+
 		});
-	});
-
-	// Handle single optimization click.
-	$('#wpoptimize_table_list').on('click', '.run-single-table-optimization', function() {
-		var take_backup_checkbox = $('#enable-auto-backup-1'),
-			button = $(this);
-
-		// check if backup checkbox is checked for db tables
-		if (take_backup_checkbox.is(':checked')) {
-			take_a_backup_with_updraftplus(
-				function() {
-					run_single_table_optimization(button);
-				}
-			);
-		} else {
-			run_single_table_optimization(button);
-		}
 	});
 
 	/**
@@ -968,7 +1003,7 @@ var WP_Optimize = function (send_command) {
 			};
 		btn.hide();
 		// if checked force button then send force value.
-		if (single_table_optimization_force.is(':checked')) {
+		if (force_single_table_optimization) {
 			data['optimization_force'] = true;
 		}
 
@@ -994,14 +1029,6 @@ var WP_Optimize = function (send_command) {
 			});
 		});
 	}
-
-	// Handle force optimization checkbox on table list tab.
-	single_table_optimization_force.change(function() {
-		update_single_table_optimization_buttons(single_table_optimization_force.is(':checked'));
-	});
-
-	// Update single table optimization buttons state on load.
-	update_single_table_optimization_buttons(single_table_optimization_force.is(':checked'));
 
 	/**
 	 * Update information about single table in the database tables list.
@@ -1248,8 +1275,26 @@ var WP_Optimize = function (send_command) {
 		});
 	});
 
+	// attach event handlers after database tables template loaded.
+	// Handle single optimization click.
+	$('#wpoptimize_table_list').on('click', '.run-single-table-optimization', function () {
+		var take_backup_checkbox = $('#enable-auto-backup-1'),
+			button = $(this);
+
+		// check if backup checkbox is checked for db tables
+		if (take_backup_checkbox.is(':checked')) {
+			take_a_backup_with_updraftplus(
+				function () {
+					run_single_table_optimization(button);
+				}
+			);
+		} else {
+			run_single_table_optimization(button);
+		}
+	});
+
 	// Handle repair table click
-	$('#wpoptimize_table_list').on('click', '.run-single-table-repair', function() {
+	$('#wpoptimize_table_list').on('click', '.run-single-table-repair', function () {
 		var btn = $(this),
 			spinner = btn.next(),
 			action_done_icon = spinner.next(),
@@ -1261,7 +1306,7 @@ var WP_Optimize = function (send_command) {
 
 		spinner.removeClass('visibility-hidden');
 
-		send_command('do_optimization', { optimization_id: 'repairtables', data: data }, function (response) {
+		send_command('do_optimization', {optimization_id: 'repairtables', data: data}, function (response) {
 			if (response.result.meta.success) {
 				var row = btn.closest('tr'),
 					tableinfo = response.result.meta.tableinfo;
@@ -1273,12 +1318,12 @@ var WP_Optimize = function (send_command) {
 				update_single_table_information(row, tableinfo);
 
 				// keep visible results from previous operation for one second and show optimize button if possible.
-				setTimeout(function() {
+				setTimeout(function () {
 					var parent_td = btn.closest('td'),
 						btn_wrap = btn.closest('.wpo_button_wrap');
 
 					// remove Repair button and show Optimize button.
-					btn_wrap.fadeOut('fast', function() {
+					btn_wrap.fadeOut('fast', function () {
 						btn_wrap.closest('.wpo_button_wrap').remove();
 
 						// if table type is supported for optimization then show OPTIMIZE button.
@@ -1298,7 +1343,7 @@ var WP_Optimize = function (send_command) {
 	});
 
 	// Handle delete table click
-	$('#wpoptimize_table_list').on('click', '.run-single-table-delete', function() {
+	$('#wpoptimize_table_list').on('click', '.run-single-table-delete', function () {
 		if (!confirm(wpoptimize.are_you_sure_you_want_to_remove_this_table)) return false;
 
 		var take_backup_checkbox = $('#enable-auto-backup-1');
@@ -1777,4 +1822,3 @@ jQuery(document).ready(function ($) {
 		}
 	});
 });
-
