@@ -13,11 +13,10 @@
  * * Database table prefix
  * * ABSPATH
  *
- * @link https://codex.wordpress.org/Editing_wp-config.php
+ * @link https://wordpress.org/support/article/editing-wp-config-php/
  *
  * @package WordPress
  */
-define( 'API', 'http://lar.tvqhub.local/api' );
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
@@ -74,28 +73,18 @@ $table_prefix = 'wp_';
  * in their development environments.
  *
  * For information on other constants that can be used for debugging,
- * visit the Codex.
+ * visit the documentation.
  *
- * @link https://codex.wordpress.org/Debugging_in_WordPress
+ * @link https://wordpress.org/support/article/debugging-in-wordpress/
  */
 define( 'WP_DEBUG', false );
-
-// SMTP
-define( 'SMTP_USER', 'user@example.com' );
-define( 'SMTP_PASS', 'smtp password' );
-define( 'SMTP_HOST', 'smtp.example.com' );
-define( 'SMTP_FROM', 'website@example.com' );
-define( 'SMTP_NAME', 'e.g Website Name' );
-define( 'SMTP_PORT', '25' );
-define( 'SMTP_SECURE', 'tls' );
-define( 'SMTP_AUTH', true );
 
 /* That's all, stop editing! Happy publishing. */
 
 /** Absolute path to the WordPress directory. */
 if ( ! defined( 'ABSPATH' ) ) {
-	define( 'ABSPATH', dirname( __FILE__ ) . '/' );
+	define( 'ABSPATH', __DIR__ . '/' );
 }
 
 /** Sets up WordPress vars and included files. */
-require_once( ABSPATH . 'wp-settings.php' );
+require_once ABSPATH . 'wp-settings.php';
