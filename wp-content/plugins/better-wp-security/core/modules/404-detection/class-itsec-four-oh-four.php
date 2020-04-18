@@ -35,7 +35,7 @@ class ITSEC_Four_Oh_Four {
 			! in_array( '/' . ITSEC_Lib::get_request_path(), $this->settings['white_list'], true ) &&
 			! in_array( '.' . pathinfo( $uri[0], PATHINFO_EXTENSION ), $this->settings['types'], true )
 		) {
-			ITSEC_Log::add_notice( 'four_oh_four', 'found_404', array( 'SERVER' => $_SERVER ) );
+			ITSEC_Log::add_notice( 'four_oh_four', 'found_404', array( 'SERVER' => ITSEC_Lib::get_server_snapshot() ) );
 			$itsec_lockout->do_lockout( new Host_Context( 'four_oh_four' ) );
 		} else {
 			do_action( 'itsec_four_oh_four_whitelisted', $uri );

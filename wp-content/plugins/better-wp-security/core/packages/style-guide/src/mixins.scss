@@ -1,4 +1,5 @@
 @import "colors.scss";
+@import "breakpoints.scss";
 
 @mixin sticky-table($spacing: 1em) {
     & thead th {
@@ -72,5 +73,57 @@
         &:hover {
             color: $primary;
         }
+    }
+}
+
+/**
+ * Breakpoint mixins
+ */
+
+@mixin break-huge() {
+    @media (min-width: #{ ($break-huge) }) {
+        @content;
+    }
+}
+
+@mixin break-wide() {
+    @media (min-width: #{ ($break-wide) }) {
+        @content;
+    }
+}
+
+@mixin break-xlarge() {
+    @media (min-width: #{ ($break-xlarge) }) {
+        @content;
+    }
+}
+
+@mixin break-large() {
+    @media (min-width: #{ ($break-large) }) {
+        @content;
+    }
+}
+
+@mixin break-medium() {
+    @media (min-width: #{ ($break-medium) }) {
+        @content;
+    }
+}
+
+@mixin break-small() {
+    @media (min-width: #{ ($break-small) }) {
+        @content;
+    }
+}
+
+@mixin break-mobile() {
+    @media (min-width: #{ ($break-mobile) }) {
+        @content;
+    }
+}
+
+@mixin break-zoomed-in() {
+    @media (min-width: #{ ($break-zoomed-in) }) {
+        @content;
     }
 }

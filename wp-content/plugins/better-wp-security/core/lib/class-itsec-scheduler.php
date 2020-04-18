@@ -372,4 +372,15 @@ abstract class ITSEC_Scheduler {
 	public function uninstall() {
 
 	}
+
+	/**
+	 * Reset the scheduler.
+	 *
+	 * This unregisters all events, and re-registers them.
+	 */
+	public function reset() {
+		$this->uninstall();
+		$this->run();
+		$this->register_events();
+	}
 }

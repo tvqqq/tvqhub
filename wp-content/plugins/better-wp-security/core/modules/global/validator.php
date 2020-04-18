@@ -1,5 +1,7 @@
 <?php
 
+use \iThemesSecurity\User_Groups;
+
 class ITSEC_Global_Validator extends ITSEC_Validator {
 	public function get_id() {
 		return 'global';
@@ -60,6 +62,18 @@ class ITSEC_Global_Validator extends ITSEC_Validator {
 
 		$this->sanitize_setting( 'newline-separated-ips', 'server_ips', __( 'Server IPs', 'better-wp-security' ) );
 		$this->sanitize_setting( 'array', 'feature_flags', __( 'Feature Flags', 'better-wp-security' ) );
+		$this->sanitize_setting( 'user-groups', 'manage_group', __( 'Manage Group', 'better-wp-security' ) );
+	}
+
+	protected function validate_settings() {
+		if ( ITSEC_Core::is_interactive() && $this->settings['manage_group'] && $this->settings['manage_group'] !== $this->previous_settings['manage_group'] ) {
+			$matcher = ITSEC_Modules::get_container()->get( User_Groups\Matcher::class );
+
+			if ( ! $matcher->matches( User_Groups\Match_Target::for_user( wp_get_current_user() ), $this->settings['manage_group'] ) ) {
+				$this->add_error( new WP_Error( 'itsec-validator-global-cannot-exclude-self', __( 'The configuration you have chosen removes your capability to manage iThemes Security.', 'better-wp-security' ), [ 'status' => 400 ] ) );
+				$this->set_can_save( false );
+			}
+		}
 	}
 
 	public function get_proxy_types() {

@@ -80,8 +80,7 @@ final class ITSEC_Debug_Page {
 				ITSEC_Response::add_error( new WP_Error( 'itsec-debug-page-module-request-missing-data', __( 'The server did not receive a valid request. The required "data" argument for the module is missing. Please try again.', 'better-wp-security' ) ) );
 			}
 		} elseif ( 'reset_scheduler' === $method ) {
-			ITSEC_Core::get_scheduler()->uninstall();
-			ITSEC_Core::get_scheduler()->register_events();
+			ITSEC_Core::get_scheduler()->reset();
 			ITSEC_Response::set_response( $this->get_events_table() );
 			ITSEC_Response::set_success( true );
 			ITSEC_Response::add_message( __( 'Scheduler reset.', 'better-wp-security' ) );
@@ -272,7 +271,7 @@ final class ITSEC_Debug_Page {
 		$wp_config = array(
 			'Version'       => get_bloginfo( 'version' ),
 			'Language'      => defined( 'WPLANG' ) && WPLANG ? WPLANG : 'en_US',
-			'Permalink'     => get_option( 'permalink_structure' ) ? get_option( 'permalink_structure' ) : 'Default',
+			'Permalink'     => get_option( 'permalink_structure' ) ?: 'Default',
 			'Theme'         => wp_get_theme()->Name . ' ' . wp_get_theme()->Version,
 			'Show on Front' => get_option( 'show_on_front' )
 		);
@@ -287,9 +286,9 @@ final class ITSEC_Debug_Page {
 
 		$wp_config['ABSPATH']            = ABSPATH;
 		$wp_config['Table Prefix']       = 'Length: ' . strlen( $wpdb->prefix ) . ' Status: ' . ( strlen( $wpdb->prefix ) > 16 ? 'Too long' : 'Acceptable' );
-		$wp_config['WP_DEBUG']           = defined( 'WP_DEBUG' ) ? WP_DEBUG ? 'Enabled' : 'Disabled' : 'Not set';
-		$wp_config['WP_DEBUG_LOG']       = defined( 'WP_DEBUG_LOG' ) ? WP_DEBUG_LOG ? 'Enabled' : 'Disabled' : 'Not set';
-		$wp_config['SCRIPT_DEBUG']       = defined( 'SCRIPT_DEBUG' ) ? SCRIPT_DEBUG ? 'Enabled' : 'Disabled' : 'Not set';
+		$wp_config['WP_DEBUG']           = defined( 'WP_DEBUG' ) ? ( WP_DEBUG ? 'Enabled' : 'Disabled' ) : 'Not set';
+		$wp_config['WP_DEBUG_LOG']       = defined( 'WP_DEBUG_LOG' ) ? ( WP_DEBUG_LOG ? 'Enabled' : 'Disabled' ) : 'Not set';
+		$wp_config['SCRIPT_DEBUG']       = defined( 'SCRIPT_DEBUG' ) ? ( SCRIPT_DEBUG ? 'Enabled' : 'Disabled' ) : 'Not set';
 		$wp_config['Object Cache']       = wp_using_ext_object_cache() ? 'Yes' : 'No';
 		$wp_config['Memory Limit']       = WP_MEMORY_LIMIT;
 		$info['WordPress Configuration'] = $wp_config;
@@ -312,6 +311,7 @@ final class ITSEC_Debug_Page {
 			'ITSEC_DISABLE_AUTOMATIC_REMOTE_IP_DETECTION',
 			'ITSEC_DISABLE_PASSWORD_STRENGTH',
 			'ITSEC_DISABLE_INACTIVE_USER_CHECK',
+			'ITSEC_SHOW_FEATURE_FLAGS',
 		);
 
 		ITSEC_Lib::load( 'feature-flags' );
@@ -328,8 +328,15 @@ final class ITSEC_Debug_Page {
 
 		foreach ( $defines as $define ) {
 			if ( defined( $define ) ) {
-				$value                               = constant( $define );
-				$info['iThemes Security'][ $define ] = $value === true ? 'Enabled' : $value === false ? 'Disabled' : $value;
+				$value = constant( $define );
+
+				if ( true === $value ) {
+					$value = 'Enabled';
+				} elseif ( false === $value ) {
+					$value = 'Disabled';
+				}
+
+				$info['iThemes Security'][ $define ] = $value;
 			}
 		}
 

@@ -14,6 +14,7 @@
  * @property-read string $upsell_url
  * @property-read bool $information_only
  * @property-read string $status
+ * @property-read string $documentation
  */
 class ITSEC_Module_Settings_Page {
 	/**
@@ -113,6 +114,12 @@ class ITSEC_Module_Settings_Page {
 	 */
 	protected $status = '';
 
+	/**
+	 * Link to documentation for this module.
+	 *
+	 * @var string
+	 */
+	protected $documentation = '';
 
 	/**
 	 * Constructor.
@@ -139,7 +146,7 @@ class ITSEC_Module_Settings_Page {
 	 * @return mixed Property.
 	 */
 	public function __get( $name ) {
-		if ( in_array( $name, array( 'id', 'title', 'description', 'type', 'pro', 'can_save', 'redraw_on_save', 'upsell', 'upsell_url', 'information_only', 'status' ) ) ) {
+		if ( in_array( $name, array( 'id', 'title', 'description', 'type', 'pro', 'can_save', 'redraw_on_save', 'upsell', 'upsell_url', 'information_only', 'status', 'documentation' ) ) ) {
 			return $this->$name;
 		}
 

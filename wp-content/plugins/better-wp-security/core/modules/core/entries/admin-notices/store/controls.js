@@ -12,7 +12,7 @@ import { default as triggerApiFetch } from '@wordpress/api-fetch';
 /**
  * Internal dependencies
  */
-import responseToError from '@ithemes/security-utils';
+import { responseToError } from '@ithemes/security-utils';
 
 /**
  * Trigger an API Fetch request.

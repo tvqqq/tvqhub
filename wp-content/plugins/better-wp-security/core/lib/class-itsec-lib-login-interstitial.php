@@ -608,7 +608,9 @@ class ITSEC_Lib_Login_Interstitial {
 		wp_enqueue_script( 'itsec-login-interstitial-util' );
 		?>
 
-		<?php if ( $this->error ) : ?>
+		<?php if ( $this->error && $this->error->get_error_data() === 'message' ) : ?>
+			<p class="message"><?php echo $this->error->get_error_message(); ?></p>
+		<?php elseif ( $this->error ): ?>
 			<div id="login-error" class="message" style="border-left-color: #dc3232;">
 				<?php echo $this->error->get_error_message(); ?>
 			</div>

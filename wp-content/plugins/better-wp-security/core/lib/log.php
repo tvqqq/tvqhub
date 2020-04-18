@@ -245,6 +245,8 @@ final class ITSEC_Log {
 			'notice'         => esc_html__( 'Notice', 'better-wp-security' ),
 			'debug'          => esc_html__( 'Debug', 'better-wp-security' ),
 			'process-start'  => esc_html__( 'Process', 'better-wp-security' ),
+			'process-update' => esc_html__( 'Process Update', 'better-wp-security' ),
+			'process-stop'   => esc_html__( 'Process Stop', 'better-wp-security' ),
 		);
 	}
 

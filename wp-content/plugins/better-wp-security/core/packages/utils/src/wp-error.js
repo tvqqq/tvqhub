@@ -124,4 +124,20 @@ export default class WPError {
 
 		return this.#errorData[ code ];
 	};
+
+	/**
+	 * Get all error messages combined into one string.
+	 * @return {Array<string>} All error messages combined into a single array ignoring code.
+	 */
+	getAllErrorMessages = () => {
+		const messages = [];
+
+		for ( const errorCode in this.#errors ) {
+			if ( this.#errors.hasOwnProperty( errorCode ) ) {
+				messages.push( ...this.#errors[ errorCode ] );
+			}
+		}
+
+		return messages
+	};
 }

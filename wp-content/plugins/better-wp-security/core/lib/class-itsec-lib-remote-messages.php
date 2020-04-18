@@ -63,33 +63,58 @@ class ITSEC_Lib_Remote_Messages {
 	 * @param ITSEC_Job $job
 	 */
 	public static function run_event( $job ) {
+		$fetched = self::fetch();
 
+		if ( is_wp_error( $fetched ) ) {
+			$job->reschedule_in( 5 * MINUTE_IN_SECONDS );
+
+			return;
+		}
+	}
+
+	/**
+	 * Fetches and stores the remote messages response.
+	 *
+	 * @return null|WP_Error
+	 */
+	public static function fetch() {
 		$response = wp_remote_get( self::URL, array(
 			'user-agent' => 'WordPress',
 		) );
 
 		if ( is_wp_error( $response ) ) {
-			$job->reschedule_in( 5 * MINUTE_IN_SECONDS );
-
-			return;
+			return $response;
 		}
 
 		$data = wp_remote_retrieve_body( $response );
 
 		if ( ! $data ) {
-			$job->reschedule_in( 5 * MINUTE_IN_SECONDS );
-
-			return;
+			return new WP_Error( 'empty_body', __( 'Empty response body.', 'better-wp-security' ) );
 		}
 
 		$json = json_decode( $data, true );
 
 		if ( ! $json ) {
-			$job->reschedule_in( 5 * MINUTE_IN_SECONDS );
-
-			return;
+			return new WP_Error( 'invalid_json', __( 'Invalid json response.', 'better-wp-security' ) );
 		}
 
+		update_site_option( self::OPTION, array(
+			'response'  => self::sanitize_response( $json ),
+			'ttl'       => $json['ttl'],
+			'requested' => ITSEC_Core::get_current_time_gmt(),
+		) );
+
+		return null;
+	}
+
+	/**
+	 * Sanitizes the JSON response.
+	 *
+	 * @param array $json
+	 *
+	 * @return array
+	 */
+	public static function sanitize_response( $json ) {
 		$json = wp_parse_args( $json, array(
 			'ttl'      => HOUR_IN_SECONDS,
 			'messages' => array(),
@@ -99,6 +124,7 @@ class ITSEC_Lib_Remote_Messages {
 
 		$sanitized = array(
 			'messages' => array(),
+			'features' => array(),
 			'actions'  => wp_parse_slug_list( $json['actions'] ),
 		);
 
@@ -110,11 +136,14 @@ class ITSEC_Lib_Remote_Messages {
 			);
 		}
 
-		update_site_option( self::OPTION, array(
-			'response'  => $sanitized,
-			'ttl'       => $json['ttl'],
-			'requested' => ITSEC_Core::get_current_time_gmt(),
-		) );
+		foreach ( $json['features'] as $feature => $f_config ) {
+			$sanitized['features'][ $feature ] = [
+				'rate'     => isset( $f_config['rate'] ) ? (int) $f_config['rate'] : false,
+				'disabled' => ! empty( $f_config['disabled'] ),
+			];
+		}
+
+		return $sanitized;
 	}
 
 	private static function sanitize_message( $message ) {
@@ -135,16 +164,25 @@ class ITSEC_Lib_Remote_Messages {
 			return array();
 		}
 
-		if ( isset( self::$_response ) ) {
-			return self::$_response;
+		if ( ! isset( self::$_response ) ) {
+			self::$_response = self::load_response();
 		}
 
+		return apply_filters( 'itsec_remote_messages', self::$_response );
+	}
+
+	/**
+	 * Loads the response from the local cache or the server.
+	 *
+	 * @return array|mixed
+	 */
+	private static function load_response() {
 		$data = self::get_stored_response();
 
 		if ( ! $data['response'] ) {
 			self::schedule_check();
 
-			return self::$_response = array();
+			return array();
 		}
 
 		if ( $data['requested'] + $data['ttl'] < ITSEC_Core::get_current_time_gmt() ) {
@@ -155,7 +193,7 @@ class ITSEC_Lib_Remote_Messages {
 				// If we are less than an hour late for processing the refresh, return the stale data.
 				if ( self::EVENT === $event['id'] ) {
 					if ( $event['fire_at'] + HOUR_IN_SECONDS > ITSEC_Core::get_current_time_gmt() ) {
-						return self::$_response = $data['response'];
+						return $data['response'];
 					}
 
 					// If its been more than a day, call the API right now.
@@ -164,16 +202,16 @@ class ITSEC_Lib_Remote_Messages {
 						$data = self::get_stored_response();
 
 						if ( $data['requested'] === ITSEC_Core::get_current_time_gmt() ) {
-							return self::$_response = $data['response'];
+							return $data['response'];
 						}
 					}
 				}
 			}
 
-			return self::$_response = array();
+			return array();
 		}
 
-		return self::$_response = $data['response'];
+		return $data['response'];
 	}
 
 	private static function get_stored_response() {

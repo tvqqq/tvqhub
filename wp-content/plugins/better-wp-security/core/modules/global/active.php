@@ -1,8 +1,11 @@
 <?php
 
+use \iThemesSecurity\User_Groups;
+
 function itsec_global_filter_whitelisted_ips( $whitelisted_ips ) {
 	return array_merge( $whitelisted_ips, ITSEC_Modules::get_setting( 'global', 'lockout_white_list', array() ) );
 }
+
 add_filter( 'itsec_white_ips', 'itsec_global_filter_whitelisted_ips', 0 );
 
 /**
@@ -115,3 +118,14 @@ function itsec_basename_attachment_thumbs( $data ) {
 }
 
 add_filter( 'wp_update_attachment_metadata', 'itsec_basename_attachment_thumbs' );
+
+function itsec_register_global_user_group_settings( User_Groups\Settings_Registry $registry ) {
+	$registry->register( new User_Groups\Settings_Registration( 'global', 'manage_group', User_Groups\Settings_Registration::T_MULTIPLE, static function () {
+		return [
+			'title'       => __( 'Manage iThemes Security', 'better-wp-security' ),
+			'description' => __( 'Allow users in the group to manage iThemes Security.', 'better-wp-security' ),
+		];
+	} ) );
+}
+
+add_action( 'itsec_register_user_group_settings', 'itsec_register_global_user_group_settings', 0 );

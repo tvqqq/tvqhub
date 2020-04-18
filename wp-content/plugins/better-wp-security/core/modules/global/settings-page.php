@@ -224,6 +224,19 @@ final class ITSEC_Global_Settings_Page extends ITSEC_Module_Settings_Page {
 				</td>
 			</tr>
 			<tr>
+				<th scope="row">
+					<label for="itsec-global-manage_group">
+						<?php esc_html_e( 'Manage iThemes Security', 'better-wp-security' ) ?>
+					</label>
+				</th>
+				<td>
+					<p class="description">
+						<?php esc_html_e( 'Select the group of users that can manage iThemes Security. If no groups are selected, all administrator users will have access.', 'better-wp-security' ); ?>
+					</p>
+					<?php $form->add_user_groups( 'manage_group', $this->id ); ?>
+				</td>
+			</tr>
+			<tr>
 				<th scope="row"><label for="itsec-global-log_type"><?php _e( 'Log Type', 'better-wp-security' ); ?></label></th>
 				<td>
 					<?php $form->add_select( 'log_type', $log_types ); ?>

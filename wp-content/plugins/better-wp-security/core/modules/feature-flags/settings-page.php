@@ -7,21 +7,21 @@ class ITSEC_Feature_Flags_Settings_Page extends ITSEC_Module_Settings_Page {
 
 		$this->id          = 'feature-flags';
 		$this->title       = esc_html__( 'Feature Flags', 'better-wp-security' );
-		$this->description = esc_html__( 'Toggle feature flags.', 'better-wp-security' );
+		$this->description = esc_html__( 'Feature Flags in iThemes Security allow you to try experimental features before they are released.', 'better-wp-security' );
 		$this->type        = 'advanced';
 	}
 
 	public function register() {
 		ITSEC_Lib::load( 'feature-flags' );
 
-		if ( ITSEC_Lib_Feature_Flags::get_available_flags() ) {
+		if ( ITSEC_Lib_Feature_Flags::get_available_flags() && ITSEC_Lib_Feature_Flags::show_ui() ) {
 			parent::register();
 		}
 	}
 
 	protected function render_description( $form ) {
 		echo '<p>';
-		echo esc_html__( 'Toggle feature flags.', 'better-wp-security' );
+		echo $this->description;
 		echo '</p>';
 	}
 
@@ -43,11 +43,13 @@ class ITSEC_Feature_Flags_Settings_Page extends ITSEC_Module_Settings_Page {
 				$description = $config['description'];
 			}
 
-			$form->set_option( $flag, ITSEC_Lib_Feature_Flags::is_enabled( $flag ) );
+			$enabled = ITSEC_Lib_Feature_Flags::is_enabled( $flag );
+			$form->set_option( $flag, $enabled );
+			list( $reason_code, $reason ) = ITSEC_Lib_Feature_Flags::get_reason( $flag );
 
 			$cb_opts = array();
 
-			if ( defined( 'ITSEC_FF_' . $flag ) ) {
+			if ( 'constant' === $reason_code ) {
 				$cb_opts['disabled'] = true;
 			}
 			?>
@@ -60,8 +62,19 @@ class ITSEC_Feature_Flags_Settings_Page extends ITSEC_Module_Settings_Page {
 					<td>
 						<?php $form->add_checkbox( $flag, $cb_opts ); ?>
 						<?php if ( $description ): ?>
-							<p class="description"><?php echo $description; ?></p>
+							<p><?php echo $description; ?></p>
 						<?php endif; ?>
+						<?php if ( $config['documentation'] ): ?>
+							<p><a href="<?php echo esc_url( $config['documentation'] ) ?>"><?php esc_html_e( 'Read the documentation', 'better-wp-security' ); ?></a></p>
+						<?php endif; ?>
+
+						<p class="description">
+							<?php if ( $enabled ): ?>
+								<?php echo esc_html( sprintf( __( 'Enabled reason: %s', 'better-wp-security' ), $reason ) ); ?>
+							<?php else: ?>
+								<?php echo esc_html( sprintf( __( 'Disabled reason: %s', 'better-wp-security' ), $reason ) ); ?>
+							<?php endif; ?>
+						</p>
 					</td>
 				</tr>
 				</tbody>

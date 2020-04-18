@@ -24,7 +24,7 @@ function AdminBar( { notices, noticesLoaded, isToggled, setState } ) {
 		<AdminBarFill>
 			<div className="itsec-admin-bar__admin-notices">
 				<div className={ classnames( 'itsec-admin-bar-admin-notices__trigger', { 'itsec-admin-bar-admin-notices__trigger--has-notices': notices.length > 0 } ) }>
-					<Button aria-expanded={ isToggled } onClick={ () => setState( { isToggled: ! isToggled } ) }>
+					<Button aria-expanded={ isToggled } onClick={ () => setState( { isToggled: ! isToggled } ) } isSecondary>
 						<Dashicon icon="megaphone" size={ 15 } />
 						{ __( 'Notifications', 'better-wp-security' ) }
 					</Button>
@@ -38,9 +38,22 @@ function AdminBar( { notices, noticesLoaded, isToggled, setState } ) {
 							onClose={ () => setState( { isToggled: false } ) }
 							onClickOutside={ ( e ) => {
 								if (
-									e.target.id !== 'itsec-admin-notices-toolbar-trigger' &&
-									e.target.parentNode.id !== 'itsec-admin-notices-toolbar-trigger' &&
-									! doesElementBelongToPanel( e.target )
+									! e.target || (
+										e.target.id !== 'itsec-admin-notices-toolbar-trigger' &&
+										e.target.parentNode.id !== 'itsec-admin-notices-toolbar-trigger' &&
+										! doesElementBelongToPanel( e.target )
+									)
+								) {
+									setState( { isToggled: false } );
+								}
+							} }
+							onFocusOutside={ () => {
+								const activeElement = document.activeElement;
+
+								if (
+									activeElement.id !== 'itsec-admin-notices-toolbar-trigger' &&
+									( ! activeElement.parentNode || activeElement.parentNode.id !== 'itsec-admin-notices-toolbar-trigger' ) &&
+									! doesElementBelongToPanel( activeElement )
 								) {
 									setState( { isToggled: false } );
 								}

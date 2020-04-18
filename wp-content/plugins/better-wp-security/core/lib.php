@@ -54,12 +54,12 @@ final class ITSEC_Lib {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return void
+	 * @return true|WP_Error
 	 */
 	public static function create_database_tables() {
 		require_once( ITSEC_Core::get_core_dir() . '/lib/schema.php' );
 
-		ITSEC_Schema::create_database_tables();
+		return ITSEC_Schema::create_database_tables();
 	}
 
 	/**
@@ -512,6 +512,25 @@ final class ITSEC_Lib {
 		$html .= '</div>';
 
 		return $html;
+	}
+
+	/**
+	 * Get an error string for all errors in a WP_Error isntance.
+	 *
+	 * @param WP_Error $error
+	 *
+	 * @return string[]
+	 */
+	public static function get_error_strings( WP_Error $error ) {
+		$messages = array();
+
+		foreach ( $error->get_error_codes() as $code ) {
+			foreach ( $error->get_error_messages( $code ) as $str ) {
+				$messages[] = $str;
+			}
+		}
+
+		return $messages;
 	}
 
 	/**
@@ -976,14 +995,18 @@ final class ITSEC_Lib {
 		return $storage;
 	}
 
+	/**
+	 * Get a dot nested value from an array.
+	 *
+	 * @param array  $array
+	 * @param string $key
+	 * @param mixed  $default
+	 *
+	 * @return mixed
+	 */
 	public static function array_get( $array, $key, $default = null ) {
-
 		if ( ! is_array( $array ) ) {
 			return $default;
-		}
-
-		if ( null === $key ) {
-			return $array;
 		}
 
 		if ( isset( $array[ $key ] ) ) {
@@ -1001,6 +1024,36 @@ final class ITSEC_Lib {
 				return $default;
 			}
 		}
+
+		return $array;
+	}
+
+	/**
+	 * Set an array item to a given value using "dot" notation.
+	 *
+	 * @param array  $array
+	 * @param string $key
+	 * @param mixed  $value
+	 *
+	 * @return array
+	 */
+	public static function array_set( $array, $key, $value ) {
+		$keys   = explode( '.', $key );
+		$modify = &$array;
+
+		while ( count( $keys ) > 1 ) {
+			$key = array_shift( $keys );
+			// If the key doesn't exist at this depth, we will just create an empty array
+			// to hold the next value, allowing us to create the arrays to hold final
+			// values at the correct depth. Then we'll keep digging into the array.
+			if ( ! isset( $modify[ $key ] ) || ! is_array( $modify[ $key ] ) ) {
+				$modify[ $key ] = [];
+			}
+
+			$modify = &$modify[ $key ];
+		}
+
+		$modify[ array_shift( $keys ) ] = $value;
 
 		return $array;
 	}
@@ -1759,10 +1812,10 @@ final class ITSEC_Lib {
 	 *
 	 * @return WP_Error
 	 */
-	public static function combine_wp_error( $errors ) {
+	public static function combine_wp_error( ...$errors ) {
 		$combined = new WP_Error();
 
-		self::add_to_wp_error( $combined, $errors );
+		self::add_to_wp_error( $combined, ...$errors );
 
 		return $combined;
 	}
@@ -1770,19 +1823,22 @@ final class ITSEC_Lib {
 	/**
 	 * Add the subsequent WP Error data to the first WP Error instance.
 	 *
-	 * @param WP_Error          $add_to
-	 * @param WP_Error[]|null[] ...$errors
+	 * @param WP_Error      $add_to
+	 * @param WP_Error|null ...$errors
 	 */
-	public static function add_to_wp_error( WP_Error $add_to, $errors ) {
-		if ( ! is_array( $errors ) ) {
-			$errors = func_get_args();
-			array_shift( $errors );
-		}
-
+	public static function add_to_wp_error( WP_Error $add_to, ...$errors ) {
 		foreach ( $errors as $error ) {
 			if ( $error ) {
 				foreach ( $error->get_error_codes() as $code ) {
-					$add_to->add( $code, $error->get_error_message( $code ) );
+					foreach ( $error->get_error_messages( $code ) as $message ) {
+						$add_to->add( $code, $message );
+					}
+
+					$data = $error->get_error_data( $code );
+
+					if ( null !== $data ) {
+						$add_to->add_data( $data, $code );
+					}
 				}
 			}
 		}
@@ -1829,9 +1885,9 @@ final class ITSEC_Lib {
 	/**
 	 * Get the WordPress branch version.
 	 *
+	 * @return string
 	 * @example 5.2.4 => 5.2
 	 *
-	 * @return string
 	 */
 	public static function get_wp_branch() {
 		$version = get_bloginfo( 'version' );
@@ -1839,5 +1895,164 @@ final class ITSEC_Lib {
 		list( $major, $minor ) = explode( '.', $version );
 
 		return $major . '.' . $minor;
+	}
+
+	/**
+	 * Are two lists equal ignoring order.
+	 *
+	 * @param array         $a
+	 * @param array         $b
+	 * @param callable|null $cmp
+	 *
+	 * @return bool
+	 */
+	public static function equal_sets( array $a, array $b, callable $cmp = null ) {
+		if ( $cmp ) {
+			usort( $a, $cmp );
+			usort( $b, $cmp );
+		} else {
+			sort( $a );
+			sort( $b );
+		}
+
+		return $a === $b;
+	}
+
+	/**
+	 * Convert the return val from {@see ITSEC_Modules::set_settings()} to a WP_Error object.
+	 *
+	 * @param array $updated
+	 *
+	 * @return WP_Error|null
+	 */
+	public static function updated_settings_to_wp_error( $updated ) {
+		if ( is_wp_error( $updated ) ) {
+			return $updated;
+		}
+
+		if ( $updated['saved'] ) {
+			return null;
+		}
+
+		if ( $updated['errors'] ) {
+			$error = self::combine_wp_error( ...$updated['errors'] );
+		} else {
+			$error = new \WP_Error( 'itsec.settings.set-failed', __( 'Failed to update settings.', 'better-wp-security' ), [ 'status' => \WP_Http::BAD_REQUEST ] );
+		}
+
+		return $error;
+	}
+
+	/**
+	 * Sanitize the list of roles.
+	 *
+	 * @param string[] $roles
+	 *
+	 * @return array
+	 */
+	public static function sanitize_roles( $roles ) {
+		return array_filter( $roles, static function ( $role ) {
+			return (bool) get_role( $role );
+		} );
+	}
+
+	/**
+	 * Get a snapshot of $_SERVER properties.
+	 *
+	 * @return array
+	 */
+	public static function get_server_snapshot() {
+		$whitelist = [
+			'REQUEST_TIME',
+			'REQUEST_TIME_FLOAT',
+			'REQUEST_METHOD',
+			'HTTPS',
+			'REQUEST_SCHEME',
+			'SERVER_PROTOCOL',
+			'SCRIPT_FILENAME',
+		];
+
+		return array_filter( $_SERVER, static function ( $key ) use ( $whitelist ) {
+			if ( $key === 'HTTP_COOKIE' ) {
+				return false;
+			}
+
+			if ( self::str_starts_with( $key, 'HTTP_' ) ) {
+				return true;
+			}
+
+			if ( self::str_starts_with( $key, 'CONTENT_' ) ) {
+				return true;
+			}
+
+			return in_array( $key, $whitelist, true );
+		}, ARRAY_FILTER_USE_KEY );
+	}
+
+	/**
+	 * Version of {@see is_super_admin()} that operates on a `WP_User` instance.
+	 *
+	 * This bypasses an issue where {@see is_super_admin()} cannot be used during the `determine_current_user` filter since
+	 * `is_super_admin` has a side effect of querying for the current user, causing an infinite loop.
+	 *
+	 * @param WP_User $user
+	 *
+	 * @return bool
+	 */
+	public static function is_super_admin( WP_User $user ) {
+		if ( ! $user->exists() ) {
+			return false;
+		}
+
+		if ( is_multisite() ) {
+			$super_admins = get_super_admins();
+			if ( is_array( $super_admins ) && in_array( $user->user_login, $super_admins ) ) {
+				return true;
+			}
+		} else {
+			if ( $user->has_cap( 'delete_users' ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Performs a {@see dbDelta()} but reports any errors encountered.
+	 *
+	 * @param string $delta
+	 *
+	 * @return WP_Error
+	 */
+	public static function db_delta_with_error_handling( $delta ) {
+		global $wpdb, $EZSQL_ERROR;
+
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+		$err_count     = is_array( $EZSQL_ERROR ) ? count( $EZSQL_ERROR ) : 0;
+		$showed_errors = $wpdb->show_errors( false );
+
+		dbDelta( $delta );
+
+		if ( $showed_errors ) {
+			$wpdb->show_errors();
+		}
+
+		$wp_error = new WP_Error();
+
+		if ( is_array( $EZSQL_ERROR ) ) {
+			for ( $i = $err_count, $i_max = count( $EZSQL_ERROR ); $i < $i_max; $i ++ ) {
+				$error = $EZSQL_ERROR[ $i ];
+
+				if ( empty( $error['error_str'] ) || empty( $error['query'] ) || 0 === strpos( $error['query'], 'DESCRIBE ' ) ) {
+					continue;
+				}
+
+				$wp_error->add( 'db_delta_error', $error['error_str'] );
+			}
+		}
+
+		return $wp_error;
 	}
 }

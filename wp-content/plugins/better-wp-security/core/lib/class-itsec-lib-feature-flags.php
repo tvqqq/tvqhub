@@ -9,18 +9,42 @@ class ITSEC_Lib_Feature_Flags {
 	private static $flags = array();
 
 	/**
+	 * Whether the Feature Flag UI should be displayed.
+	 *
+	 * @return bool
+	 */
+	public static function show_ui() {
+		$show = count( self::get_enabled() ) > 0;
+
+		if ( defined( 'ITSEC_SHOW_FEATURE_FLAGS' ) ) {
+			$show = ITSEC_SHOW_FEATURE_FLAGS;
+		}
+
+		return apply_filters( 'itsec_show_feature_flags_ui', $show );
+	}
+
+	/**
 	 * Register a feature flag.
 	 *
 	 * @param string $name
 	 * @param array  $args
+	 *
+	 * @return true|WP_Error
 	 */
 	public static function register_flag( $name, $args = array() ) {
+		if ( ! preg_match( '/^[a-zA-Z0-9_]+$/', $name ) ) {
+			return new WP_Error( 'invalid_flag_name', __( 'Invalid flag name.', 'better-wp-security' ) );
+		}
+
 		self::$flags[ $name ] = wp_parse_args( $args, array(
-			'rate'        => false,
-			'remote'      => false,
-			'title'       => '',
-			'description' => '',
+			'rate'          => false,
+			'remote'        => false,
+			'title'         => '',
+			'description'   => '',
+			'documentation' => '',
 		) );
+
+		return true;
 	}
 
 	/**
@@ -74,6 +98,10 @@ class ITSEC_Lib_Feature_Flags {
 			return (bool) constant( 'ITSEC_FF_' . $flag );
 		}
 
+		if ( ! empty( $config['disabled'] ) ) {
+			return false;
+		}
+
 		$flags = ITSEC_Modules::get_setting( 'global', 'feature_flags' );
 
 		if ( ! empty( $flags[ $flag ]['enabled'] ) ) {
@@ -88,8 +116,8 @@ class ITSEC_Lib_Feature_Flags {
 				return false;
 			}
 
-			// If the rice haven't been rolled, or the rate has changed since the last run, roll the dice.
-			if ( ! isset( $flags[ $flag ]['rate'] ) || $flags[ $flag ]['rate'] !== $rate ) {
+			// If the dice haven't been rolled, or the rate has changed since the last run, roll the dice.
+			if ( ! isset( $flags[ $flag ]['rate'] ) || $flags[ $flag ]['rate'] < $rate ) {
 				$enabled = mt_rand( 1, 100 ) <= $rate;
 
 				$flags[ $flag ] = array(
@@ -107,6 +135,35 @@ class ITSEC_Lib_Feature_Flags {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Get's the reason for the flag being enabled/disabled.
+	 *
+	 * @param string $flag
+	 *
+	 * @return array
+	 */
+	public static function get_reason( $flag ) {
+		if ( ! $config = self::get_flag_config( $flag ) ) {
+			return [ 'unknown', __( 'Unknown flag' ) ];
+		}
+
+		if ( defined( 'ITSEC_FF_' . $flag ) ) {
+			return [ 'constant', __( 'Manually configured with a constant.' ) ];
+		}
+
+		if ( ! empty( $config['disabled'] ) ) {
+			return [ 'remote', __( 'Remotely disabled by iThemes.' ) ];
+		}
+
+		$flags = ITSEC_Modules::get_setting( 'global', 'feature_flags' );
+
+		if ( isset( $flags[ $flag ]['rate'] ) ) {
+			return [ 'rollout', __( 'Gradually rolling out.' ) ];
+		}
+
+		return [ 'setting', __( 'Configured in the Feature Flags settings page.' ) ];
 	}
 
 	/**
@@ -150,7 +207,6 @@ class ITSEC_Lib_Feature_Flags {
 	 */
 	public static function get_flag_config( $flag ) {
 		self::load();
-
 
 		if ( ! isset( self::$flags[ $flag ] ) ) {
 			return null;

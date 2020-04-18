@@ -39,7 +39,7 @@ class ITSEC_Brute_Force {
 			// Failed authentication.
 
 			$details = ITSEC_Lib::get_login_details();
-			$SERVER  = $_SERVER;
+			$SERVER  = ITSEC_Lib::get_server_snapshot();
 
 			if ( 'admin' === $username && $this->settings['auto_ban_admin'] ) {
 				ITSEC_Log::add_notice( 'brute_force', 'auto-ban-admin-username', compact( 'details', 'user', 'username', 'SERVER' ) );

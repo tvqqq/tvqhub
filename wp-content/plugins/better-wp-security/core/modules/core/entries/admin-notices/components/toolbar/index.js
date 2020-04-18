@@ -50,9 +50,22 @@ function Toolbar( { notices, noticesLoaded, isToggled, setState } ) {
 					onClose={ () => setState( { isToggled: false } ) }
 					onClickOutside={ ( e ) => {
 						if (
-							e.target.id !== 'itsec-admin-notices-toolbar-trigger' &&
-							e.target.parentNode.id !== 'itsec-admin-notices-toolbar-trigger' &&
-							! doesElementBelongToPanel( e.target )
+							! e.target || (
+								e.target.id !== 'itsec-admin-notices-toolbar-trigger' &&
+								e.target.parentNode.id !== 'itsec-admin-notices-toolbar-trigger' &&
+								! doesElementBelongToPanel( e.target )
+							)
+						) {
+							setState( { isToggled: false } );
+						}
+					} }
+					onFocusOutside={ () => {
+						const activeElement = document.activeElement;
+
+						if (
+							activeElement.id !== 'itsec-admin-notices-toolbar-trigger' &&
+							( ! activeElement.parentNode || activeElement.parentNode.id !== 'itsec-admin-notices-toolbar-trigger' ) &&
+							! doesElementBelongToPanel( activeElement )
 						) {
 							setState( { isToggled: false } );
 						}

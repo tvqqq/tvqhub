@@ -54,6 +54,7 @@ module.exports = function makeConfig( directory, pro ) {
 		entry: {
 			...entries,
 			'core/packages/components/site-scan-results/style': './core/packages/components/src/site-scan-results/style.scss',
+			'packages/preload': './core/packages/preload/src/index.js',
 		},
 		output: {
 			path: path.resolve( directory, 'dist' ),
@@ -174,6 +175,8 @@ module.exports = function makeConfig( directory, pro ) {
 				'@ithemes/security-style-guide': path.resolve( directory, './core/packages/style-guide/src/index.js' ),
 				'@ithemes/security-hocs': path.resolve( directory, './core/packages/hocs/src/index.js' ),
 				'@ithemes/security-components': path.resolve( directory, './core/packages/components/src/index.js' ),
+				'@ithemes/security-i18n': path.resolve( directory, './core/packages/i18n/src/index.js' ),
+				'@ithemes/security-data': path.resolve( directory, './core/packages/data/src/index.js' ),
 				...Object.keys( entries ).reduce( function( acc, entry ) {
 					const parts = entry.split( '/' );
 					const alias = `@ithemes/security.${ parts[ 0 ] }.${ parts[ 1 ] }`;

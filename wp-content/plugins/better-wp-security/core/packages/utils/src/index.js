@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { isPlainObject } from 'lodash';
+import { get, isPlainObject } from 'lodash';
 
 /**
  * Internal dependencies
@@ -150,11 +150,27 @@ export function entriesToObject( entries ) {
 }
 
 /**
+ * Splits a list into two arrays, with items that pass the filter in the first array, and ones that fail in the second.
+ * @param {Array} array
+ * @param {Function} filter
+ * @return {[][]}
+ */
+export function bifurcate( array, filter ) {
+	const bifurcated = [ [], [] ];
+
+	for ( const value of array ) {
+		bifurcated[ filter( value ) ? 0 : 1 ].push( value );
+	}
+
+	return bifurcated;
+}
+
+/**
  * Convert a response object from @wordpress/apiFetch to an Error object.
  *
  * @param {Object} response
  */
-export default function responseToError( response ) {
+export function responseToError( response ) {
 	if ( response instanceof Error ) {
 		throw response;
 	}
@@ -163,3 +179,44 @@ export default function responseToError( response ) {
 }
 
 export const MYSTERY_MAN_AVATAR = 'https://secure.gravatar.com/avatar/d7a973c7dab26985da5f961be7b74480?s=96&d=mm&f=y&r=g';
+
+/**
+ * Get the "self" link for a REST API object.
+ *
+ * @param {Object} object
+ * @return {string|undefined}
+ */
+export function getSelf( object ) {
+	return getLink( object, 'self' );
+}
+
+/**
+ * Get the href for a link with the given relation.
+ *
+ * @param {Object} object
+ * @param {string} rel
+ * @return {string|undefined}
+ */
+export function getLink( object, rel ) {
+	return get( object, [ '_links', rel, 0, 'href' ] );
+}
+
+/**
+ * Get a link from a schema document.
+ *
+ * @param {Object} schema
+ * @param {string} rel
+ *
+ * @return {Object|undefined}
+ */
+export function getSchemaLink( schema, rel ) {
+	if ( ! schema || ! schema.links ) {
+		return;
+	}
+
+	for ( const link of schema.links ) {
+		if ( link.rel === rel ) {
+			return link;
+		}
+	}
+}

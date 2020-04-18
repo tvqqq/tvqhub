@@ -728,6 +728,14 @@ final class ITSEC_Notification_Center {
 			}
 		}
 
+		/**
+		 * Filters the list of scheduled notifications to send on this request.
+		 *
+		 * @param string[] $to_send       Notification slugs to send.
+		 * @param array    $notifications List of available notifications that could be sent.
+		 */
+		$to_send = apply_filters( 'itsec_notification_center_send_scheduled_notifications', $to_send, $notifications );
+
 		$ret = array();
 
 		if ( $to_send ) {

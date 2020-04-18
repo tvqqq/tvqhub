@@ -184,6 +184,44 @@ class ITSEC_Login_Interstitial_Session {
 	}
 
 	/**
+	 * Get a meta value by key.
+	 *
+	 * @param string $key
+	 *
+	 * @return mixed|null The meta value, or null if the meta key does not exist.
+	 */
+	public function get_meta( $key ) {
+		return isset( $this->data['meta'][ $key ] ) ? $this->data['meta'][ $key ] : null;
+	}
+
+	/**
+	 * Set meta key-value pair.
+	 *
+	 * @param string $key   The meta key to set the value for.
+	 * @param mixed  $value The value to set. Must be serializable.
+	 *
+	 * @return $this
+	 */
+	public function set_meta( $key, $value ) {
+		$this->data['meta'][ $key ] = $value;
+
+		return $this;
+	}
+
+	/**
+	 * Remove a meta value by key.
+	 *
+	 * @param string $key
+	 *
+	 * @return $this
+	 */
+	public function remove_meta( $key ) {
+		unset( $this->data['meta'][ $key ] );
+
+		return $this;
+	}
+
+	/**
 	 * Verify the session.
 	 *
 	 * @param int    $user_id
@@ -407,6 +445,8 @@ class ITSEC_Login_Interstitial_Session {
 		if ( ! empty( $_REQUEST['rememberme'] ) ) {
 			$this->set_remember_me();
 		}
+
+		do_action( 'itsec_initialize_login_interstitial_session_from_global_state', $this );
 	}
 
 	/**
@@ -471,7 +511,7 @@ class ITSEC_Login_Interstitial_Session {
 	public static function create( WP_User $user, $current = '' ) {
 		$log = ITSEC_Log::add_process_start( 'login-interstitial', 'create', [
 			'current' => $current,
-			'_server' => $_SERVER,
+			'_server' => ITSEC_Lib::get_server_snapshot(),
 		], [ 'user_id' => $user->ID ] );
 
 		$data = array(
@@ -484,6 +524,7 @@ class ITSEC_Login_Interstitial_Session {
 			'remember_me'   => false,
 			'interim_login' => false,
 			'state'         => array(),
+			'meta'          => array(),
 			'log'           => $log,
 		);
 

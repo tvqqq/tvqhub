@@ -42,7 +42,7 @@
         }
     }
 
-    & .itsec-admin-notice-panel__configure-trigger.components-icon-button {
+    & .itsec-admin-notice-panel__configure-trigger.components-button {
         padding: 5px;
         height: 30px;
         position: absolute;
@@ -56,7 +56,7 @@
         }
     }
 
-    &.itsec-admin-notice-panel--is-configuring .itsec-admin-notice-panel__configure-trigger.components-icon-button {
+    &.itsec-admin-notice-panel--is-configuring .itsec-admin-notice-panel__configure-trigger.components-button {
         color: $main-blue;
 
         &:hover {

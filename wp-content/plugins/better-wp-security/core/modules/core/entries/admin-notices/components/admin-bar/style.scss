@@ -6,6 +6,8 @@
 
     & .itsec-admin-bar-admin-notices__trigger > .components-button {
         color: $main-blue;
+        border: none;
+        background: transparent;
 
         &:hover {
             color: lighten($main-blue, 20%);

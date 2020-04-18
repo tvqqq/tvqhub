@@ -129,6 +129,9 @@ final class ITSEC_Security_Check_Pro_Utility {
 	public static function get_remote_ip_index() {
 		$remote_ips = self::get_remote_ips();
 
+		if ( is_wp_error( $remote_ips ) ) {
+			return false;
+		}
 
 		$standard_indexes = array(
 			'REMOTE_ADDR',
@@ -288,6 +291,11 @@ final class ITSEC_Security_Check_Pro_Utility {
 		return $key;
 	}
 
+	/**
+	 * Get the list of remote IPs that the SSL Proxy Detect server may be issuing requests from.
+	 *
+	 * @return string[]|WP_Error
+	 */
 	public static function get_remote_ips() {
 		$remote_ips = apply_filters( 'itsec-security-check-pro-remote-ips', array() );
 
@@ -295,28 +303,28 @@ final class ITSEC_Security_Check_Pro_Utility {
 			return $remote_ips;
 		}
 
-
 		$settings = ITSEC_Modules::get_settings( 'security-check-pro' );
 
 		if ( $settings['remote_ips_timestamp'] + ( 5 * MINUTE_IN_SECONDS ) > time() && ! empty( $settings['remote_ips'] ) ) {
 			return $settings['remote_ips'];
 		}
 
-
 		$response = wp_remote_get( self::$config_url );
 
 		if ( is_wp_error( $response ) ) {
-			return array();
+			return $response;
 		}
-
 
 		$body = $response['body'];
 		$data = json_decode( $body, true );
 
-		if ( ! is_array( $data ) || ! isset( $data['ips'] ) || ! is_array( $data['ips'] ) ) {
-			return array();
+		if ( json_last_error() !== JSON_ERROR_NONE ) {
+			return new WP_Error( 'itsec_security_check_pro_invalid_json_response', json_last_error_msg() );
 		}
 
+		if ( ! is_array( $data ) || ! isset( $data['ips'] ) || ! is_array( $data['ips'] ) ) {
+			return new WP_Error( 'itsec_security_check_pro_malformed_response', __( 'The response body is missing the "ips" entry.', 'better-wp-security' ) );
+		}
 
 		$settings['remote_ips_timestamp'] = time();
 		$settings['remote_ips']           = $data['ips'];
