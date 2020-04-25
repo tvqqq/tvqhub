@@ -877,3 +877,5 @@
 5.7.4 - 2020-04-15 - Timothy Jacobs
 	Bug Fix: Users with weak passwords would not be forced to change their password if the strong password requirement had been enabled after their password strength was checked.
 	Bug Fix: PHP warning if downgrading from Pro to Free.
+5.7.5 - 2020-04-20 - Timothy Jacobs
+	Bug Fix: PHP warning when evaluating password requirements.

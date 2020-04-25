@@ -346,7 +346,7 @@ class ITSEC_Password_Requirements {
 				$evaluation = get_user_meta( $user->ID, $requirement['meta'], true );
 
 				if ( '' !== $evaluation ) {
-					$validated = call_user_func( $requirement['validate'], $evaluation, $user, $settings[ $code ], array(
+					$validated = call_user_func( $requirement['validate'], $evaluation, $user, $settings, array(
 						'target' => User_Groups\Match_Target::for_user( $user ),
 					) );
 
@@ -358,35 +358,6 @@ class ITSEC_Password_Requirements {
 				}
 			}
 		}
-	}
-
-	/**
-	 * Is a given requirement enabled.
-	 *
-	 * @param string $requirement
-	 *
-	 * @return bool
-	 */
-	protected function is_requirement_enabled( $requirement ) {
-
-		$requirements = ITSEC_Lib_Password_Requirements::get_registered();
-
-		if ( ! isset( $requirements[ $requirement ] ) ) {
-			return false;
-		}
-
-		// If the requirement does not have any settings, than it is always enabled.
-		if ( null === $requirements[ $requirement ]['settings_config'] ) {
-			return true;
-		}
-
-		$enabled = ITSEC_Modules::get_setting( 'password-requirements', 'enabled_requirements' );
-
-		if ( ! empty( $enabled[ $requirement ] ) ) {
-			return true;
-		}
-
-		return false;
 	}
 
 	/**

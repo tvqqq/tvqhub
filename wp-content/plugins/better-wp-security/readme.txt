@@ -3,7 +3,7 @@ Contributors: ithemes, chrisjean, mattdanner, timothyblynjacobs
 Tags: security, security plugin, malware, hack, secure, block, SSL, admin, htaccess, lockdown, login, protect, protection, anti virus, attack, injection, login security, maintenance, permissions, prevention, authentication, administration, password, brute force, ban, permissions, bots, user agents, xml rpc, security log
 Requires at least: 5.2
 Tested up to: 5.4
-Stable tag: 7.7.0
+Stable tag: 7.7.1
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -188,6 +188,9 @@ Free support may be available with the help of the community in the <a href="htt
 5. Free malware scan powered by Sucuri SiteCheck.
 
 == Changelog ==
+
+= 7.7.1 =
+* Bug Fix: PHP warning when evaluating password requirements.
 
 = 7.7.0 =
 * Important: iThemes Security requires PHP 5.6 or greater and WordPress 5.2 or greater.
@@ -590,5 +593,5 @@ Free support may be available with the help of the community in the <a href="htt
 
 == Upgrade Notice ==
 
-= 7.7.0 =
-Version 7.7.0 contains new features and bug fixes. It is recommended for all users.
+= 7.7.1 =
+Version 7.7.1 contains bug fixes. It is recommended for all users.

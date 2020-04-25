@@ -884,3 +884,5 @@
 	Bug Fix: Remove "get_magic_quotes()" call that existed for backwards compatibility with PHP versions 5.3 and earlier. This function call was causing a warning on PHP 7.4.
 	Bug Fix: Warning when loading the settings page on PHP 7.4.
 	Bug Fix: Warning when loading the debug page on PHP 7.4.
+7.7.1 - 2020-04-20 - Timothy Jacobs
+	Bug Fix: PHP warning when evaluating password requirements.
