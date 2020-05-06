@@ -20,17 +20,19 @@
  * @subpackage Tvqhub_Helper/includes
  * @author     TVQ <quyen@tvqhub.com>
  */
-class Tvqhub_Helper_Deactivator {
+class Tvqhub_Helper_Deactivator
+{
 
-	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
-	 *
-	 * @since    1.0.0
-	 */
-	public static function deactivate() {
+    /**
+     * Short Description. (use period)
+     *
+     * Long Description.
+     *
+     * @since    1.0.0
+     */
+    public static function deactivate()
+    {
 
-	}
+    }
 
 }

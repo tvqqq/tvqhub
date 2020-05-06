@@ -24,24 +24,25 @@
  * @subpackage Tvqhub_Helper/includes
  * @author     TVQ <quyen@tvqhub.com>
  */
-class Tvqhub_Helper_i18n {
+class Tvqhub_Helper_i18n
+{
 
 
-	/**
-	 * Load the plugin text domain for translation.
-	 *
-	 * @since    1.0.0
-	 */
-	public function load_plugin_textdomain() {
+    /**
+     * Load the plugin text domain for translation.
+     *
+     * @since    1.0.0
+     */
+    public function load_plugin_textdomain()
+    {
 
-		load_plugin_textdomain(
-			'tvqhub-helper',
-			false,
-			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
-		);
+        load_plugin_textdomain(
+            'tvqhub-helper',
+            false,
+            dirname(dirname(plugin_basename(__FILE__))) . '/languages/'
+        );
 
-	}
-
+    }
 
 
 }

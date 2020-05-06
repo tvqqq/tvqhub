@@ -20,17 +20,19 @@
  * @subpackage Tvqhub_Helper/includes
  * @author     TVQ <quyen@tvqhub.com>
  */
-class Tvqhub_Helper_Activator {
+class Tvqhub_Helper_Activator
+{
 
-	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
-	 *
-	 * @since    1.0.0
-	 */
-	public static function activate() {
+    /**
+     * Short Description. (use period)
+     *
+     * Long Description.
+     *
+     * @since    1.0.0
+     */
+    public static function activate()
+    {
 
-	}
+    }
 
 }
