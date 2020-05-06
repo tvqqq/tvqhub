@@ -26,8 +26,8 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if (!defined('WPINC')) {
+    die;
 }
 
 /**
@@ -35,34 +35,36 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'TVQHUB_HELPER_VERSION', '1.0.0' );
+define('TVQHUB_HELPER_VERSION', '1.0.0');
 
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-tvqhub-helper-activator.php
  */
-function activate_tvqhub_helper() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-tvqhub-helper-activator.php';
-	Tvqhub_Helper_Activator::activate();
+function activate_tvqhub_helper()
+{
+    require_once plugin_dir_path(__FILE__) . 'includes/class-tvqhub-helper-activator.php';
+    Tvqhub_Helper_Activator::activate();
 }
 
 /**
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-tvqhub-helper-deactivator.php
  */
-function deactivate_tvqhub_helper() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-tvqhub-helper-deactivator.php';
-	Tvqhub_Helper_Deactivator::deactivate();
+function deactivate_tvqhub_helper()
+{
+    require_once plugin_dir_path(__FILE__) . 'includes/class-tvqhub-helper-deactivator.php';
+    Tvqhub_Helper_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_tvqhub_helper' );
-register_deactivation_hook( __FILE__, 'deactivate_tvqhub_helper' );
+register_activation_hook(__FILE__, 'activate_tvqhub_helper');
+register_deactivation_hook(__FILE__, 'deactivate_tvqhub_helper');
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-tvqhub-helper.php';
+require plugin_dir_path(__FILE__) . 'includes/class-tvqhub-helper.php';
 
 /**
  * Begins execution of the plugin.
@@ -73,10 +75,12 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-tvqhub-helper.php';
  *
  * @since    1.0.0
  */
-function run_tvqhub_helper() {
+function run_tvqhub_helper()
+{
 
-	$plugin = new Tvqhub_Helper();
-	$plugin->run();
+    $plugin = new Tvqhub_Helper();
+    $plugin->run();
 
 }
+
 run_tvqhub_helper();
