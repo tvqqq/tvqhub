@@ -6,5 +6,5 @@ wp-config.php
 wp-content/cache
 wp-content/*.log
 
-# Updraft
-wp-content/updraft
+# WP Admin Style
+wp-content/plugins/wordpress-admin-style-master
