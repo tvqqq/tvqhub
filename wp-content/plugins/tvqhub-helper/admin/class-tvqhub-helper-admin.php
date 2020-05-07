@@ -76,6 +76,7 @@ class Tvqhub_Helper_Admin
          * class.
          */
 
+        wp_enqueue_style('bs4_css', plugin_dir_url(__FILE__) . 'css/bootstrap.min.css', array(), $this->version, 'all');
         wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/tvqhub-helper-admin.css', array(), $this->version, 'all');
 
     }
@@ -100,6 +101,7 @@ class Tvqhub_Helper_Admin
          * class.
          */
 
+        wp_enqueue_script('bs4_script', plugin_dir_url(__FILE__) . 'js/bootstrap.bundle.min.js', array('jquery'), $this->version, false);
         wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/tvqhub-helper-admin.js', array('jquery'), $this->version, false);
 
     }

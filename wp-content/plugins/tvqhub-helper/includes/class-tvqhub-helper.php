@@ -50,6 +50,15 @@ class Tvqhub_Helper
     protected $plugin_name;
 
     /**
+     * The unique identifier of this plugin (display).
+     *
+     * @since    1.0.0
+     * @access   protected
+     * @var      string $plugin_name_display The string used to uniquely identify this plugin.
+     */
+    protected $plugin_name_display;
+
+    /**
      * The current version of the plugin.
      *
      * @since    1.0.0
@@ -75,12 +84,30 @@ class Tvqhub_Helper
             $this->version = '1.0.0';
         }
         $this->plugin_name = 'tvqhub-helper';
+        $this->plugin_name_display = 'TVQhub Helper';
 
         $this->load_dependencies();
         $this->set_locale();
         $this->define_admin_hooks();
         $this->define_public_hooks();
 
+        add_action('admin_menu', [$this, 'registerAdminMenu']);
+    }
+
+    public function registerAdminMenu()
+    {
+        add_menu_page(
+            $this->plugin_name_display,
+            $this->plugin_name_display,
+            'manage_options',
+            $this->plugin_name, [$this, 'loadAdminDisplay'],
+            'dashicons-star-empty'
+        );
+    }
+
+    public function loadAdminDisplay()
+    {
+        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/tvqhub-helper-admin-display.php';
     }
 
     /**
@@ -158,9 +185,10 @@ class Tvqhub_Helper
     {
 
         $plugin_admin = new Tvqhub_Helper_Admin($this->get_plugin_name(), $this->get_version());
-
-        $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
-        $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
+        if (strpos($_SERVER['REQUEST_URI'], $this->get_plugin_name()) !== false) {
+            $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
+            $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
+        }
 
     }
 
