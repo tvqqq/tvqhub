@@ -5,6 +5,3 @@
 wp-config.php
 wp-content/cache
 wp-content/*.log
-
-# WP Admin Style
-wp-content/plugins/wordpress-admin-style-master

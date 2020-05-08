@@ -15,16 +15,21 @@
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
-<div class="container-fluid w-100">
-    <h2 class="mt-4">
-        <?php echo $this->plugin_name_display ?>
-    </h2>
+<div class="container-fluid">
+    <h2 class="my-3"><?php echo $this->plugin_name_display ?></h2>
 
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-2fa-tab" data-toggle="tab" href="#nav-2fa" role="tab" aria-controls="nav-2fa" aria-selected="true">2FA</a>
+            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</a>
+            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a>
         </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-2fa" role="tabpanel" aria-labelledby="nav-2fa-tab">
+            <?php include_once plugin_dir_path(dirname(__FILE__)) . 'partials/2fa.php' ?>
+        </div>
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
     </div>
 </div>
