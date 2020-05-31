@@ -76,7 +76,7 @@ function tvqhub_enqueue_scripts()
     wp_enqueue_style('fa', get_template_directory_uri() . '/vendor/fontawesome/css/all.min.css');
 
     // Google Fonts
-    wp_enqueue_style('ggfonts', '//fonts.googleapis.com/css?family=Open+Sans:400,700');
+    wp_enqueue_style('ggfonts', '//fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
 
     // Animate.css
     wp_enqueue_style('animate', get_template_directory_uri() . '/vendor/animate/animate.min.css');
