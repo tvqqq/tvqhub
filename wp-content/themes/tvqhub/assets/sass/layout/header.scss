@@ -9,8 +9,8 @@ header.navbar {
     min-height: 4rem;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, .2);
     background: #4b6cb7; /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #182848, #4b6cb7); /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #182848, #4b6cb7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: -webkit-linear-gradient(to right, $cyan, $blue); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, $cyan, $blue); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
 
   .navbar-brand {
@@ -39,9 +39,47 @@ header.navbar {
   .nav-link {
     color: #fff !important;
     font-weight: bold;
+    position: relative;
+    text-decoration: none;
 
-    &:hover {
-      color: rgba(255, 255, 255, .5) !important;
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: #ccc;
+    }
+
+    &:before {
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: transform 0s cubic-bezier(0.175, 0.885, 0.320, 1.275), opacity 0s;
+    }
+
+    &:after {
+      opacity: 0;
+      transform: translateY(8px/2);
+      transition: transform .2s cubic-bezier(0.175, 0.885, 0.320, 1.275), opacity .2s;
+    }
+
+    &:hover,
+    &:focus {
+      &:before,
+      &:after {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      &:before {
+        transition: transform .2s cubic-bezier(0.175, 0.885, 0.320, 1.275), opacity .2s;
+      }
+
+      &:after {
+        transition: transform 0s .2s cubic-bezier(0.175, 0.885, 0.320, 1.275), opacity 0s .2s;
+      }
     }
   }
 

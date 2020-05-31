@@ -1,4 +1,8 @@
-<div class="col-12 col-lg-4" id="sidebar">
+<?php
+$isHome = is_home();
+$col = $isHome ? 4 : 3;
+?>
+<div class="col-12 col-lg-<?php echo $col ?>" id="sidebar">
     <aside id="secondary" class="widget-area mt-5 mt-lg-0" role="complementary">
         <?php
         if (is_home()) { ?>

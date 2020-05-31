@@ -1,4 +1,10 @@
 #sidebar {
+  .post-sidebar {
+    .sidebar-posts-list .sidebar-post .sidebar-post-image {
+      width: 100px;
+    }
+  }
+
   .sidebar-title {
     font-weight: bold;
     letter-spacing: 2px;
