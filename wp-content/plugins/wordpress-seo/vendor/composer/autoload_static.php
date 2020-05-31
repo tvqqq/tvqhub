@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit4bf56a192e35dbfaa84a178c46dfe504
+class ComposerStaticInite6617511aa8456dbbf2378e32ec784bc
 {
     public static $prefixLengthsPsr4 = array (
         'C' => 
@@ -118,6 +118,7 @@ class ComposerStaticInit4bf56a192e35dbfaa84a178c46dfe504
         'Composer\\Installers\\ZikulaInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/ZikulaInstaller.php',
         'DeleteDuplicateIndexables' => __DIR__ . '/../..' . '/src/config/migrations/20200507054848_DeleteDuplicateIndexables.php',
         'ExpandIndexableColumnLengths' => __DIR__ . '/../..' . '/src/config/migrations/20200428194858_ExpandIndexableColumnLengths.php',
+        'ResetIndexableHierarchyTable' => __DIR__ . '/../..' . '/src/config/migrations/20200513133401_ResetIndexableHierarchyTable.php',
         'TruncateIndexableTables' => __DIR__ . '/../..' . '/src/config/migrations/20200429105310_TruncateIndexableTables.php',
         'WPSEO_Abstract_Capability_Manager' => __DIR__ . '/../..' . '/admin/capabilities/class-abstract-capability-manager.php',
         'WPSEO_Abstract_Metabox_Tab_With_Sections' => __DIR__ . '/../..' . '/admin/metabox/class-abstract-sectioned-metabox-tab.php',
@@ -896,9 +897,9 @@ class ComposerStaticInit4bf56a192e35dbfaa84a178c46dfe504
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit4bf56a192e35dbfaa84a178c46dfe504::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit4bf56a192e35dbfaa84a178c46dfe504::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit4bf56a192e35dbfaa84a178c46dfe504::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInite6617511aa8456dbbf2378e32ec784bc::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInite6617511aa8456dbbf2378e32ec784bc::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInite6617511aa8456dbbf2378e32ec784bc::$classMap;
 
         }, null, ClassLoader::class);
     }

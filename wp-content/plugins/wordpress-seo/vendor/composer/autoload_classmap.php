@@ -103,6 +103,7 @@ return array(
     'Composer\\Installers\\ZikulaInstaller' => $vendorDir . '/composer/installers/src/Composer/Installers/ZikulaInstaller.php',
     'DeleteDuplicateIndexables' => $baseDir . '/src/config/migrations/20200507054848_DeleteDuplicateIndexables.php',
     'ExpandIndexableColumnLengths' => $baseDir . '/src/config/migrations/20200428194858_ExpandIndexableColumnLengths.php',
+    'ResetIndexableHierarchyTable' => $baseDir . '/src/config/migrations/20200513133401_ResetIndexableHierarchyTable.php',
     'TruncateIndexableTables' => $baseDir . '/src/config/migrations/20200429105310_TruncateIndexableTables.php',
     'WPSEO_Abstract_Capability_Manager' => $baseDir . '/admin/capabilities/class-abstract-capability-manager.php',
     'WPSEO_Abstract_Metabox_Tab_With_Sections' => $baseDir . '/admin/metabox/class-abstract-sectioned-metabox-tab.php',
