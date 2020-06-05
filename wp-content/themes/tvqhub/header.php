@@ -38,7 +38,8 @@
     <div class="container flex-wrap header-bar">
         <a class="navbar-brand mb-1 mx-auto mx-lg-0 mr-lg-2" href="<?php echo esc_url(home_url('/')) ?>"
            aria-label="TVQhub">
-            <img class="d-block no-lazy" width="100px" src="<?php echo get_theme_file_uri('assets/images/tvqhub.svg') ?>"
+            <img class="d-block no-lazy" width="100px"
+                 src="<?php echo get_theme_file_uri('assets/images/tvqhub.svg') ?>"
                  alt="TVQhub Logo">
         </a>
 
@@ -58,12 +59,17 @@
 
         <ul class="navbar-nav ml-md-auto mx-auto m-md-0">
             <li class="nav-item">
-                <a class="nav-link p-2" href="/me" data-toggle="tooltip" data-placement="bottom" title="About me"><i
-                        class="fas fa-user-circle"></i></a>
+                <a class="nav-link p-2" href="/me" data-toggle="tooltip" data-placement="bottom" title="About me">
+                    <i class="fas fa-user-circle"></i></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link p-2" href="/contact" data-toggle="tooltip" data-placement="bottom" title="Contact"><i
-                        class="far fa-paper-plane"></i></a>
+                <a class="nav-link p-2" href="/contact" data-toggle="tooltip" data-placement="bottom" title="Contact">
+                    <i class="far fa-paper-plane"></i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link p-2" href="/bucket-list" data-toggle="tooltip" data-placement="bottom"
+                   title="Bucket List">
+                    <i class="fas fa-layer-group"></i></a>
             </li>
             <li class="nav-item">
                 <form class="form-inline search" method="get" action="<?php echo home_url(); ?>"
