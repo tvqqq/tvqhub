@@ -1,6 +1,6 @@
 <div id="app-vue-bucketlist">
-    <ul>
-        <li v-for="(item, index) in items">
+    <ul style="list-style: none">
+        <li v-for="(item, index) in items" class="my-1">
             <input disabled type="checkbox" class="mr-1" :checked="item.complete_date"/>
             <span :class="{ 'text-muted': item.complete_date }">{{ index + 1 }}. {{ item.content }}</span>
             <span v-if="item.complete_date" class="btn badge badge-success badge-pill" data-toggle="popover"
