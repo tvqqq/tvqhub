@@ -14,5 +14,5 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.KEY_SSH }}
-          script: cd /var/www/html/tvqhub
+          script: cd /opt/tvqhub
             && git pull origin master
