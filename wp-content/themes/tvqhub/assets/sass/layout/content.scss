@@ -57,18 +57,18 @@ article {
       border-top: 20px solid transparent;
       border-bottom: 20px solid transparent;
       border-left: 20px solid #e0e0e0;
-      top: 19px;
+      top: 28px;
       left: 0;
     }
   }
 
   .entry-title {
-    font-size: 33px;
+    line-height: 130%;
     font-weight: bold;
     color: $blue !important;
 
     &.title-home {
-      font-size: 28px;
+      font-size: 26px;
     }
 
     a {
