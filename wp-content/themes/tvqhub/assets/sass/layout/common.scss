@@ -35,9 +35,19 @@ embed, iframe, object, img {
   margin: 0 auto !important;
 }
 
+code {
+  background-color: #f9f2f4;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
 pre {
   color: #494545;
   background-color: #eee;
   padding: 10px;
   border-left: 8px solid #d2d2d2;
+
+  code {
+    background-color: initial;
+  }
 }
