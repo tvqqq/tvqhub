@@ -165,3 +165,6 @@ function send_smtp_email(PHPMailer $phpmailer)
     $phpmailer->From = SMTP_FROM;
     $phpmailer->FromName = SMTP_NAME;
 }
+
+// Disable XML-RPC
+add_filter('xmlrpc_enabled', '__return_false');
