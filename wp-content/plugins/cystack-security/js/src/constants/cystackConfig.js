@@ -1,0 +1,43 @@
+const {
+    adminUrl,
+    ajaxUrl,
+    cystackBaseUrl,
+    locale,
+    nonce,
+    phpVersion,
+    pluginPath,
+    plugins,
+    targetId,
+    targetName,
+    targetAddress,
+    cystackEmail,
+    iframeUrl,
+    loginUrl,
+    signupUrl,
+    theme,
+    wpVersion,
+    cystackFeature,
+    homeUrl
+} = window.cystackConfig;
+
+export {
+    adminUrl,
+    ajaxUrl,
+    cystackBaseUrl,
+    locale,
+    nonce,
+    phpVersion,
+    pluginPath,
+    plugins,
+    targetId,
+    targetName,
+    targetAddress,
+    cystackEmail,
+    iframeUrl,
+    loginUrl,
+    signupUrl,
+    theme,
+    wpVersion,
+    cystackFeature,
+    homeUrl
+};

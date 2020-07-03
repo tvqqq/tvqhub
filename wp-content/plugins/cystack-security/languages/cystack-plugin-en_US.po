@@ -1,0 +1,100 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: CyStack Security\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-06-23 03:42+0000\n"
+"PO-Revision-Date: 2020-06-23 03:46+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.4.0; wp-5.4.2"
+
+#: inc/Base/BuildMenu.php:30
+msgid "Blacklist Monitor"
+msgstr ""
+
+#. Author of the plugin
+#: inc/Base/BuildMenu.php:28 inc/Base/BuildMenu.php:39
+#: inc/Base/BuildMenu.php:39
+msgid "CyStack"
+msgstr ""
+
+#: inc/Base/BuildMenu.php:30
+msgid "CyStack Blacklist Monitor"
+msgstr ""
+
+#. Description of the plugin
+msgid ""
+"CyStack Cloud Security constantly monitors your website, server & cloud "
+"service to help you fight emerging security threats."
+msgstr ""
+
+#: inc/Base/BuildMenu.php:29
+msgid "CyStack Dashboard"
+msgstr ""
+
+#: inc/Base/BuildMenu.php:31
+msgid "CyStack DNS Monitor"
+msgstr ""
+
+#: inc/Base/BuildMenu.php:32
+msgid "CyStack HTTPS Monitor"
+msgstr ""
+
+#: inc/Base/BuildMenu.php:35
+msgid "CyStack Members"
+msgstr ""
+
+#. Name of the plugin
+msgid "CyStack Security"
+msgstr ""
+
+#: inc/Base/BuildMenu.php:36
+msgid "CyStack Settings"
+msgstr ""
+
+#: inc/Base/BuildMenu.php:33
+msgid "CyStack Uptime Monitor"
+msgstr ""
+
+#: inc/Base/BuildMenu.php:34
+msgid "CyStack Vulnerability Monitor"
+msgstr ""
+
+#: inc/Base/BuildMenu.php:29
+msgid "Dashboard"
+msgstr ""
+
+#: inc/Base/BuildMenu.php:31
+msgid "DNS Monitor"
+msgstr ""
+
+#: inc/Base/BuildMenu.php:32
+msgid "HTTPS Monitor"
+msgstr ""
+
+#. URI of the plugin
+#. Author URI of the plugin
+msgid "https://cystack.net/"
+msgstr ""
+
+#: inc/Base/BuildMenu.php:35
+msgid "Members"
+msgstr ""
+
+#: inc/Base/BuildMenu.php:36
+msgid "Settings"
+msgstr ""
+
+#: inc/Base/BuildMenu.php:33
+msgid "Uptime Monitor"
+msgstr ""
+
+#: inc/Base/BuildMenu.php:34
+msgid "Vulnerability Monitor"
+msgstr ""
