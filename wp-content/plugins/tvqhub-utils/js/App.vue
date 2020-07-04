@@ -1,6 +1,6 @@
 <template>
-    <div>
-        Hello World!
+    <div class="py-3 pr-3">
+        <b-alert show>Default Alert</b-alert>
     </div>
 </template>
 
