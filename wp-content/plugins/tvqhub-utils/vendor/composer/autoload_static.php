@@ -16,7 +16,7 @@ class ComposerStaticInitba7663f09ebea7e6dfdd30513b37fa22
     public static $prefixDirsPsr4 = array (
         'Tvqhub\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/src',
+            0 => __DIR__ . '/../..' . '/app',
         ),
     );
 
