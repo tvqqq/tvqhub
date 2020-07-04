@@ -14,6 +14,7 @@ final class Init
         return [
             Base\Menu::class,
             Base\Enqueue::class,
+            Base\Routes::class,
         ];
     }
 

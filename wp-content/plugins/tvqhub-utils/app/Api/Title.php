@@ -2,10 +2,12 @@
 
 namespace Tvqhub\Api;
 
-class Title
+use WP_REST_Response;
+
+class Title extends BaseController
 {
-    public function convert()
+    public function handle()
     {
-        var_dump(1111);die;
+        return $this->ok(['title' => 'damn-so-good']);
     }
 }
