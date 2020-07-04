@@ -12,7 +12,7 @@ final class Init
     private static function getServices()
     {
         return [
-
+            Base\Menu::class,
         ];
     }
 
