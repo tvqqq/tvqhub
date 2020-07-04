@@ -24,6 +24,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Tvqhub\Base\Activate;
+use Tvqhub\Base\Deactivate;
+use Tvqhub\Init;
+
 if (!defined('ABSPATH')) {
     exit;
 }
@@ -40,12 +44,20 @@ if (!defined('TVQHUB_UTILS_PLUGIN_VERSION')) {
 }
 
 /**
+ * Plugin URL.
+ */
+if (!defined('TVQHUB_UTILS_PLUGIN_URL')) {
+    define('TVQHUB_UTILS_PLUGIN_URL', plugin_dir_url(__FILE__));
+}
+
+/**
  * The code that runs during plugin activation
  */
 function tvqhub_utils_activate_plugin()
 {
-    \Tvqhub\Base\Activate::activate();
+    Activate::activate();
 }
+
 register_activation_hook(__FILE__, 'tvqhub_utils_activate_plugin');
 
 /**
@@ -53,11 +65,12 @@ register_activation_hook(__FILE__, 'tvqhub_utils_activate_plugin');
  */
 function tvqhub_utils_deactivate_plugin()
 {
-    \Tvqhub\Base\Deactivate::deactivate();
+    Deactivate::deactivate();
 }
+
 register_activation_hook(__FILE__, 'tvqhub_utils_deactivate_plugin');
 
 /**
  * Register services for plugin.
  */
-\Tvqhub\Init::registerServices();
+Init::registerServices();

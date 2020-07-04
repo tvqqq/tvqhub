@@ -1,16 +1,16 @@
 {
-    "name": "tvq/tvqhub-utils",
-    "type": "project",
-    "authors": [
-        {
-            "name": "Tat Vi Quyen",
-            "email": "tvq9612@gmail.com"
-        }
-    ],
-    "require": {},
-    "autoload": {
-        "psr-4": {
-            "Tvqhub\\": "./src"
-        }
+  "name": "tvq/tvqhub-utils",
+  "type": "project",
+  "authors": [
+    {
+      "name": "Tat Vi Quyen",
+      "email": "tvq9612@gmail.com"
     }
+  ],
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "Tvqhub\\": "./src"
+    }
+  }
 }
