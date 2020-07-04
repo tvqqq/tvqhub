@@ -9,17 +9,13 @@ class Enqueue
         add_action('admin_enqueue_scripts', [$this, 'enqueue']);
     }
 
-    public function enqueue()
+    public function enqueue($hook)
     {
-        // CSS
-//        wp_enqueue_style(
-//            'tvqhub-utils-css',
-//            TVQHUB_UTILS_PLUGIN_URL . 'assets/scss/style.css',
-//            null,
-//            TVQHUB_UTILS_PLUGIN_VERSION
-//        );
+        // Only load script inside this plugin
+        if ($hook !== 'toplevel_page_tvqhub-utils') {
+            return;
+        }
 
-        // JS
         wp_enqueue_script(
             'tvqhub-utils-js',
             TVQHUB_UTILS_PLUGIN_URL . 'dist/bundle.js',
