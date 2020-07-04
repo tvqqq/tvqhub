@@ -1,6 +1,6 @@
 <template>
     <div class="py-3 pr-3">
-        <b-alert show>Default Alert</b-alert>
+        <router-view></router-view>
     </div>
 </template>
 
