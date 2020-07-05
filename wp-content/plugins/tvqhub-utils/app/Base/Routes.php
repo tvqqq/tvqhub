@@ -2,7 +2,8 @@
 
 namespace Tvqhub\Base;
 
-use Tvqhub\Api\Title;
+use Tvqhub\Api\Functions;
+use Tvqhub\Api\Home;
 use WP_REST_Server;
 
 class Routes
@@ -14,11 +15,23 @@ class Routes
     private function routes()
     {
         return [
+            // Home
+            [
+                'slug' => 'home',
+                'method' => WP_REST_Server::READABLE,
+                'callback' => [new Home(), 'index']
+            ],
+            [
+                'slug' => 'home',
+                'method' => WP_REST_Server::CREATABLE,
+                'callback' => [new Home(), 'store']
+            ],
             [
                 'slug' => 'title',
-                'method' => WP_REST_Server::READABLE,
-                'callback' => [new Title(), 'handle']
+                'method' => WP_REST_Server::CREATABLE,
+                'callback' => [new Functions(), 'convertTitle']
             ],
+            // ...
         ];
     }
 
@@ -32,8 +45,7 @@ class Routes
      */
     public function registerRoutes()
     {
-        $version = '1';
-        $namespace = 'tvqhub-utils/v' . $version;
+        $namespace = 'tvqhub-utils';
         foreach (self::routes() as $route) {
             register_rest_route($namespace, '/' . $route['slug'], [
                 [

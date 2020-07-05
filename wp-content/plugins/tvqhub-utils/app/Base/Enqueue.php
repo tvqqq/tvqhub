@@ -27,7 +27,7 @@ class Enqueue
         // Add initial data to plugin so it can be rendered without fetch.
         $data = [
             'data' => [
-                'test' => 'Test data'
+                'base_url' => home_url('/') . 'wp-json/tvqhub-utils'
             ],
             'nonce' => wp_create_nonce('tvqhub-utils')
         ];

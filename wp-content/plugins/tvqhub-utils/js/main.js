@@ -1,23 +1,33 @@
 import Vue from 'vue'
-import {BootstrapVue} from 'bootstrap-vue'
+import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import axios from 'axios';
 import VueRouter from 'vue-router'
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
-Vue.use(VueRouter);
+Vue.use(BootstrapVueIcons)
+Vue.use(VueRouter)
+
+window.axios = require('axios');
+axios.defaults.baseURL = TvqhubJs.data.base_url;
 
 // Plugin components
 import App from './App.vue'
 import Home from "./components/Home.vue";
+import Functions from "./components/Functions.vue";
 
 const router = new VueRouter({
     routes: [
         {
             path: '/',
+            name: 'home',
             component: Home
+        },
+        {
+            path: 'functions',
+            name: 'functions',
+            component: Functions
         }
     ]
 });
@@ -27,6 +37,18 @@ Vue.mixin({
     computed: {
         nonce: function () {
             return TvqhubJs.nonce;
+        }
+    },
+    methods: {
+        makeToast(msg, variant = 'success') {
+            this.$bvToast.toast(msg, {
+                title: 'Notification',
+                autoHideDelay: 3000,
+                appendToast: true,
+                variant: variant,
+                solid: true,
+                toaster: 'b-toaster-bottom-right'
+            })
         }
     }
 });
