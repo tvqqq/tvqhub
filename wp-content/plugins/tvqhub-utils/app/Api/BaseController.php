@@ -2,12 +2,13 @@
 
 namespace Tvqhub\Api;
 
+use Tvqhub\Base\Constants;
 use WP_Error;
 use WP_REST_Response;
 
 class BaseController
 {
-    const OPTION_NAME = 'tvqhub_utils_home_options';
+    const OPTION_NAME = Constants::SNAKE_NAME . '_home_options';
 
     public function getOptions()
     {

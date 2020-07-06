@@ -10,7 +10,7 @@ Vue.use(BootstrapVueIcons)
 Vue.use(VueRouter)
 
 window.axios = require('axios');
-axios.defaults.baseURL = TvqhubJs.data.base_url;
+axios.defaults.baseURL = WpvrJs.data.base_url;
 
 // Plugin components
 import App from './App.vue'
@@ -34,11 +34,6 @@ const router = new VueRouter({
 
 // Create a global mixin to expose strings, global config, and single backend resource.
 Vue.mixin({
-    computed: {
-        nonce: function () {
-            return TvqhubJs.nonce;
-        }
-    },
     methods: {
         makeToast(msg, variant = 'success') {
             this.$bvToast.toast(msg, {
@@ -55,8 +50,8 @@ Vue.mixin({
 
 // Main Vue instance that bootstraps the frontend.
 new Vue({
-    el: '#tvqhub-utils-app',
-    data: TvqhubJs.data,
+    el: '#wpvr-app',
+    data: WpvrJs.data,
     router,
     render: h => h(App)
 });

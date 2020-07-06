@@ -12,12 +12,12 @@ class Enqueue
     public function enqueue($hook)
     {
         // Only load script inside this plugin
-        if ($hook !== 'toplevel_page_tvqhub-utils') {
+        if ($hook !== 'toplevel_page_' . Constants::HYPHEN_NAME) {
             return;
         }
 
         wp_enqueue_script(
-            'tvqhub-utils-js',
+            Constants::HYPHEN_NAME . '-js',
             TVQHUB_UTILS_PLUGIN_URL . 'dist/bundle.js',
             null,
             TVQHUB_UTILS_PLUGIN_VERSION,
@@ -27,10 +27,9 @@ class Enqueue
         // Add initial data to plugin so it can be rendered without fetch.
         $data = [
             'data' => [
-                'base_url' => home_url('/') . 'wp-json/tvqhub-utils'
-            ],
-            'nonce' => wp_create_nonce('tvqhub-utils')
+                'base_url' => home_url('/') . 'wp-json/' . Constants::HYPHEN_NAME
+            ]
         ];
-        wp_localize_script('tvqhub-utils-js', 'TvqhubJs', $data);
+        wp_localize_script(Constants::HYPHEN_NAME . '-js', 'WpvrJs', $data);
     }
 }

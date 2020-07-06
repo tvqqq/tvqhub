@@ -45,9 +45,8 @@ class Routes
      */
     public function registerRoutes()
     {
-        $namespace = 'tvqhub-utils';
         foreach (self::routes() as $route) {
-            register_rest_route($namespace, '/' . $route['slug'], [
+            register_rest_route(Constants::HYPHEN_NAME, '/' . $route['slug'], [
                 [
                     'methods' => $route['method'],
                     'callback' => $route['callback'],

@@ -11,11 +11,11 @@ class Menu
 
     public function buildMenu()
     {
-        add_menu_page('TVQhub Utils', 'TVQhub Utils', 'manage_options', 'tvqhub-utils', [$this, 'buildApp'], 'dashicons-rest-api');
+        add_menu_page(Constants::DISPLAY_NAME, Constants::DISPLAY_NAME, 'manage_options', Constants::HYPHEN_NAME, [$this, 'buildApp'], 'dashicons-rest-api');
     }
 
     public function buildApp()
     {
-        echo '<div id="tvqhub-utils-app"><app></app></div>';
+        echo '<div id="wpvr-app"><app></app></div>';
     }
 }
