@@ -7,13 +7,11 @@
         <div class="row">
             <div class="col-2">
                 <b-list-group>
-                    <b-list-group-item :to="{name: 'home'}" :class="{'active': isSelected(0)}"
-                                       @click="selected = 0">
+                    <b-list-group-item :to="{name: 'home'}" :class="{'active': isRoute('home')}">
                         <b-icon-heart-fill></b-icon-heart-fill>
                         Home
                     </b-list-group-item>
-                    <b-list-group-item :to="{name: 'functions'}" :class="{'active': isSelected(1)}"
-                                       @click="selected = 1">
+                    <b-list-group-item :to="{name: 'functions'}" :class="{'active': isRoute('functions')}">
                         <b-icon-layers-fill></b-icon-layers-fill>
                         Functions
                     </b-list-group-item>
@@ -33,14 +31,9 @@
 <script>
     export default {
         name: "App",
-        data() {
-            return {
-                selected: 0
-            }
-        },
         methods: {
-            isSelected(i) {
-                return i === this.selected
+            isRoute(name) {
+                return name === this.$route.name
             }
         }
     }

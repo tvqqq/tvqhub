@@ -25,7 +25,7 @@ const router = new VueRouter({
             component: Home
         },
         {
-            path: 'functions',
+            path: '/functions',
             name: 'functions',
             component: Functions
         }
