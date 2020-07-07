@@ -26,7 +26,6 @@
         },
         methods: {
             convertTitleWp() {
-                console.log('1111');
                 axios({
                     method: 'POST',
                     url: '/title',
