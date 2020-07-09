@@ -18,17 +18,17 @@ class Routes
             // Home
             [
                 'slug' => 'home',
-                'method' => WP_REST_Server::READABLE,
+                'method' => 'GET',
                 'callback' => [new Home(), 'index']
             ],
             [
                 'slug' => 'home',
-                'method' => WP_REST_Server::CREATABLE,
+                'method' => 'POST',
                 'callback' => [new Home(), 'store']
             ],
             [
                 'slug' => 'title',
-                'method' => WP_REST_Server::CREATABLE,
+                'method' => 'POST',
                 'callback' => [new Functions(), 'convertTitle']
             ],
             // ...
