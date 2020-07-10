@@ -32,6 +32,11 @@ class Routes
                 'callback' => [new Functions(), 'convertTitle']
             ],
             // ...
+            [
+                'slug' => 'clean-up',
+                'method' => 'GET',
+                'callback' => [new Functions(), 'cleanUpDb']
+            ],
         ];
     }
 

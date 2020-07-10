@@ -12,6 +12,15 @@
                 </div>
             </div>
         </div>
+
+        <div class="card my-3">
+            <div class="card-header">
+                Clean Up Database
+            </div>
+            <div class="card-body">
+                <b-button size="lg" @click="cleanUpDb">Clean <b-icon-bucket></b-icon-bucket></b-button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -32,6 +41,16 @@
                     data: {data: { title: this.titleRaw } }
                 }).then(response => {
                     this.titleConverted = response.data.data;
+                    this.makeToast('Action completed!');
+                }).catch(err => {
+                    this.makeToast(err.response.data.message, 'danger');
+                });
+            },
+            cleanUpDb() {
+                axios({
+                    method: 'GET',
+                    url: '/clean-up',
+                }).then(response => {
                     this.makeToast('Action completed!');
                 }).catch(err => {
                     this.makeToast(err.response.data.message, 'danger');
