@@ -4,23 +4,30 @@ namespace Tvqhub\Api;
 
 class Functions extends BaseController
 {
+    /**
+     * Convert Title WP to Vietnamese no signatures.
+     *
+     * @param $request
+     * @return \WP_Error|\WP_REST_Response
+     */
     public function convertTitle($request)
     {
         $data = $request['data'];
+        return $this->ok(sanitize_title($data['title']));
 
-        $url = 'https://hvtvvyct8h.execute-api.ap-southeast-1.amazonaws.com/default/convertTitleWp?title=' . $data['title'];
-        $args = [
-            'headers' => [
-                'x-api-key' => $this->getOptions()['lambda_secret_key'] ?? null
-            ]
-        ];
-        $result = wp_remote_get($url, $args);
-        $body = json_decode($result['body']);
-        if (!empty($body->message)) {
-            return $this->fail($body->message);
-        }
+//        $url = 'https://hvtvvyct8h.execute-api.ap-southeast-1.amazonaws.com/default/convertTitleWp?title=' . $data['title'];
+//        $args = [
+//            'headers' => [
+//                'x-api-key' => $this->getOptions()['lambda_secret_key'] ?? null
+//            ]
+//        ];
+//        $result = wp_remote_get($url, $args);
+//        $body = json_decode($result['body']);
+//        if (!empty($body->message)) {
+//            return $this->fail($body->message);
+//        }
+    }
 
-        return $this->ok($body);
     /**
      * Clean up database by remove revision posts.
      *

@@ -15,7 +15,6 @@ class Routes
     private function routes()
     {
         return [
-            // Home
             [
                 'slug' => 'home',
                 'method' => 'GET',
@@ -31,7 +30,6 @@ class Routes
                 'method' => 'POST',
                 'callback' => [new Functions(), 'convertTitle']
             ],
-            // ...
             [
                 'slug' => 'clean-up',
                 'method' => 'GET',

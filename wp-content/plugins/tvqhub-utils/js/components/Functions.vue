@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="card">
+        <div class="card my-3">
             <div class="card-header">
                 Convert Title WP
             </div>
