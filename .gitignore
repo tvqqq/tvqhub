@@ -5,3 +5,4 @@
 wp-config.php
 wp-content/cache
 wp-content/*.log
+wp-content/plugins/wordpress-plugin-vue-rest
