@@ -1,5 +1,3 @@
-<?php $cv = get_post_meta(get_the_ID(), 'cv', true); ?>
-
 <div class="row" id="page-me">
     <div class="col-12 col-lg-3 order-lg-last text-center">
         <!-- Intro -->
@@ -14,34 +12,17 @@
         <h3>Tất Vĩ Quyền (TVQ)</h3>
         <div class="row text-muted d-flex flex-row me-info">
             <span><i class="fas fa-map-marker-alt"></i> Saigonese</span>
-            <span><i
-                    class="far fa-sun"></i> <?php echo date_diff(date_create(date('Y-m-d')), date_create('1996-12-17'))->y ?>+</span>
             <span><i class="fas fa-horse-head"></i> Sagittarius</span>
         </div>
+        <div class="text-muted mt-1">
+            <i class="fas fa-birthday-cake"></i>
+            <?php $diff = date_diff(date_create(date('Y-m-d')), date_create('1996-12-17')); ?>
+            <?= $diff->y ?> years, <?= $diff->m ?> month, <?= $diff->d ?> days
+        </div>
         <div class="mt-3 button-cv">
-            <button type="button" class="btn btn-outline-primary" data-toggle="modal"
-                    data-target="#myCV">My CV <i class="fas fa-chevron-circle-right"></i>
-            </button>
-            <div class="modal fade" id="myCV" tabindex="-1" role="dialog"
-                 aria-labelledby="myCVLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <object width="100%" height="900" data="<?= $cv ?>">
-                                <p>Your web browser doesn't have a PDF plugin.
-                                    You can download the PDF file.<br/><i class="fas fa-arrow-circle-down"></i>
-                                    <a href="<?= $cv ?>"
-                                       class="btn btn-outline-primary mt-3 mb-1">
-                                        <strong>DOWNLOAD CV</strong>
-                                        <i class="fa fa-download" aria-hidden="true"></i>
-                                    </a>
-                                </p>
-                            </object>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- end modal-->
+            <a href="https://cv.tvqhub.com" target="_blank">
+                <button type="button" class="btn btn-outline-primary">My CV <i class="fas fa-chevron-circle-right"></i></button>
+            </a>
         </div>
     </div>
     <div class="col-12 col-lg-9 order-lg-first mt-4 mt-lg-0">
@@ -61,6 +42,8 @@
         <ul>
             <li><strong>Laptop:</strong> Macbook Pro 2019 13" 1.4Ghz</li>
             <li><strong>Smartphone:</strong> Apple iPhone 11</li>
+            <li><strong>Keyboard:</strong> Logitech K380</li>
+            <li><strong>Mouse:</strong> Logitech M337</li>
             <li><span class="text-muted">Updating...</span></li>
         </ul>
 
