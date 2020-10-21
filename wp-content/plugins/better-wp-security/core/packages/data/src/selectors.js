@@ -54,3 +54,11 @@ export function getRoles() {
 
 	return index.roles;
 }
+
+export function getActorTypes( state ) {
+	return state.actors.types;
+}
+
+export function getActors( state, type ) {
+	return state.actors.byType[ type ];
+}

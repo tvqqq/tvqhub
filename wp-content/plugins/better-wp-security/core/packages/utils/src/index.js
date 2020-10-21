@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { get, isPlainObject } from 'lodash';
+import { get, isPlainObject, cloneDeep } from 'lodash';
 
 /**
  * Internal dependencies
@@ -181,6 +181,18 @@ export function responseToError( response ) {
 export const MYSTERY_MAN_AVATAR = 'https://secure.gravatar.com/avatar/d7a973c7dab26985da5f961be7b74480?s=96&d=mm&f=y&r=g';
 
 /**
+ * Gets a targetHint from an object.
+ *
+ * @param {Object} object
+ * @param {string} header
+ * @param {boolean} undefinedIfEmpty
+ * @return {Array<string>|undefined}
+ */
+export function getTargetHint( object, header, undefinedIfEmpty = true ) {
+	return get( object, [ '_links', 'self', 0, 'targetHints', header ], undefinedIfEmpty ? undefined : [] );
+}
+
+/**
  * Get the "self" link for a REST API object.
  *
  * @param {Object} object
@@ -219,4 +231,37 @@ export function getSchemaLink( schema, rel ) {
 			return link;
 		}
 	}
+}
+
+/**
+ * Modifies a schema by its ui schema.
+ *
+ * This will remove any hidden fields from the actual schema document.
+ *
+ * @param {Object} schema
+ * @param {Object} uiSchema
+ * @return {Object}
+ */
+export function modifySchemaByUiSchema( schema, uiSchema ) {
+	if ( schema.type !== 'object' ) {
+		return schema;
+	}
+
+	let modified;
+
+	for ( const property in uiSchema ) {
+		if ( ! uiSchema.hasOwnProperty( property ) ) {
+			continue;
+		}
+
+		if ( uiSchema[ property ][ 'ui:widget' ] === 'hidden' ) {
+			if ( ! modified ) {
+				modified = cloneDeep( schema );
+			}
+
+			delete modified.properties[ property ];
+		}
+	}
+
+	return modified || schema;
 }

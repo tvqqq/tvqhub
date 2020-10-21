@@ -39,8 +39,8 @@ final class Eager_Loading_Decorator implements Repository {
 		return isset( $this->all[ $id ] );
 	}
 
-	public function persist( User_Group $user_group ) {
-		$this->decorates->persist( $user_group );
+	public function persist( User_Group $user_group, array $args = [] ) {
+		$this->decorates->persist( $user_group, $args );
 
 		if ( null !== $this->all ) {
 			$this->all[ $user_group->get_id() ] = $user_group;

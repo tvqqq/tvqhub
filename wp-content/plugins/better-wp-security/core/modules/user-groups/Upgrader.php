@@ -44,7 +44,7 @@ final class Upgrader {
 		}
 
 		$user_group->set_label( $label );
-		$this->user_groups->persist( $user_group );
+		$this->user_groups->persist( $user_group, [] );
 
 		return $user_group;
 	}

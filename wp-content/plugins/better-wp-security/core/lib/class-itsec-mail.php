@@ -46,7 +46,7 @@ final class ITSEC_Mail {
 			$callout = $this->get_template( 'pro-callout.html' );
 
 			$replacements = array(
-				'two_factor' => esc_html__( 'Want two-factor authentication, scheduled malware scanning, ticketed support and more?', 'better-wp-security' ),
+				'two_factor' => esc_html__( 'Want two-factor authentication, scheduled site scanning, ticketed support and more?', 'better-wp-security' ),
 				'get_pro'    => esc_html__( 'Get iThemes Security Pro', 'better-wp-security' ),
 				'why_pro'    => sprintf( wp_kses( __( 'Why go Pro? <a href="%s">Check out the Free/Pro comparison chart.</a>', 'better-wp-security' ), array( 'a' => array( 'href' => array() ) ) ), esc_url( 'https://ithemes.com/security/why-go-pro/' ) ),
 			);

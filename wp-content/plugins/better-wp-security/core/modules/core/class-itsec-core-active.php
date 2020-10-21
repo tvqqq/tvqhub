@@ -3,9 +3,16 @@
 class ITSEC_Core_Active {
 
 	public function run() {
+		add_action( 'rest_api_init', array( $this, 'rest_api_init' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ), 0 );
 		add_action( 'login_enqueue_scripts', array( $this, 'register_scripts' ), 0 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_scripts' ), 0 );
+	}
+
+	public function rest_api_init() {
+		$factory = ITSEC_Modules::get_container()->get( \iThemesSecurity\Actor\Multi_Actor_Factory::class );
+		( new ITSEC_REST_Actor_Types_Controller( $factory ) )->register_routes();
+		( new ITSEC_REST_Actors_Controller( $factory ) )->register_routes();
 	}
 
 	public function register_scripts() {

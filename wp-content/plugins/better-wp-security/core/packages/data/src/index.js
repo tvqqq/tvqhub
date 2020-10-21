@@ -6,6 +6,7 @@ import { registerStore } from '@wordpress/data';
 /**
  * Internal dependencies
  */
+import './bans';
 import controls from './controls';
 import * as selectors from './selectors';
 import * as resolvers from './resolvers';

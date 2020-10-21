@@ -570,7 +570,7 @@ class ITSEC_Lib_Login_Interstitial {
 		$session      = $this->get_and_verify_session();
 
 		if ( ! $interstitial->show_to_user( $session->get_user(), $session->is_current_requested() ) ) {
-			wp_safe_redirect( set_url_scheme( wp_login_url(), 'login_post' ) );
+			wp_safe_redirect( wp_login_url() );
 			die;
 		}
 
@@ -901,10 +901,13 @@ class ITSEC_Lib_Login_Interstitial {
 	 * @return string
 	 */
 	private function get_base_wp_login_url() {
+		add_filter( 'rcp_do_login_hijack', '__return_false', 100 );
 		$wp_login_url = set_url_scheme( wp_login_url(), 'login_post' );
+		remove_filter( 'rcp_do_login_hijack', '__return_false', 100 );
 
-		if ( isset( $_GET['wpe-login'] ) && ! preg_match( '/[&?]wpe-login=/', $wp_login_url ) ) {
-			$wp_login_url = add_query_arg( 'wpe-login', $_GET['wpe-login'], $wp_login_url );
+		if ( ( defined( 'WPE_PLUGIN_URL' ) || isset( $_GET['wpe-login'] ) ) && ! preg_match( '/[&?]wpe-login=/', $wp_login_url ) ) {
+			$wpe_login    = isset( $_GET['wpe-login'] ) ? $_GET['wpe-login'] : 'true';
+			$wp_login_url = add_query_arg( 'wpe-login', $wpe_login, $wp_login_url );
 		}
 
 		return $wp_login_url;

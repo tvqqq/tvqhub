@@ -43,6 +43,7 @@ class autoptimizeConfig
 
             add_action( 'admin_menu', array( $this, 'addmenu' ) );
             add_action( 'admin_init', array( $this, 'registersettings' ) );
+            add_action( 'admin_init', array( 'PAnD', 'init' ) );
 
             // Set meta info.
             if ( function_exists( 'plugin_row_meta' ) ) {
@@ -96,7 +97,7 @@ class autoptimizeConfig
     public function show_config()
     {
         $conf = self::instance();
-?>
+        ?>
 <style>
 /* title and button */
 #ao_title_and_button:after {content:''; display:block; clear:both;}
@@ -250,7 +251,7 @@ if ( is_network_admin() && autoptimizeOptionWrapper::is_ao_active_for_network() 
 <?php } ?>
 <tr valign="top" class="js_sub">
 <th scope="row"><?php _e( 'Exclude scripts from Autoptimize:', 'autoptimize' ); ?></th>
-<td><label><input type="text" style="width:100%;" name="autoptimize_js_exclude" value="<?php echo autoptimizeOptionWrapper::get_option( 'autoptimize_js_exclude', 'wp-includes/js/dist/, wp-includes/js/tinymce/, js/jquery/jquery.js' ); ?>"/><br />
+<td><label><input type="text" style="width:100%;" name="autoptimize_js_exclude" value="<?php echo esc_attr( autoptimizeOptionWrapper::get_option( 'autoptimize_js_exclude', 'wp-includes/js/dist/, wp-includes/js/tinymce/, js/jquery/jquery.js' ) ); ?>"/><br />
 <?php
 echo __( 'A comma-separated list of scripts you want to exclude from being optimized, for example \'whatever.js, another.js\' (without the quotes) to exclude those scripts from being aggregated by Autoptimize.', 'autoptimize' ) . ' ' . __( 'Important: excluded non-minified files are still minified by Autoptimize unless that option under "misc" is disabled.', 'autoptimize' );
 ?>
@@ -321,7 +322,7 @@ echo sprintf( __( 'This can be fully automated for different types of pages on t
 </tr>
 <tr valign="top" class="css_sub">
 <th scope="row"><?php _e( 'Exclude CSS from Autoptimize:', 'autoptimize' ); ?></th>
-<td><label><input type="text" style="width:100%;" name="autoptimize_css_exclude" value="<?php echo autoptimizeOptionWrapper::get_option( 'autoptimize_css_exclude', 'wp-content/cache/, wp-content/uploads/, admin-bar.min.css, dashicons.min.css' ); ?>"/><br />
+<td><label><input type="text" style="width:100%;" name="autoptimize_css_exclude" value="<?php echo esc_attr( autoptimizeOptionWrapper::get_option( 'autoptimize_css_exclude', 'wp-content/cache/, wp-content/uploads/, admin-bar.min.css, dashicons.min.css' ) ); ?>"/><br />
 <?php
 echo __( 'A comma-separated list of CSS you want to exclude from being optimized.', 'autoptimize' ) . ' ' . __( 'Important: excluded non-minified files are still minified by Autoptimize unless that option under "misc" is disabled.', 'autoptimize' );
 ?>
@@ -407,9 +408,9 @@ echo __( 'A comma-separated list of CSS you want to exclude from being optimized
         <?php _e( 'When aggregating JS or CSS, excluded files that are not minified (based on filename) are by default minified by Autoptimize despite being excluded. Uncheck this option if anything breaks despite excluding.', 'autoptimize' ); ?></label></td>
     </tr>
     <tr valign="top">
-        <th scope="row"><?php _e( 'Experimental: enable 404 fallbacks.', 'autoptimize' ); ?></th>
-        <td><label class="cb_label"><input type="checkbox" name="autoptimize_cache_fallback" <?php echo autoptimizeOptionWrapper::get_option( 'autoptimize_cache_fallback', '' ) ? 'checked="checked" ' : ''; ?>/>
-        <?php _e( 'Sometimes Autoptimized JS/ CSS is referenced in cached HTML but is already removed, resulting in broken sites. This experimental feature tries to redirect those not-found files to "fallback"-versions, keeping the page/ site somewhat intact. In some cases this will require extra web-server level configuration to ensure <code>wp-content/autoptimize_404_handler.php</code> is set to handle 404\'s in <code>wp-content/cache/autoptimize</code>.', 'autoptimize' ); ?></label></td>
+        <th scope="row"><?php _e( 'Enable 404 fallbacks?', 'autoptimize' ); ?></th>
+        <td><label class="cb_label"><input type="checkbox" name="autoptimize_cache_fallback" <?php echo autoptimizeOptionWrapper::get_option( 'autoptimize_cache_fallback', '1' ) ? 'checked="checked" ' : ''; ?>/>
+        <?php _e( 'Sometimes Autoptimized JS/ CSS is referenced in cached HTML but is already removed, resulting in broken sites. With this option on, Autoptimize will try to redirect those not-found files to "fallback"-versions, keeping the page/ site somewhat intact. In some cases this will require extra web-server level configuration to ensure <code>wp-content/autoptimize_404_handler.php</code> is set to handle 404\'s in <code>wp-content/cache/autoptimize</code>.', 'autoptimize' ); ?></label></td>
     </tr>
     <tr valign="top">
     <th scope="row"><?php _e( 'Also optimize for logged in editors/ administrators?', 'autoptimize' ); ?></th>
@@ -519,7 +520,7 @@ echo __( 'A comma-separated list of CSS you want to exclude from being optimized
         });
 
         jQuery( "#autoptimize_js_aggregate" ).change(function() {
-            if (this.checked && jQuery("#autoptimize_js").attr('checked')) {
+            if (this.checked && jQuery("#autoptimize_js").prop('checked')) {
                 jQuery(".js_aggregate:visible").fadeTo("fast",1);
                 jQuery( "#min_excl_row" ).show();
             } else {
@@ -539,7 +540,7 @@ echo __( 'A comma-separated list of CSS you want to exclude from being optimized
         });
 
         jQuery( "#autoptimize_css_aggregate" ).change(function() {
-            if (this.checked && jQuery("#autoptimize_css").attr('checked')) {
+            if (this.checked && jQuery("#autoptimize_css").prop('checked')) {
                 jQuery(".css_aggregate:visible").fadeTo("fast",1);
                 jQuery( "#min_excl_row" ).show();
             } else {
@@ -593,25 +594,25 @@ echo __( 'A comma-separated list of CSS you want to exclude from being optimized
     }
 
     function check_ini_state() {
-        if (!jQuery("#autoptimize_css_defer").attr('checked')) {
+        if (!jQuery("#autoptimize_css_defer").prop('checked')) {
             jQuery("#autoptimize_css_defer_inline").hide();
         }
-        if (!jQuery("#autoptimize_html").attr('checked')) {
+        if (!jQuery("#autoptimize_html").prop('checked')) {
             jQuery(".html_sub:visible").fadeTo('fast',.33);
         }
-        if (!jQuery("#autoptimize_css").attr('checked')) {
+        if (!jQuery("#autoptimize_css").prop('checked')) {
             jQuery(".css_sub:visible").fadeTo('fast',.33);
         }
-        if (!jQuery("#autoptimize_css_aggregate").attr('checked')) {
+        if (!jQuery("#autoptimize_css_aggregate").prop('checked')) {
             jQuery(".css_aggregate:visible").fadeTo('fast',.33);
         }
-        if (!jQuery("#autoptimize_js").attr('checked')) {
+        if (!jQuery("#autoptimize_js").prop('checked')) {
             jQuery(".js_sub:visible").fadeTo('fast',.33);
         }
-        if (!jQuery("#autoptimize_js_aggregate").attr('checked')) {
+        if (!jQuery("#autoptimize_js_aggregate").prop('checked')) {
             jQuery(".js_aggregate:visible").fadeTo('fast',.33);
         }
-        if (jQuery("#autoptimize_enable_site_config").attr('checked')) {
+        if (jQuery("#autoptimize_enable_site_config").prop('checked')) {
             jQuery("li.itemDetail:not(.multiSite)").fadeTo('fast',.33);
         }
     }
@@ -743,7 +744,7 @@ echo __( 'A comma-separated list of CSS you want to exclude from being optimized
             'autoptimize_optimize_logged'    => 1,
             'autoptimize_optimize_checkout'  => 0,
             'autoptimize_minify_excluded'    => 1,
-            'autoptimize_cache_fallback'     => '',
+            'autoptimize_cache_fallback'     => 1,
         );
 
         return $config;
@@ -786,24 +787,15 @@ echo __( 'A comma-separated list of CSS you want to exclude from being optimized
     }
 
     /**
-     * Returns preload polyfill JS.
-     *
-     * @return string
-     */
-    public static function get_ao_css_preload_polyfill()
-    {
-        $preload_poly = apply_filters( 'autoptimize_css_preload_polyfill', '<script data-cfasync=\'false\'>!function(t){"use strict";t.loadCSS||(t.loadCSS=function(){});var e=loadCSS.relpreload={};if(e.support=function(){var e;try{e=t.document.createElement("link").relList.supports("preload")}catch(t){e=!1}return function(){return e}}(),e.bindMediaToggle=function(t){function e(){t.media=a}var a=t.media||"all";t.addEventListener?t.addEventListener("load",e):t.attachEvent&&t.attachEvent("onload",e),setTimeout(function(){t.rel="stylesheet",t.media="only x"}),setTimeout(e,3e3)},e.poly=function(){if(!e.support())for(var a=t.document.getElementsByTagName("link"),n=0;n<a.length;n++){var o=a[n];"preload"!==o.rel||"style"!==o.getAttribute("as")||o.getAttribute("data-loadcss")||(o.setAttribute("data-loadcss",!0),e.bindMediaToggle(o))}},!e.support()){e.poly();var a=t.setInterval(e.poly,500);t.addEventListener?t.addEventListener("load",function(){e.poly(),t.clearInterval(a)}):t.attachEvent&&t.attachEvent("onload",function(){e.poly(),t.clearInterval(a)})}"undefined"!=typeof exports?exports.loadCSS=loadCSS:t.loadCSS=loadCSS}("undefined"!=typeof global?global:this);</script>' );
-        return $preload_poly;
-    }
-
-    /**
      * Returns preload JS onload handler.
      *
+     * @param string $media media attribute value the JS to use.
+     *
      * @return string
      */
-    public static function get_ao_css_preload_onload()
+    public static function get_ao_css_preload_onload( $media = 'all' )
     {
-        $preload_onload = apply_filters( 'autoptimize_filter_css_preload_onload', "this.onload=null;this.rel='stylesheet'" );
+        $preload_onload = apply_filters( 'autoptimize_filter_css_preload_onload', "this.onload=null;this.media='" . $media . "';" );
         return $preload_onload;
     }
 

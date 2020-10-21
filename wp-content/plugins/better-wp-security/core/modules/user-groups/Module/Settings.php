@@ -40,7 +40,7 @@ class Settings extends ITSEC_Settings implements Runnable {
 	/**
 	 * Get the default user group.
 	 *
-	 * @param string $name     The name of the gorup.
+	 * @param string $name     The name of the group.
 	 * @param bool   $recreate Whether to recreate the group if it was deleted.
 	 *
 	 * @return string
@@ -77,7 +77,7 @@ class Settings extends ITSEC_Settings implements Runnable {
 		}
 
 		if ( $recreate ) {
-			$this->repository->persist( $prototype );
+			$this->repository->persist( $prototype, [ 'is_default' => $name ] );
 			$defaults[ $name ] = $prototype->get_id();
 
 			$this->set( 'default_groups', $defaults );
@@ -118,7 +118,7 @@ class Settings extends ITSEC_Settings implements Runnable {
 			if ( ! isset( $defaults[ $role ] ) ) {
 				$group = new User_Group( $this->repository->next_id() );
 				$this->configure_group( $group, $role );
-				$this->repository->persist( $group );
+				$this->repository->persist( $group, [ 'is_default' => $role ] );
 				$defaults[ $role ] = $group->get_id();
 
 				$save = true;

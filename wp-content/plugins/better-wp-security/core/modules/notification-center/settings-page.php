@@ -107,7 +107,7 @@ class ITSEC_Notification_Center_Settings_Page extends ITSEC_Module_Settings_Page
 			return;
 		}
 
-		$link = esc_url( ITSEC_Core::get_logs_page_url( 'notification_center', 'error' ) );
+		$link = esc_url( ITSEC_Core::get_logs_page_url( array( 'module' => 'notification_center', 'type' => 'error' ) ) );
 		?>
 		<div class="itsec-notification-center-mail-errors-container">
 			<div class="notice notice-alt notice-error below-h2 itsec-is-dismissible itsec-notification-center-mail-error">

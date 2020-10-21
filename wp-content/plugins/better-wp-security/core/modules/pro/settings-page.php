@@ -12,7 +12,7 @@ final class ITSEC_Magic_Links_Settings_Page extends ITSEC_Module_Settings_Page {
 		$this->type = 'recommended';
 		$this->pro = true;
 		$this->upsell = true;
-		$this->upsell_url = 'http://ithemes.com/security/?utm_source=wordpressadmin&utm_medium=widget&utm_campaign=itsecfreecta';
+		$this->upsell_url = 'https://ithemes.com/security/?utm_source=wordpressadmin&utm_medium=widget&utm_campaign=itsecfreecta';
 
 		parent::__construct();
 	}
@@ -23,12 +23,12 @@ new ITSEC_Magic_Links_Settings_Page();
 final class ITSEC_Malware_Scheduling_Settings_Page extends ITSEC_Module_Settings_Page {
 	public function __construct() {
 		$this->id = 'malware-scheduling';
-		$this->title = __( 'Malware Scan Scheduling', 'better-wp-security' );
-		$this->description = __( 'Protect your site with automated malware scans. When this feature is enabled, the site will be automatically scanned each day. If a problem is found, an email is sent to select users.', 'better-wp-security' );
+		$this->title = __( 'Site Scan Scheduling', 'better-wp-security' );
+		$this->description = __( 'Protect your site with automated site scans. When this feature is enabled, the site will be automatically scanned each day. If a problem is found, an email is sent to select users.', 'better-wp-security' );
 		$this->type = 'recommended';
 		$this->pro = true;
 		$this->upsell = true;
-		$this->upsell_url = 'http://ithemes.com/security/wordpress-malware-scan/?utm_source=wordpressadmin&utm_medium=widget&utm_campaign=itsecfreecta';
+		$this->upsell_url = 'https://ithemes.com/security/wordpress-malware-scan/?utm_source=wordpressadmin&utm_medium=widget&utm_campaign=itsecfreecta';
 
 		parent::__construct();
 	}

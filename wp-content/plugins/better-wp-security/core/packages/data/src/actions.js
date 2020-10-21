@@ -36,5 +36,22 @@ export function receiveUser( user ) {
 	};
 }
 
+export function receiveActorTypes( types ) {
+	return {
+		type: RECEIVE_ACTOR_TYPES,
+		types,
+	};
+}
+
+export function receiveActors( type, actors ) {
+	return {
+		type: RECEIVE_ACTORS,
+		actorType: type,
+		actors: actors,
+	};
+}
+
 export const RECEIVE_INDEX = 'RECEIVE_INDEX';
 export const RECEIVE_USER = 'RECEIVE_USER';
+export const RECEIVE_ACTOR_TYPES = 'RECEIVE_ACTOR_TYPES';
+export const RECEIVE_ACTORS = 'RECEIVE_ACTORS';

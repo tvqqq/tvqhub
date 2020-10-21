@@ -27,7 +27,7 @@ class autoptimizeCriticalCSSEnqueue {
         $enqueue = true;
 
         // ... which are not the ones below.
-        if ( is_user_logged_in() || is_feed() || is_404() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) || $self->ao_ccss_ua() || 'nokey' == $key['status'] || 'invalid' == $key['status'] ) {
+        if ( is_user_logged_in() || is_feed() || is_404() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) || $self->ao_ccss_ua() || 'nokey' == $key['status'] || 'invalid' == $key['status'] || false === apply_filters( 'autoptimize_filter_ccss_enqueue_should_enqueue', true ) ) {
             $enqueue = false;
             autoptimizeCriticalCSSCore::ao_ccss_log( "Job queuing is not available for WordPress's logged in users, feeds, error pages, ajax calls, to criticalcss.com itself or when a valid API key is not found", 3 );
         }
@@ -91,8 +91,8 @@ class autoptimizeCriticalCSSEnqueue {
                 }
             }
 
-            if ( $job_qualify && false == $rule_properties['hash'] && false != $rule_properties['file'] ) {
-                // If job qualifies but rule hash is false and file isn't false  (MANUAL rule), job does not qualify despite what previous evaluations says.
+            if ( $job_qualify && ( ( false == $rule_properties['hash'] && false != $rule_properties['file'] ) || strpos( $req_type, 'template_' ) !== false ) ) {
+                // If job qualifies but rule hash is false and file isn't false (MANUAL rule) or if template, job does not qualify despite what previous evaluations says.
                 $job_qualify = false;
                 autoptimizeCriticalCSSCore::ao_ccss_log( 'Job submission DISQUALIFIED by MANUAL rule <' . $target_rule . '> with hash <' . $rule_properties['hash'] . '> and file <' . $rule_properties['file'] . '>', 3 );
             } elseif ( ! $job_qualify && empty( $rule_properties ) ) {
@@ -189,6 +189,7 @@ class autoptimizeCriticalCSSEnqueue {
         // Get the type of a page
         // Attach the conditional tags array.
         global $ao_ccss_types;
+        global $ao_ccss_forcepath;
 
         // By default, a page type is false.
         $page_type = false;
@@ -198,14 +199,18 @@ class autoptimizeCriticalCSSEnqueue {
             if ( is_404() ) {
                 $page_type = 'is_404';
                 break;
-            } elseif ( strpos( $type, 'custom_post_' ) !== false ) {
-                // Match custom post types.
+            } elseif ( strpos( $type, 'custom_post_' ) !== false && ( ! $ao_ccss_forcepath || ! is_page() ) ) {
+                // Match custom post types and not page or page not forced to path-based.
                 if ( get_post_type( get_the_ID() ) === substr( $type, 12 ) ) {
                     $page_type = $type;
                     break;
                 }
-            } elseif ( strpos( $type, 'template_' ) !== false ) {
-                // If templates; don't break, templates become manual-only rules.
+            } elseif ( strpos( $type, 'template_' ) !== false && ( ! $ao_ccss_forcepath || ! is_page() ) ) {
+                // Match templates if not page or if page is not forced to path-based.
+                if ( is_page_template( substr( $type, 9 ) ) ) {
+                    $page_type = $type;
+                    break;
+                }
             } else {
                 // Match all other existing types
                 // but remove prefix to be able to check if the function exists & returns true.

@@ -12,4 +12,5 @@ export { default as NoticeList } from './notice-list';
 export { default as ModuleSettingsNoticeList } from './module-settings-notice-list';
 export { default as ToggleControl } from './toggle-control';
 export { default as CheckboxControl } from './checkbox-control';
+export { default as SelectControl } from './select-control';
 export { default as TabPanel, ControlledTabPanel, ControlledMultiTabPanel } from './tab-panel';

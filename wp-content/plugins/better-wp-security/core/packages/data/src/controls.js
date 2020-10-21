@@ -80,7 +80,7 @@ export function select( storeKey, selectorName, ...args ) {
  *
  * @param {string} storeKey    The key for the store the action belongs to
  * @param {string} actionName  The name of the action to dispatch
- * @param {Array}  args        Arguments for the dispatch action.
+ * @param {...*}  args        Arguments for the dispatch action.
  *
  * @example
  * ```js
@@ -102,6 +102,28 @@ export function dispatch( storeKey, actionName, ...args ) {
 		actionName,
 		args,
 	};
+}
+/**
+ * Parses the fetch response.
+ *
+ * @param {Response} response The response object from apiFetch.
+ * @return {{response: *, type: string}} Data control.
+ */
+export function parseFetchResponse( response ) {
+	return {
+		type: 'PARSE_FETCH_RESPONSE',
+		response,
+	};
+}
+
+/**
+ * Parse the fetch response into an object with data and headers.
+ *
+ * @param {Response} response The response object from apiFetch.
+ * @return {Promise<*>} Parsed response object.
+ */
+async function PARSE_FETCH_RESPONSE( { response } ) {
+	return await response.json();
 }
 
 /**
@@ -159,6 +181,7 @@ const controls = {
 	DISPATCH( { storeKey, actionName, args } ) {
 		return dispatchData( storeKey )[ actionName ]( ...args );
 	},
+	PARSE_FETCH_RESPONSE,
 	CREATE_NOTICE( { status, content, options } ) {
 		if ( options.autoDismiss ) {
 			options.id = options.id || uniqueId( 'itsec-auto-dismiss-' );

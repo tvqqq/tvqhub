@@ -1,9 +1,4 @@
 <?php
-/**
- * Yoast SEO Plugin File.
- *
- * @package Yoast\YoastSEO\Integrations
- */
 
 namespace Yoast\WP\SEO\Integrations;
 
@@ -67,8 +62,6 @@ class Front_End_Integration implements Integration_Interface {
 		'Title',
 		'Meta_Description',
 		'Robots',
-		'Googlebot',
-		'Bingbot',
 	];
 
 	/**
@@ -238,6 +231,7 @@ class Front_End_Integration implements Integration_Interface {
 		global $wp_query;
 
 		$old_wp_query = $wp_query;
+		// phpcs:ignore WordPress.WP.DiscouragedFunctions.wp_reset_query_wp_reset_query -- Reason: The recommended function, wp_reset_postdata, doesn't reset wp_query.
 		\wp_reset_query();
 
 		\do_action( 'wpseo_head' );

@@ -9,6 +9,7 @@
 final class ITSEC_Setup {
 	private static $protected = [
 		4117,
+		4121,
 	];
 
 	/**
@@ -201,6 +202,10 @@ final class ITSEC_Setup {
 			_set_cron_array( $crons );
 
 			ITSEC_Lib::schedule_cron_test();
+		}
+
+		if ( $build < 4119 ) {
+			ITSEC_Files::regenerate_server_config( false );
 		}
 
 		if ( null === get_site_option( 'itsec-enable-grade-report', null ) ) {

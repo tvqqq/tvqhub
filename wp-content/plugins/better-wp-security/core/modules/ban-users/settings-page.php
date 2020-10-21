@@ -1,8 +1,8 @@
 <?php
 
-final class ITSEC_Ban_Users_Settings_Page extends ITSEC_Module_Settings_Page {
-	private $script_version = 1;
+use iThemesSecurity\Ban_Users\Database_Repository;
 
+final class ITSEC_Ban_Users_Settings_Page extends ITSEC_Module_Settings_Page {
 
 	public function __construct() {
 		$this->id = 'ban-users';
@@ -22,15 +22,17 @@ final class ITSEC_Ban_Users_Settings_Page extends ITSEC_Module_Settings_Page {
 	}
 
 	protected function render_settings( $form ) {
+		$hosts = ITSEC_Modules::get_container()->get( Database_Repository::class )->get_legacy_hosts();
+		$form->set_option( 'host_list', $hosts );
 
 ?>
 	<table class="form-table itsec-settings-section">
 		<tr>
-			<th scope="row"><label for="itsec-ban-users-default"><?php _e( 'Default Blacklist', 'better-wp-security' ); ?></label></th>
+			<th scope="row"><label for="itsec-ban-users-default"><?php _e( 'Default Ban List', 'better-wp-security' ); ?></label></th>
 			<td>
 				<?php $form->add_checkbox( 'default' ); ?>
-				<label for="itsec-ban-users-default"><?php _e( 'Enable HackRepair.com\'s blacklist feature', 'better-wp-security' ); ?></label>
-				<p class="description"><?php esc_html_e( 'As a getting-started point you can include the blacklist developed by Jim Walker.', 'better-wp-security' ); ?></p>
+				<label for="itsec-ban-users-default"><?php _e( 'Enable HackRepair.com\'s ban list feature', 'better-wp-security' ); ?></label>
+				<p class="description"><?php esc_html_e( 'As a getting-started point you can include the ban list developed by Jim Walker.', 'better-wp-security' ); ?></p>
 			</td>
 		</tr>
 		<tr>
@@ -58,6 +60,14 @@ final class ITSEC_Ban_Users_Settings_Page extends ITSEC_Module_Settings_Page {
 					<li><?php _e( 'Note: You cannot ban yourself.', 'better-wp-security' ); ?></li>
 				</ul>
 				<p><a href="<?php echo esc_url( ITSEC_Lib::get_trace_ip_link() ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Lookup IP Address.', 'better-wp-security' ); ?></a></p>
+			</td>
+		</tr>
+		<tr class="itsec-ban-users-enable_ban_lists-content">
+			<th scope="row"><label for="itsec-ban-users-server_config_limit"><?php esc_html_e( 'Limit Banned IPs in Server Configuration Files', 'better-wp-security'); ?></label></th>
+			<td>
+				<?php $form->add_html5_input( 'server_config_limit', 'number', [ 'min' => 0, 'max' => 9999, 'step' => 1 ] ); ?>
+				<p><?php esc_html_e( 'Limiting the number of IPs blocked by the Server Configuration Files (.htaccess and nginx.conf) will help reduce the risk of a server timeout when updating the configuration file.', 'better-wp-security' ); ?></p>
+				<p><?php esc_html_e( 'If the number of IPs in the banned list exceeds the Server Configuration File limit, the additional IPs will be blocked using PHP. Blocking IPs at the server level is more efficient than blocking IPs at the application level using PHP.', 'better-wp-security' ); ?></p>
 			</td>
 		</tr>
 		<tr class="itsec-ban-users-enable_ban_lists-content">

@@ -525,7 +525,9 @@ final class ITSEC_Logs_Page {
 							<?php $form->add_nonce( 'itsec-logs-page' ); ?>
 							<?php $form->add_hidden( 'widget-id', $id ); ?>
 							<div id="itsec-sidebar-widget-<?php echo $id; ?>" class="postbox itsec-sidebar-widget">
-								<h3 class="hndle ui-sortable-handle"><span><?php echo esc_html( $widget->title ); ?></span></h3>
+								<div class="postbox-header">
+									<h2 class="hndle ui-sortable-handle"><span><?php echo esc_html( $widget->title ); ?></span></h2>
+								</div>
 								<div class="inside">
 									<?php $this->get_widget_settings( $id, $form, true ); ?>
 								</div>

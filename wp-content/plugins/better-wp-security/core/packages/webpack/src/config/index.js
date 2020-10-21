@@ -177,6 +177,7 @@ module.exports = function makeConfig( directory, pro ) {
 				'@ithemes/security-components': path.resolve( directory, './core/packages/components/src/index.js' ),
 				'@ithemes/security-i18n': path.resolve( directory, './core/packages/i18n/src/index.js' ),
 				'@ithemes/security-data': path.resolve( directory, './core/packages/data/src/index.js' ),
+				'@ithemes/security-rjsf-theme': path.resolve( directory, './core/packages/rjsf-theme/src/index.js' ),
 				...Object.keys( entries ).reduce( function( acc, entry ) {
 					const parts = entry.split( '/' );
 					const alias = `@ithemes/security.${ parts[ 0 ] }.${ parts[ 1 ] }`;

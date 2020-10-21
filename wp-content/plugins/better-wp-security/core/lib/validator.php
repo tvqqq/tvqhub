@@ -116,6 +116,18 @@ abstract class ITSEC_Validator {
 		}
 	}
 
+	/**
+	 * Sanitizes a setting.
+	 *
+	 * @param string|callable $type                  The sanitization to apply.
+	 * @param string          $var                   The variable name.
+	 * @param string          $name                  The human facing label for the setting.
+	 * @param bool            $prevent_save_on_error Whether to prevent the module from saving if sanitization fails.
+	 * @param bool            $trim_value            Whether to trim the value if it is a string.
+	 * @param string          $custom_error          A custom error message to use instead of the default.
+	 *
+	 * @return bool Whether sanitization passed or not.
+	 */
 	final protected function sanitize_setting( $type, $var, $name, $prevent_save_on_error = true, $trim_value = true, $custom_error = '' ) {
 		$id = $this->get_id();
 
@@ -553,6 +565,11 @@ abstract class ITSEC_Validator {
 		return $array;
 	}
 
+	/**
+	 * Adds an error to be displayed to the user.
+	 *
+	 * @param \WP_Error $error
+	 */
 	final protected function add_error( $error ) {
 		$this->errors[] = $error;
 	}

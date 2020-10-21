@@ -1,18 +1,13 @@
 <?php
-/**
- * Yoast extension of the Model class.
- *
- * @package Yoast\WP\SEO\Repositories
- */
 
 namespace Yoast\WP\SEO\Repositories;
 
-use Yoast\WP\Lib\ORM;
 use Yoast\WP\Lib\Model;
+use Yoast\WP\Lib\ORM;
 use Yoast\WP\SEO\Models\Primary_Term;
 
 /**
- * Class Primary_Term_Repository
+ * Class Primary_Term_Repository.
  */
 class Primary_Term_Repository {
 

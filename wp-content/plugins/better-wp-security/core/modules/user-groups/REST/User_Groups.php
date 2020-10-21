@@ -142,7 +142,7 @@ class User_Groups extends \WP_REST_Controller {
 				return $response;
 			}
 
-			$this->repository->persist( $user_group );
+			$this->repository->persist( $user_group, [] );
 			$request['context'] = 'edit';
 
 			$response = $this->prepare_item_for_response( $user_group, $request );
@@ -203,7 +203,7 @@ class User_Groups extends \WP_REST_Controller {
 				return $user_group;
 			}
 
-			$this->repository->persist( $user_group );
+			$this->repository->persist( $user_group, [] );
 			$request['context'] = 'edit';
 
 			return $this->prepare_item_for_response( $user_group, $request );

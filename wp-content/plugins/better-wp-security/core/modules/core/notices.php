@@ -3,7 +3,7 @@
 class ITSEC_Admin_Notice_New_Feature_Core implements ITSEC_Admin_Notice {
 
 	public function get_id() {
-		return 'release-user-groups';
+		return 'release-rcp';
 	}
 
 	public function get_title() {
@@ -11,12 +11,7 @@ class ITSEC_Admin_Notice_New_Feature_Core implements ITSEC_Admin_Notice {
 	}
 
 	public function get_message() {
-		return sprintf(
-			esc_html__( 'New in iThemes Security version %1$s, %2$sSave Time Securing WordPress With User Groups%3$s!', 'better-wp-security' ),
-			ITSEC_Core::is_pro() ? '6.4.0' : '7.7.0',
-			'<a href="{{ $blog }}">',
-			'</a>'
-		);
+		return esc_html__( 'iThemes Security Pro Now Integrates with Restrict Content Pro.', 'better-wp-security' );
 	}
 
 	public function get_meta() {
@@ -34,13 +29,13 @@ class ITSEC_Admin_Notice_New_Feature_Core implements ITSEC_Admin_Notice {
 	public function get_actions() {
 		return array(
 			'blog' => new ITSEC_Admin_Notice_Action_Link(
-				add_query_arg( 'itsec_view_release_post', 'user-groups', admin_url( 'index.php' ) ),
-				esc_html__( 'See How It Works', 'better-wp-security' ),
+				add_query_arg( 'itsec_view_release_post', 'release-ban-users', admin_url( 'index.php' ) ),
+				esc_html__( 'See what’s new', 'better-wp-security' ),
 				ITSEC_Admin_Notice_Action::S_PRIMARY,
 				function () {
 					$this->handle_dismiss();
 
-					wp_redirect( 'https://ithemes.com/new-save-time-securing-wordpress-with-user-groups' );
+					wp_redirect( 'https://ithemes.com/?p=59484' );
 					die;
 				}
 			)
@@ -70,4 +65,7 @@ class ITSEC_Admin_Notice_New_Feature_Core implements ITSEC_Admin_Notice {
 	}
 }
 
-ITSEC_Lib_Admin_Notices::register( new ITSEC_Admin_Notice_Globally_Dismissible( new ITSEC_Admin_Notice_Managers_Only( new ITSEC_Admin_Notice_New_Feature_Core() ) ) );
+if ( time() > 1603206000 ) {
+	ITSEC_Lib_Admin_Notices::register( new ITSEC_Admin_Notice_Globally_Dismissible( new ITSEC_Admin_Notice_Managers_Only( new ITSEC_Admin_Notice_New_Feature_Core() ) ) );
+}
+

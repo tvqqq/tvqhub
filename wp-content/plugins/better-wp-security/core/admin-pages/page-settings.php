@@ -500,7 +500,9 @@ final class ITSEC_Settings_Page {
 							<?php $form->add_hidden( 'widget-id', $id ); ?>
 						<?php endif; ?>
 							<div id="itsec-sidebar-widget-<?php echo $id; ?>" class="postbox itsec-sidebar-widget">
-								<h3 class="hndle ui-sortable-handle"><span><?php echo esc_html( $widget->title ); ?></span></h3>
+								<div class="postbox-header">
+									<h2 class="hndle ui-sortable-handle"><span><?php echo esc_html( $widget->title ); ?></span></h2>
+								</div>
 								<div class="inside">
 									<?php if ( $messages = ITSEC_Lib_Remote_Messages::get_messages_for_placement( array( 'widget' => $id ) ) ) : ?>
 										<div class="itsec-widgets-service-status">

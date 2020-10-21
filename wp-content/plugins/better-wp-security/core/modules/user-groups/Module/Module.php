@@ -36,7 +36,7 @@ class Module implements Runnable {
 	public function run() {
 		add_action( 'itsec_initialized', [ $this, 'trigger_setting_registration' ] );
 		add_filter( 'map_meta_cap', [ $this, 'map_meta_cap' ], 10, 4 );
-		add_action( 'itsec_create_user_group', [ $this, 'initialize_settings' ] );
+		add_action( 'itsec_create_user_group', [ $this, 'initialize_settings' ], 10, 2 );
 	}
 
 	public function trigger_setting_registration() {
@@ -76,9 +76,10 @@ class Module implements Runnable {
 	 * Initialize a new user group's settings to use the configuration for the Everybody Else group.
 	 *
 	 * @param User_Group $user_group
+	 * @param array      $args
 	 */
-	public function initialize_settings( User_Group $user_group ) {
-		if ( \ITSEC_Core::is_importing() ) {
+	public function initialize_settings( User_Group $user_group, array $args = [] ) {
+		if ( \ITSEC_Core::is_importing() || ! empty( $args['is_default'] ) ) {
 			// During an import, there is no need to initialize these groups as "new" since we'll
 			// be importing their settings shortly.
 			return;

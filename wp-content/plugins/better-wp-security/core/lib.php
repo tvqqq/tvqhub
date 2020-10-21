@@ -162,7 +162,7 @@ final class ITSEC_Lib {
 	 *
 	 * @param bool $use_cache Whether to check the cache, or force the retrieval of a new value.
 	 *
-	 * @return  String The IP address of the user
+	 * @return string The IP address of the user
 	 */
 	public static function get_ip( $use_cache = true ) {
 		if ( isset( $GLOBALS['__itsec_remote_ip'] ) && $use_cache ) {
@@ -264,12 +264,53 @@ final class ITSEC_Lib {
 
 	}
 
-	public static function get_blacklisted_ips() {
-		return apply_filters( 'itsec_filter_blacklisted_ips', array() );
+	/**
+	 * Checks if the given IP is banned.
+	 *
+	 * @param string $ip IP address to check.
+	 *
+	 * @return bool
+	 */
+	public static function is_ip_banned( $ip = '' ) {
+		$ip = $ip ?: ITSEC_Lib::get_ip();
+
+		if ( ! ITSEC_Lib_IP_Tools::validate( $ip ) ) {
+			return false;
+		}
+
+		$source = ITSEC_Modules::get_container()->get( \iThemesSecurity\Ban_Hosts\Source::class );
+		$source = new \iThemesSecurity\Ban_Hosts\Deprecated_Filter_Source( $source );
+
+		return (bool) $source->find_ban_for_host( $ip );
 	}
 
 	/**
-	 * Determines whether a given IP address is blacklisted
+	 * Gets the list of banned IPs.
+	 *
+	 * @deprecated 6.7.0
+	 *
+	 * @return string[]
+	 */
+	public static function get_blacklisted_ips() {
+		_deprecated_function( __METHOD__, '6.7.0', \iThemesSecurity\Ban_Hosts\Multi_Repository::class );
+
+		if (
+			ITSEC_Modules::get_container()->has( \iThemesSecurity\Ban_Users\Database_Repository::class ) &&
+			ITSEC_Modules::get_setting( 'ban-users', 'enable_ban_lists' )
+		) {
+			$repo = ITSEC_Modules::get_container()->get( \iThemesSecurity\Ban_Users\Database_Repository::class );
+			$ips  = $repo->get_legacy_hosts();
+		} else {
+			$ips = [];
+		}
+
+		return apply_filters( 'itsec_filter_blacklisted_ips', $ips );
+	}
+
+	/**
+	 * Determines whether a given IP address is blacklisted.
+	 *
+	 * @deprecated 6.7.0
 	 *
 	 * @param string $ip              ip to check (can be in CIDR notation)
 	 * @param array  $blacklisted_ips ip list to compare to if not yet saved to options
@@ -277,27 +318,19 @@ final class ITSEC_Lib {
 	 * @return boolean true if blacklisted or false
 	 */
 	public static function is_ip_blacklisted( $ip = null, $blacklisted_ips = null ) {
-		$ip = sanitize_text_field( $ip );
+		_deprecated_function( __METHOD__, '6.7.0', 'ITSEC_Lib::is_ip_banned' );
 
-		if ( empty( $ip ) ) {
-			$ip = ITSEC_Lib::get_ip();
-		}
-
-		if ( ! class_exists( 'ITSEC_Lib_IP_Tools' ) ) {
-			require_once( ITSEC_Core::get_core_dir() . '/lib/class-itsec-lib-ip-tools.php' );
-		}
-
-		if ( is_null( $blacklisted_ips ) ) {
-			$blacklisted_ips = self::get_blacklisted_ips();
-		}
-
-		foreach ( $blacklisted_ips as $blacklisted_ip ) {
-			if ( ITSEC_Lib_IP_Tools::intersect( $ip, ITSEC_Lib_IP_Tools::ip_wild_to_ip_cidr( $blacklisted_ip ) ) ) {
-				return true;
+		if ( null !== $blacklisted_ips ) {
+			foreach ( $blacklisted_ips as $blacklisted_ip ) {
+				if ( ITSEC_Lib_IP_Tools::intersect( $ip, $blacklisted_ip ) ) {
+					return true;
+				}
 			}
+
+			return false;
 		}
 
-		return false;
+		return self::is_ip_banned( $ip );
 	}
 
 	/**
@@ -1284,6 +1317,96 @@ final class ITSEC_Lib {
 	}
 
 	/**
+	 * Gets the first key in an array.
+	 *
+	 * @param array $arr
+	 *
+	 * @return int|string|null
+	 */
+	public static function array_key_first( array $arr ) {
+		if ( function_exists( 'array_key_first' ) ) {
+			return array_key_first( $arr );
+		}
+
+		foreach ( $arr as $key => $value ) {
+			return $key;
+		}
+
+		return null;
+	}
+
+	/**
+	 * Gets the last ket in an array.
+	 *
+	 * @param array $arr
+	 *
+	 * @return int|string|null
+	 */
+	public static function array_key_last( array $arr ) {
+		if ( function_exists( 'array_key_last' ) ) {
+			return array_key_last( $arr );
+		}
+
+		end( $arr );
+
+		return key( $arr );
+	}
+
+	/**
+	 * Plucks a certain field out of each item in the list.
+	 *
+	 * Similar to {@see wp_list_pluck()} but it supports using methods.
+	 *
+	 * @param array  $list      The list of items.
+	 * @param string $field     The field or method name to use.
+	 * @param string $index_key Field from the item to use as keys for the new array.
+	 *
+	 * @return array
+	 */
+	public static function pluck( array $list, $field, $index_key = '' ) {
+		$output = [];
+
+		foreach ( $list as $i => $item ) {
+			$key = $index_key ? static::get( $item, $index_key ) : $i;
+
+			$value = static::get( $item, $field );
+
+			if ( null === $key ) {
+				$output[] = $value;
+			} else {
+				$output[ $key ] = $value;
+			}
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Get's a value from an array or object.
+	 *
+	 * @param array|object $item    The item to retrieve the value from.
+	 * @param string       $field   The field or method name to use.
+	 * @param null         $default The default value to return if no value is found.
+	 *
+	 * @return mixed|null
+	 */
+	public static function get( $item, $field, $default = null ) {
+		if ( is_array( $item ) ) {
+			return isset( $item[ $field ] ) ? $item[ $field ] : $default;
+		}
+
+		if ( is_object( $item ) ) {
+			if ( is_callable( [ $item, $field ] ) ) {
+				return $item->{$field}();
+			}
+
+			return isset( $item->{$field} ) ? $item->{$field} : $default;
+		}
+
+		return $default;
+	}
+
+	/**
 	 * Array unique implementation that allows for non-scalar values.
 	 *
 	 * Will compare elements using `serialize()`.
@@ -1343,7 +1466,7 @@ final class ITSEC_Lib {
 
 			$attrs = array();
 			$parts = explode( ';', trim( $value ) );
-			$main  = $parts[0];
+			$main  = trim( $parts[0], ' <>' );
 
 			foreach ( $parts as $part ) {
 				if ( false === strpos( $part, '=' ) ) {
@@ -1352,7 +1475,7 @@ final class ITSEC_Lib {
 
 				list( $key, $value ) = array_map( 'trim', explode( '=', $part, 2 ) );
 
-				$attrs[ $key ] = $value;
+				$attrs[ $key ] = trim( $value, '" ' );
 			}
 
 			$parsed[ $main ] = $attrs;
@@ -1705,13 +1828,15 @@ final class ITSEC_Lib {
 	/**
 	 * Format as a ISO 8601 date.
 	 *
-	 * @param int|string $date Epoch or strtotime compatible date.
+	 * @param int|string|\DateTimeInterface $date Epoch or strtotime compatible date.
 	 *
 	 * @return string|false
 	 */
 	public static function to_rest_date( $date = 0 ) {
 		if ( ! $date ) {
 			$date = ITSEC_Core::get_current_time_gmt();
+		} elseif ( $date instanceof \DateTimeInterface ) {
+			$date = $date->getTimestamp();
 		} elseif ( ! is_int( $date ) ) {
 			$date = strtotime( $date );
 		}
@@ -2054,5 +2179,143 @@ final class ITSEC_Lib {
 		}
 
 		return $wp_error;
+	}
+
+	/**
+	 * Evaluate whether this site passes the given requirements.
+	 *
+	 * @param array $requirements
+	 *
+	 * @return WP_Error
+	 */
+	public static function evaluate_requirements( array $requirements ) {
+		$schema = [
+			'type'                 => 'object',
+			'additionalProperties' => false,
+			'properties'           => [
+				'version' => [
+					'type'                 => 'object',
+					'additionalProperties' => false,
+					'properties'           => [
+						'pro'  => [
+							'type'     => 'string',
+							'required' => true,
+						],
+						'free' => [
+							'type'     => 'string',
+							'required' => true,
+						],
+					],
+				],
+			],
+		];
+
+		$valid_requirements = rest_validate_value_from_schema( $requirements, $schema );
+
+		if ( is_wp_error( $valid_requirements ) ) {
+			return $valid_requirements;
+		}
+
+		$error = new WP_Error();
+
+		foreach ( $requirements as $kind => $requirement ) {
+			switch ( $kind ) {
+				case 'version':
+					$key     = ITSEC_Core::is_pro() ? 'pro' : 'free';
+					$version = $requirement[ $key ];
+
+					if ( version_compare( ITSEC_Core::get_plugin_version(), $version, '<' ) ) {
+						$error->add(
+							'version',
+							sprintf( __( 'Must be running at least version %s of iThemes Security.', 'better-wp-security' ), $version )
+						);
+					}
+
+					break;
+			}
+		}
+
+		return $error;
+	}
+
+	/**
+	 * Converts a JSON Schema to a WP-CLI synopsis.
+	 *
+	 * @param array $schema
+	 *
+	 * @return array
+	 */
+	public static function convert_schema_to_cli_synopsis( array $schema ) {
+		$synopsis = [];
+
+		$required = isset( $schema['required'] ) ? $schema['required'] : [];
+
+		if ( isset( $schema['properties'] ) ) {
+			foreach ( $schema['properties'] as $property => $config ) {
+				$param = [
+					'name' => $property,
+				];
+
+				if ( 'boolean' === $config['type'] ) {
+					$param['type'] = 'flag';
+				} else {
+					$param['type'] = 'assoc';
+				}
+
+				if ( array_key_exists( 'default', $config ) ) {
+					$param['default'] = $config['default'];
+				}
+
+				if ( isset( $config['enum'] ) ) {
+					$param['options'] = $config['enum'];
+				}
+
+				if ( ( ! isset( $config['required'] ) || true !== $config['required'] ) && ! in_array( $property, $required, true ) ) {
+					$param['optional'] = true;
+				}
+
+				if ( isset( $config['description'] ) ) {
+					$param['description'] = $config['description'];
+				}
+
+				$synopsis[] = $param;
+			}
+		}
+
+		if ( ! empty( $schema['additionalProperties'] ) ) {
+			$synopsis[] = [
+				'type' => 'generic',
+			];
+		}
+
+		return $synopsis;
+	}
+
+	/**
+	 * Decode a string with URL-safe Base64.
+	 *
+	 * @param string $input A Base64 encoded string
+	 *
+	 * @return string A decoded string
+	 */
+	public static function url_safe_b64_decode( $input ) {
+		$remainder = strlen( $input ) % 4;
+		if ( $remainder ) {
+			$padlen = 4 - $remainder;
+			$input  .= str_repeat( '=', $padlen );
+		}
+
+		return base64_decode( strtr( $input, '-_', '+/' ) );
+	}
+
+	/**
+	 * Encode a string with URL-safe Base64.
+	 *
+	 * @param string $input The string you want encoded
+	 *
+	 * @return string The base64 encode of what you passed in
+	 */
+	public static function url_safe_b64_encode( $input ) {
+		return str_replace( '=', '', strtr( base64_encode( $input ), '+/', '-_' ) );
 	}
 }
