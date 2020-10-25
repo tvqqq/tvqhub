@@ -54,6 +54,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/category/chuyen-linh-tinh">Chuyện linh tinh</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/category/tai-chinh-ca-nhan"><i class="fas fa-comments-dollar"></i>&nbsp;Tài chính cá nhân</a>
+                </li>
             </ul>
         </div>
 
@@ -65,11 +68,6 @@
             <li class="nav-item">
                 <a class="nav-link p-2" href="/contact" data-toggle="tooltip" data-placement="bottom" title="Contact">
                     <i class="far fa-paper-plane"></i></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link p-2" href="/bucket-list" data-toggle="tooltip" data-placement="bottom"
-                   title="Bucket List">
-                    <i class="fas fa-layer-group"></i></a>
             </li>
             <li class="nav-item">
                 <form class="form-inline search" method="get" action="<?php echo home_url(); ?>"
