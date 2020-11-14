@@ -54,9 +54,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/category/chuyen-linh-tinh">Chuyện linh tinh</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/category/tai-chinh-ca-nhan"><i class="fas fa-comments-dollar"></i>&nbsp;Tài chính cá nhân</a>
-                </li>
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" href="/category/tai-chinh-ca-nhan"><i class="fas fa-comments-dollar"></i>&nbsp;Tài chính cá nhân</a>-->
+<!--                </li>-->
             </ul>
         </div>
 
